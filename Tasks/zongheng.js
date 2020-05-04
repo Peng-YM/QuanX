@@ -1,5 +1,11 @@
+/**
+ *  @author: Peng-YM
+ *  更新地址: https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/zongheng.js
+ *  使用方法：进入纵横小说页面，例如<<剑来>>：http://book.zongheng.com/book/672340.html 则id为672340，将id添加到列表即可。
+ */
+
 // 书籍id列表
-const ids = [954217];
+const ids = [408586];
 /********************************* CONVERTER START *******************************************************/
 // #region 固定头部
 let isQuantumultX = $task != undefined; //判断当前运行环境是否是qx
