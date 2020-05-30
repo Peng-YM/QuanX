@@ -168,6 +168,9 @@ async function checkUpdate(books) {
       // check update from each book
       let config = {
         url: `http://book.zongheng.com/book/${id}.html`,
+headers: {
+"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"
+}
       };
 
       await $task
@@ -179,9 +182,7 @@ async function checkUpdate(books) {
           updateCount = html.match(parsers.updateCount)[1];
           latestChapter = html.match(parsers.latestChapter)[1];
 
-          console.log(
-            `title: ${title}, latest chapter: ${latestChapter}, ${updateCount}`
-          );
+          //console.log(`title: ${title}, latest chapter: ${latestChapter}, ${updateCount}`);
 
           book = books[id];
           if (book === undefined || latestChapter !== book.latestChapter) {
