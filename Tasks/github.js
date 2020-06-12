@@ -98,7 +98,9 @@ function parseURL(url) {
 
 function needUpdate(url, timestamp) {
   const storedTimestamp = $prefs.valueForKey(url.hashCode());
-  console.log(`Stored Timestamp for ${url.hashCode()}: ` + storedTimestamp);
+  if (debug){
+    console.log(`Stored Timestamp for ${url.hashCode()}: ` + storedTimestamp);
+  }
   return storedTimestamp === undefined || storedTimestamp !== timestamp
     ? true
     : false;
