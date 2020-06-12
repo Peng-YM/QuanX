@@ -18,7 +18,7 @@ const token = "784a03feb07989d3339dfa41c7eb41777436cbfa";
 
 const repository = [
   {
-    name: "NZW9314 Scripts",
+    name: "NZW9314 脚本",
     url: "https://github.com/nzw9314/QuantumultX/tree/master",
   },
   {
@@ -26,9 +26,17 @@ const repository = [
     url: "https://github.com/yichengchen/clashX/releases",
   },
   {
-    name: "Chavy Scripts",
+    name: "Chavy 脚本",
     url: "https://github.com/chavyleung/scripts",
   },
+  {
+    name: "Qure 图标",
+    url: "https://github.com/Koolson/Qure"
+  },
+  {
+    name: "Orz-mini 图标",
+    url: "https://github.com/Orz-3/mini"
+  }
 ];
 
 const debug = false;
