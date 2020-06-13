@@ -1,41 +1,44 @@
 /**
- * 监控github仓库的commits和release。
- * @author: Peng-YM
- * 更新地址：https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/github.js
+ * 2020年06月13日
+ * 1、监控github仓库的commits和release。
+ * 2、监控具体的文件或目录是否有更新。 
+ * @author: Peng-YM， toulanboy
+ * 更新地址：https://github.com/toulanboy/github_detect
  * 配置方法：
  * 1. 填写github token, 在github > settings > developer settings > personal access token 里面生成一个新token。
- * 默认TOKEN用的是我自己的，请不要请求过于频繁，每天一两次即可。例如：cron "0 9 * * *"
  * 2. 配置仓库地址，格式如下：
  * {
- *  name: "仓库名称",
- *  url: "仓库的url"
+ *  name: "",//填写仓库名称，可自定义
+ *  file_name:[],//填写需要监控的文件或目录。目前只支持【一级目录】。如果为空，默认监控整个仓库
+ *  url: "" //仓库的url
  * }
  * 📌 如果希望监控某个分支的Commit，请切换到该分支，直接复制URL填入；
  * 📌 如果希望监控Release，请切换至Release界面，直接复制URL填入；
+ * 📌 若文件存在某个目录里面，请填写【一级目录】。如 JD-DailyBonus/JD-DailyBonus.js， 那么填写前面的JD-DailyBonus。
  */
 
-const token = "784a03feb07989d3339dfa41c7eb41777436cbfa";
+const token = "";
 
 const repository = [
   {
-    name: "NZW9314 脚本",
+    name: "NZW9314",
+    file_name:[], //如果为空，默认监控整个仓库
     url: "https://github.com/nzw9314/QuantumultX/tree/master",
   },
   {
-    name: "ClashX",
-    url: "https://github.com/yichengchen/clashX/releases",
-  },
-  {
-    name: "Chavy 脚本",
+    name: "chavyleung",
+    file_name:[],
     url: "https://github.com/chavyleung/scripts",
   },
   {
-    name: "Qure 图标",
-    url: "https://github.com/Koolson/Qure"
+    name: "NobyDa -- 京豆签到",
+    file_name: ["JD-DailyBonus"],
+    url: "https://github.com/NobyDa/Script/tree/master"
   },
   {
-    name: "Orz-mini 图标",
-    url: "https://github.com/Orz-3/mini"
+    name: "yichahucha -- 微博广告",
+    file_name: ["wb_ad.js", "wb_launch.js"],
+    url: "https://github.com/yichahucha/surge/tree/master"
   }
 ];
 
@@ -107,7 +110,7 @@ function needUpdate(url, timestamp) {
 }
 
 async function checkUpdate(item) {
-  const { name, url } = item;
+  const { name, url, file_name } = item;
   const headers = {
     Authorization: `token ${token}`,
     "User-Agent":
@@ -154,19 +157,56 @@ async function checkUpdate(item) {
           const author = commit.committer.name;
           const body = commit.message;
           const published_at = commit.committer.date;
-
-          if (needUpdate(url, published_at)) {
-            $notify(
-              `🎈🎈🎈 [${name}] 新提交`,
-              "",
-              `⏰ 提交于: ${formatTime(
-                published_at
-              )}\n👨🏻‍💻 发布者: ${author}\n📌 更新说明: \n${body}`
-            );
-            // update stored timestamp
-            if (!debug){
-              $prefs.setValueForKey(published_at, url.hashCode());
+          const file_url = commit.tree.url
+          //监控仓库是否有更新
+          if (file_name.length == 0) {
+            if (needUpdate(url, published_at)) {
+              $notify(
+                `🎈🎈🎈 [${name}] 新提交`,
+                "",
+                `⏰ 提交于: ${formatTime(
+                  published_at
+                )}\n👨🏻‍💻 发布者: ${author}\n📌 更新说明: \n${body}`
+              );
+              // update stored timestamp
+              if (!debug){
+                $prefs.setValueForKey(published_at, url.hashCode());
+              }
             }
+          }
+          //找出具体的文件是否有更新
+          else{        
+            $task
+            .fetch({
+              url: file_url,
+              headers,
+            })
+            .then((response) => {              
+              const file_detail = JSON.parse(response.body);
+              const file_list = file_detail.tree;
+              for (var i in file_list) {
+                for(var j in file_name){
+                  if (file_list[i].path == file_name[j]) {
+                    var file_hash = file_list[i].sha;
+                    last_sha = $prefs.valueForKey(file_name[j]);
+                    if (debug)
+                      last_sha = "111";
+                    if (file_hash != last_sha) { 
+                      $notify(
+                        `🐬 [${name}]`,
+                        "",
+                        `📌 ${file_name[j]}有更新`
+                      );
+                      if(!debug)
+                        $prefs.setValueForKey(file_hash, file_name[j]);
+                    }
+                    console.log(`🐬 ${file_name[j]}：\n\tlast sha: ${last_sha}\n\tlatest sha: ${file_hash}\n\t${file_hash == last_sha ? "✅当前已是最新" : "🔅需要更新"}`);
+                      
+                  }
+                }
+              }       
+            })
+              .catch((e) => console.error(e));
           }
         })
         .catch((e) => console.error(e));
