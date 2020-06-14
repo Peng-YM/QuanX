@@ -10,6 +10,7 @@
 | [Github](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/github.js) | 监测Github仓库的Commit和Release |  0 9 * * *   |
 | [今日汇率](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/exchange.js) | 汇率监控 |  0 9 * * *   |
 | [Steam](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/steam.js) | Steam日报 | 0 9 * * * |
+| [Epic](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/epic.js) | Epic周免 | 0 9 ? * MON |
 
 ### Gallery
 
