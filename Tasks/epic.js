@@ -2,6 +2,11 @@
  * 每周Epic游戏限免提醒。
  * @author: Peng-YM
  * 更新地址：https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/epic.js
+ * 📌 注意 epic 需要代理访问，将下面的配置加到分流规则中：
+ * 1. QX
+ * host, epic.com, proxy
+ * 2. Loon & Surge
+ * domain, epic.com, PROXY
  */
 
 
