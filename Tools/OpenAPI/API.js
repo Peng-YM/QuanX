@@ -73,7 +73,7 @@ function API(name = "untitled", debug = false) {
     initCache() {
       if (this.isQX) return $prefs.valueForKey(this.name) || {};
       if (this.isLoon || this.isSurge)
-        return $persistanceStore.read(this.name) || {};
+        return $persistentStore.read(this.name) || {};
       if (this.isNode) {
         // create a json file with the given name if not exists
         const fpath = `${this.name}.json`;
@@ -95,7 +95,7 @@ function API(name = "untitled", debug = false) {
     persistCache() {
       const data = this.cache;
       if (this.isQX) $prefs.setValueForKey(data, this.name);
-      if (this.isSurge) $persistanceStore.write(data, this.name);
+      if (this.isSurge) $persistentStore.write(data, this.name);
       if (this.isNode)
         this.node.fs.writeFileSync(
           `${this.name}.json`,
