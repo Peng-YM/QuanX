@@ -102,7 +102,7 @@ function API(name = "untitled", debug = false) {
           );
           return {};
         } else {
-          return JSON.parse(this.node.fs.readFileSyznc(`${this.name}.json`));
+          return JSON.parse(this.node.fs.readFileSync(`${this.name}.json`));
         }
       }
     }
@@ -110,13 +110,13 @@ function API(name = "untitled", debug = false) {
     // store cache
     persistCache() {
       const data = JSON.stringify(this.cache);
-      $.log(`FLUSHING DATA:\n${data}`);
+      this.log(`FLUSHING DATA:\n${data}`);
       if (this.isQX) $prefs.setValueForKey(data, this.name);
       if (this.isLoon || this.isSurge) $persistentStore.write(data, this.name);
       if (this.isNode)
         this.node.fs.writeFileSync(
           `${this.name}.json`,
-          JSON.stringify(data),
+          data,
           { flag: "w" },
           (err) => console.log(err)
         );
@@ -182,7 +182,7 @@ function API(name = "untitled", debug = false) {
     }
 
     done(value = {}) {
-      $.log("DONE");
+      this.log("DONE");
       if (!this.isNode) $done(value);
     }
   }
