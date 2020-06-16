@@ -107,10 +107,7 @@ function API(name = "untitled", debug = false) {
 
     write(data, key) {
       this.log(`SET ${key} = ${data}`);
-      this.cache = {
-        ...this.cache,
-        [key]: data,
-      };
+      this.cache[key] = data;
     }
 
     read(key) {
@@ -120,7 +117,7 @@ function API(name = "untitled", debug = false) {
 
     delete(key) {
       this.log(`DELETE ${key}`);
-      this.write(undefined, key);
+      delete this.cache[key];
     }
 
     // notification
