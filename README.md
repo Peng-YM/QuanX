@@ -11,6 +11,7 @@
 | [今日汇率](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/exchange.js) | 汇率监控 |  0 9 * * *   |
 | [Steam](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/steam.js) | Steam日报 | 0 9 * * * |
 | [Epic](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/epic.js) | Epic周免 | 0 9 ? * MON |
+| [PSN](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/psn.js) | PSN会免 | 0 9 1 * * |
 
 ### Gallery
 

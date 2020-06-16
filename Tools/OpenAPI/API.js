@@ -143,7 +143,7 @@ function API(name = "untitled", debug = false) {
         );
       if (this.isNode) {
         if (typeof $jsbox === "undefined") {
-          console.log(`${title}\n${subtitle}\n${content_}`);
+          console.log(`${title}\n${subtitle}\n${content_}\n\n`);
         } else {
           const push = require("push");
           push.schedule({
