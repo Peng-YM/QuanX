@@ -134,7 +134,7 @@ function API(name = "untitled", debug = false) {
         else $notify(title, subtitle, content, options);
       }
       if (this.isSurge) $notification.post(title, subtitle, content_);
-      if (this.isLoon) $notification.post(title, subtitle, content, url);
+      if (this.isLoon) $notification.post(title, subtitle, content, url || options['open-url']);
       if (this.isNode) console.log(`${title}\n${subtitle}\n${content_}`);
     }
 
