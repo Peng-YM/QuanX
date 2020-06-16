@@ -140,7 +140,7 @@ function API(name = "untitled", debug = false) {
 
     // other helper functions
     log(msg) {
-      if ((this.debug = true)) console.log(msg);
+      if (this.debug) console.log(msg);
     }
 
     info(msg) {
