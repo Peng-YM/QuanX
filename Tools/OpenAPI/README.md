@@ -75,7 +75,7 @@ $.write("VALUE", "KEY"); // 将VALUE保存到KEY中
 $.read("KEY"); // 将KEY的值取出
 $.delete("KEY"); // 删除KEY的值
 $.cache; // 当前脚本所有的缓存
-$.done(); // 将API对象中的缓存持久化
+$.done();
 ```
 
 持久化在OpenAPI中得到了巨大改进，在不同环境下，其表现如下：
@@ -96,8 +96,6 @@ $2.write("data", "key");
 #### 2. Node & JSBox (2.0+)
 
 Node环境中，`cache`会被保存到和脚本同级目录下的`name.json`中。
-
-#### 记住：务必在脚本结束前调用`$.done()`刷新缓存。
 
 ### 其他
 
