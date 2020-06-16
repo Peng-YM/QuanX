@@ -44,36 +44,52 @@ function API(name = "untitled", debug = false) {
         if (typeof options == "string")
           options = { url: options, method: "GET" };
         return $task.fetch(options);
-      }
-      if (this.isLoon || this.isSurge) return $httpClient.get(options);
-      if (this.isNode)
+      } else {
         return new Promise((resolve, reject) => {
-          this.node.request(options, (err, response) => {
-            if (err) reject(err);
-            else resolve(response);
-          });
+          if (this.isLoon || this.isSurge)
+            $httpClient.get(options, (err, response, body) => {
+              if (err) reject(err);
+              else resolve({ ...response, body });
+            });
+          else
+            this.node.request(options, (err, response, body) => {
+              if (err) reject(err);
+              else resolve({ ...response, status: response.statusCode, body });
+            });
         });
+      }
     }
 
     post(options) {
-      if (this.isQX) return $task.fetch(options);
-      if (this.isLoon || this.isSurge) return $httpClient.post(options);
-      if (this.isNode)
+      if (this.isQX) {
+        if (typeof options == "string") options = { url: options };
+        options["method"] = "POST";
+        return $task.fetch(options);
+      } else {
         return new Promise((resolve, reject) => {
-          this.node.request.post(options, (err, response) => {
-            if (err) reject(err);
-            else resolve(response);
-          });
+          if (this.isLoon || this.isSurge) {
+            $httpClient.post(options, (err, response, body) => {
+              if (err) reject(err);
+              else resolve({ ...response, body });
+            });
+          } else {
+            this.node.request.post(options, (err, response, body) => {
+              if (err) reject(err);
+              else resolve({ ...response, status: response.statusCode, body });
+            });
+          }
         });
+      }
     }
 
     // persistance
 
     // initialize cache
     initCache() {
-      if (this.isQX) return $prefs.valueForKey(this.name) || {};
+      if (this.isQX) return JSON.parse($prefs.valueForKey(this.name) || "{}");
       if (this.isLoon || this.isSurge)
-        return $persistentStore.read(this.name) || {};
+        return JSON.parse($persistentStore.read(this.name) || "{}");
+
       if (this.isNode) {
         // create a json file with the given name if not exists
         const fpath = `${this.name}.json`;
@@ -86,16 +102,17 @@ function API(name = "untitled", debug = false) {
           );
           return {};
         } else {
-          return JSON.parse(this.node.fs.readFileSync(`${this.name}.json`));
+          return JSON.parse(this.node.fs.readFileSyznc(`${this.name}.json`));
         }
       }
     }
 
     // store cache
     persistCache() {
-      const data = this.cache;
+      const data = JSON.stringify(this.cache);
+      $.log(`FLUSHING DATA:\n${data}`);
       if (this.isQX) $prefs.setValueForKey(data, this.name);
-      if (this.isSurge) $persistentStore.write(data, this.name);
+      if (this.isLoon || this.isSurge) $persistentStore.write(data, this.name);
       if (this.isNode)
         this.node.fs.writeFileSync(
           `${this.name}.json`,
@@ -108,6 +125,7 @@ function API(name = "untitled", debug = false) {
     write(data, key) {
       this.log(`SET ${key} = ${data}`);
       this.cache[key] = data;
+      this.persistCache();
     }
 
     read(key) {
@@ -118,6 +136,7 @@ function API(name = "untitled", debug = false) {
     delete(key) {
       this.log(`DELETE ${key}`);
       delete this.cache[key];
+      this.persistCache();
     }
 
     // notification
@@ -131,13 +150,7 @@ function API(name = "untitled", debug = false) {
         else $notify(title, subtitle, content, options);
       }
       if (this.isSurge) $notification.post(title, subtitle, content_);
-      if (this.isLoon)
-        $notification.post(
-          title,
-          subtitle,
-          content,
-          url || options["open-url"]
-        );
+      if (this.isLoon) $notification.post(title, subtitle, content);
       if (this.isNode) {
         if (typeof $jsbox === "undefined") {
           console.log(`${title}\n${subtitle}\n${content_}\n\n`);
@@ -169,9 +182,8 @@ function API(name = "untitled", debug = false) {
     }
 
     done(value = {}) {
-      this.persistCache();
-      if (this.isQX) $done(value);
-      if (this.isLoon || this.isSurge) $done(value);
+      $.log("DONE");
+      if (!this.isNode) $done(value);
     }
   }
   return new wrapper(name, debug);
