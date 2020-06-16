@@ -142,7 +142,7 @@ function API(name = "untitled", debug = false) {
           url || options["open-url"]
         );
       if (this.isNode) {
-        if (typeof $app === "undefined") {
+        if (typeof $jsbox === "undefined") {
           console.log(`${title}\n${subtitle}\n${content_}`);
         } else {
           const push = require("push");
