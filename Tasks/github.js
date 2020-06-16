@@ -61,19 +61,17 @@ const parser = {
   releases: new RegExp(/^https:\/\/github.com\/([\w|-]+)\/([\w|-]+)\/releases/),
 };
 
-Object.defineProperty(String.prototype, "hashCode", {
-  value: function () {
-    let hash = 0,
+function hash(str) {
+  let hash = 0,
       i,
       chr;
-    for (i = 0; i < this.length; i++) {
-      chr = this.charCodeAt(i);
+    for (i = 0; i < str.length; i++) {
+      chr = str.charCodeAt(i);
       hash = (hash << 5) - hash + chr;
       hash |= 0; // Convert to 32bit integer
     }
     return String(hash);
-  },
-});
+}
 
 function parseURL(url) {
   try {
@@ -103,8 +101,8 @@ function parseURL(url) {
 }
 
 function needUpdate(url, timestamp) {
-  const storedTimestamp = $.read(url.hashCode());
-  $.log(`Stored Timestamp for ${url.hashCode()}: ` + storedTimestamp);
+  const storedTimestamp = $.read(hash(url));
+  $.log(`Stored Timestamp for ${hash(url)}: ` + storedTimestamp);
   return storedTimestamp === undefined || storedTimestamp !== timestamp
     ? true
     : false;
@@ -145,7 +143,7 @@ async function checkUpdate(item) {
                 )}\n👨🏻‍💻 发布者: ${author}\n📌 更新说明: \n${body}`,
                 notificationURL
               );
-              $.write(published_at, url.hashCode());
+              $.write(published_at, hash(url));
             }
           }
         })
@@ -185,7 +183,7 @@ async function checkUpdate(item) {
             notificationURL
           );
           // update stored timestamp
-          $.write(published_at, url.hashCode());
+          $.write(published_at, hasn(url));
         }
       }
       //找出具体的文件是否有更新
@@ -203,11 +201,11 @@ async function checkUpdate(item) {
                 if (file_list[i].path == file_names[j]) {
                   let file_hash = file_list[i].sha;
                   let last_sha = $.read(
-                    (item.name + file_names[j]).hashCode()
+                    hash(item.name + file_names[j])
                   );
                   if (file_hash != last_sha) {
                     $.notify(`🐬 [${name}]`, "", `📌 ${file_names[j]}有更新`, notificationURL);
-                    $.write(file_hash, (item.name + file_names[j]).hashCode());
+                    $.write(file_hash, hash(item.name + file_names[j]));
                   }
 
                   $.log(
