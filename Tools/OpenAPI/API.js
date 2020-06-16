@@ -119,7 +119,7 @@ function API(name = "untitled", debug = false) {
     }
 
     delete(key) {
-      this.log(`DELETE ${key}`)
+      this.log(`DELETE ${key}`);
       this.write(undefined, key);
     }
 
@@ -134,8 +134,24 @@ function API(name = "untitled", debug = false) {
         else $notify(title, subtitle, content, options);
       }
       if (this.isSurge) $notification.post(title, subtitle, content_);
-      if (this.isLoon) $notification.post(title, subtitle, content, url || options['open-url']);
-      if (this.isNode) console.log(`${title}\n${subtitle}\n${content_}`);
+      if (this.isLoon)
+        $notification.post(
+          title,
+          subtitle,
+          content,
+          url || options["open-url"]
+        );
+      if (this.isNode) {
+        if (typeof $app === "undefined") {
+          console.log(`${title}\n${subtitle}\n${content_}`);
+        } else {
+          const push = require("push");
+          push.schedule({
+            title: title,
+            body: subtitle ? subtitle + "\n" + content : content,
+          });
+        }
+      }
     }
 
     // other helper functions
@@ -159,13 +175,6 @@ function API(name = "untitled", debug = false) {
       this.persistCache();
       if (this.isQX) $done(value);
       if (this.isLoon || this.isSurge) $done(value);
-    }
-
-    formatTime(timestamp) {
-      const date = new Date(timestamp);
-      return `${date.getFullYear()}年${
-        date.getMonth() + 1
-      }月${date.getDate()}日${date.getHours()}时`;
     }
   }
   return new wrapper(name, debug);
