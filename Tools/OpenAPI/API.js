@@ -123,13 +123,13 @@ function API(name = "untitled", debug = false) {
     }
 
     write(data, key) {
-      this.log(`SET ${key} = ${data}`);
+      this.log(`SET ${key} = ${JSON.stringify(data)}`);
       this.cache[key] = data;
       this.persistCache();
     }
 
     read(key) {
-      this.log(`READ ${key}`);
+      this.log(`READ ${key} ==> ${JSON.stringify(this.cache[key])}`);
       return this.cache[key];
     }
 
