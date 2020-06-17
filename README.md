@@ -15,6 +15,11 @@
 
 ### Gallery
 
+#### 纵横
+
+![Zongheng](demos/zongheng.JPG)
+
+
 #### Github
 
 ![Github](demos/github.JPG)
@@ -26,3 +31,9 @@
 #### Steam
 
 ![Steam](demos/steam.JPG)
+
+#### Epic
+![Epic](demos/epic.JPG)
+
+#### PSN
+![PSN](demos/psn.JPG)
