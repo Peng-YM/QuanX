@@ -1,16 +1,27 @@
 /**
- *  疫情日报，API来自 https://lab.isaaclin.cn
+ *  疫情日报，自动获取当前位置的疫情信息
+ *  API来自 https://lab.isaaclin.cn
  *  @author: Peng-YM
+ *  感谢 @Mazetsz 提供腾讯API接口Token
  *  更新地址: https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/nCov.js
  */
 
 const $ = API("nCov");
+
+const key = "NOUBZ-7BNHD-SZ64A-HUWCW-YBGZ7-DDBNK";
 const headers = {
   "User-Agent":
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36",
 };
 
 !(async () => {
+  // get current location
+  const province = await $.get(`https://apis.map.qq.com/ws/location/v1/ip?key=${key}`).then(resp => {
+    const data = JSON.parse(resp.body);
+    return data.result.ad_info.province;
+  });
+  $.log(province);
+
   const overall = await $.get({
     url: "https://lab.isaaclin.cn/nCoV/api/overall?latest=1",
     headers,
@@ -19,12 +30,12 @@ const headers = {
     .delay(1000);
   $.log(overall);
   const news = await $.get({
-    url: "https://lab.isaaclin.cn/nCoV/api/news?page=1&num=1",
+    url: `https://lab.isaaclin.cn/nCoV/api/news?page=1&num=1&province=${encodeURIComponent(province)}`,
     headers,
   }).then((resp) => JSON.parse(resp.body).results[0]);
   $.log(news);
 
-  let title = "🗞【疫情日报】";
+  let title = `🗞【疫情日报】🇨🇳 ${province}`;
   let subtitle = `🗓 ${formatTime()}`;
   let detail =
     "「数据统计」" +
@@ -49,9 +60,9 @@ const headers = {
 
 function formatTime() {
     const date = new Date();
-    return `${date.getFullYear()}年${
+    return `${
         date.getMonth() + 1
-    }月${date.getDate()}日`;
+    }月${date.getDate()}日${date.getHours()}时`;
 }
 
 // prettier-ignore
