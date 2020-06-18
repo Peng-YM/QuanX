@@ -39,7 +39,7 @@ const headers = {
   let subtitle = `🗓 ${formatTime()}`;
   let detail =
     "「数据统计」" +
-    "\n\n    -新增确诊: " +
+    "\n    -新增确诊: " +
     overall.currentConfirmedIncr +
     "\n    -现有确诊: " +
     overall.currentConfirmedCount +
@@ -49,9 +49,9 @@ const headers = {
     overall.curedCount +
     "\n    -死亡: " +
     overall.deadCount +
-    "\n\n「疫情动态」\n\n     " +
+    "\n「疫情动态」\n\n     " +
     news.title +
-    "\n\n「动态详情」\n\n     " +
+    "\n「动态详情」\n\n     " +
     news.summary;
   $.notify(title, subtitle, detail);
 })()
