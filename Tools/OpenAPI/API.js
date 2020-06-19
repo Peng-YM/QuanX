@@ -8,10 +8,12 @@ function API(name = "untitled", debug = false) {
       this.isLoon = typeof $loon != "undefined";
       this.isSurge = typeof $httpClient != "undefined" && !this.isLoon;
       this.isNode = typeof require == "function";
+      this.isJSBox = this.isNode && typeof $jsbox != "undefined";
 
       this.node = (() => {
         if (this.isNode) {
-          const request = require("request");
+          const request =
+            typeof $request != "undefined" ? undefined : require("request");
           const fs = require("fs");
 
           return {
@@ -22,7 +24,6 @@ function API(name = "untitled", debug = false) {
           return null;
         }
       })();
-
       this.cache = this.initCache();
       this.log(`INITIAL CACHE:\n${JSON.stringify(this.cache)}`);
 
@@ -152,14 +153,14 @@ function API(name = "untitled", debug = false) {
       if (this.isSurge) $notification.post(title, subtitle, content_);
       if (this.isLoon) $notification.post(title, subtitle, content);
       if (this.isNode) {
-        if (typeof $jsbox === "undefined") {
-          console.log(`${title}\n${subtitle}\n${content_}\n\n`);
-        } else {
+        if (this.isJSBox) {
           const push = require("push");
           push.schedule({
             title: title,
             body: subtitle ? subtitle + "\n" + content : content,
           });
+        } else {
+          console.log(`${title}\n${subtitle}\n${content_}\n\n`);
         }
       }
     }
@@ -183,7 +184,13 @@ function API(name = "untitled", debug = false) {
 
     done(value = {}) {
       $.log("DONE");
-      if (!this.isNode) $done(value);
+      if (this.isQX || this.isLoon || this.isSurge) {
+        $done(value);
+      } else if (this.isNode && !this.isJSBox) {
+        $context.headers = value.headers;
+        $context.statusCode = value.statusCode;
+        $context.body = value.body;
+      }
     }
   }
   return new wrapper(name, debug);
