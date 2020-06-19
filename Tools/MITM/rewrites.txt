@@ -1,4 +1,4 @@
-hostname=
+hostname=httpbin.org
 
 ================ Quantumult X ================
 ^http://httpbin\.org/post url script-request-body https://raw.githubusercontent.com/Peng-YM/QuanX/master/Rewritestest-request-body.js

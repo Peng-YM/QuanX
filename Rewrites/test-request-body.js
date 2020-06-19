@@ -1,79 +1,9 @@
-const $ = API("APP", true); // API("APP") --> 无log输出
-// 测试console
-$.log("测试输出");
-$.error("这是一条错误信息");
-
-
-// 测试通知
-$.notify("跳转测试", "Subtitle", "点击跳转", "http://www.bing.com");
-$.notify("图片测试（QX有效）", "Subtitle", "", {
-  "media-url":
-    "https://avatars2.githubusercontent.com/u/21050064?s=460&u=40a74913dd0a3d00670d05148c3a08c787470021&v=4",
-});
-$.notify("HELLO", "", "")
-
-// 测试缓存
-const key = "测试";
-const data = "数据";
-$.write(data, key);
-$.write("Hello", "World");
-$.log(`当前缓存：\n${JSON.stringify($.cache)}`);
-if ($.read(key) !== data) {
-  $.notify("缓存测试炸了！", "", "");
-}else{
-  $.log("缓存测试通过！");
-}
-$.delete(key);
-if ($.read(key) !== undefined) {
-  $.log("缓存Key未删除！");
-}
-
-// 测试请求
-$.get("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
-  .then((resp) => {
-    $.log("GET: status: " + resp.status);
-    $.log("GET: response headers: \n" + resp.headers.toString());
-    $.log("GET: response body: \n" + resp.body);
-    return JSON.parse(resp.body);
-  })
-  .delay(1000) // wait for 1 second
-  .then((data) => {
-    if (data.args.foo1 !== "bar1") {
-      throw new Error("Wrong Parameter!");
-    } else {
-      $.log("GET 测试通过！");
-    }
-  })
-  .catch((err) => $.notify("GET 请求测试失败！", "", err));
-
-const sample = {
-  msg: "ECHO",
-};
-
-$.post({
-  url: "https://postman-echo.com/post",
-  body: JSON.stringify(sample),
-  headers: {
-    "Content-Type": "application/json",
-  },
-})
-  .then((resp) => {
-    $.log("POST: status: " + resp.status);
-    $.log("POST: response headers: \n" + resp.headers.toString());
-    $.log("POST: response body: \n" + resp.body);
-    const body = JSON.parse(resp.body);
-    if (body.data["msg"] !== sample.msg) {
-      $.notify("POST 测试失败", "返回体", resp.body);
-    } else {
-      $.log("POST 测试通过！");
-    }
-  })
-  .catch((err) => $.notify("POST 请求测试失败！", "", err));
-
-// delay
-$.wait(1000).then(() => $.log("等待1s"));
-
-$.done();
+/*
+ * 示例：测试修改request body
+ */
+console.log(`${$request.body}`);
+const $ = new API("test-request-body");
+$.done({body: $.read("data")})
 
 // prettier-ignore
 /*********************************** API *************************************/

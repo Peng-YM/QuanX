@@ -16,10 +16,11 @@ const vmconfigs = {
         },
         writeFileSync(path, data) {
           console.log(`WRITING DATA: ${data}`);
+          fs.writeFileSync(`${config.general.workspace}/${path}`, data);
         },
-        existsSync(path){
+        existsSync(path) {
           return fs.existsSync(`${config.general.workspace}/${path}`);
-        }
+        },
       },
     },
   },
@@ -43,7 +44,7 @@ try {
     console.log(`MITM proxy listenning on ${port}...`);
   });
 } catch (err) {
-  console.error(err);
+  console.error("ERROR:" + err);
 }
 
 function loadConfig(path) {
@@ -126,7 +127,10 @@ function addRules(proxy, config) {
 
           if (script.type === "request") {
             const $context = {};
-            const vm = new NodeVM({...vmconfigs, sandbox: {$context, $request}});
+            const vm = new NodeVM({
+              ...vmconfigs,
+              sandbox: { $context, $request },
+            });
             vm.run(code);
             // modify the request
             req.headers = $context.headers;
