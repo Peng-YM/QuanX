@@ -12,8 +12,14 @@
 | [Steam](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/steam.js) | Steam日报 | 0 9 * * * |
 | [Epic](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/epic.js) | Epic周免 | 0 9 ? * MON |
 | [PSN](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/psn.js) | PSN会免 | 0 9 1 * * |
+| [疫情日报](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/nCov.js) | 推送当前地区疫情信息 | 0 9 * * * |
 
 ### Gallery
+
+#### 纵横
+
+![Zongheng](demos/zongheng.JPG)
+
 
 #### Github
 
@@ -26,3 +32,9 @@
 #### Steam
 
 ![Steam](demos/steam.JPG)
+
+#### Epic
+![Epic](demos/epic.JPG)
+
+#### PSN
+![PSN](demos/psn.JPG)
