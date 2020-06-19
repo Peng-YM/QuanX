@@ -4,6 +4,7 @@ function API(name = "untitled", debug = false) {
       this.name = name;
       this.debug = debug;
 
+      this.isRequest = typeof $request != "undefined";
       this.isQX = typeof $task != "undefined";
       this.isLoon = typeof $loon != "undefined";
       this.isSurge = typeof $httpClient != "undefined" && !this.isLoon;
