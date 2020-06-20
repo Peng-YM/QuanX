@@ -1,6 +1,6 @@
 {
     "general": {
-        "workspace": "/Users/pengyiming/Project/QuanX/Rewrites",
+        "workspace": "/Users/pengym/Project/QuanX/Rewrites",
         "remote": "https://raw.githubusercontent.com/Peng-YM/QuanX/master/Rewrites"
     },
 
@@ -20,7 +20,8 @@
             "type": "request",
             "pattern": "^http:\/\/httpbin\\.org\/post",
             "require_body": true,
-            "path": "test-request-body.js"
+            "path": "test-request-body.js",
+            "enabled": true
         }
     ]
 }
