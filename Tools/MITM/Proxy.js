@@ -11,12 +11,19 @@ const vmconfigs = {
     mock: {
       fs: {
         readFileSync(path) {
-          console.log(`READING FILE: ${config.general.workspace}/${path}`);
-          return fs.readFileSync(`${config.general.workspace}/${path}`);
+          try {
+            const data = fs.readFileSync(`${config.general.workspace}/${path}`);
+            return data;
+          } catch (err) {
+            console.error(err);
+          }
         },
         writeFileSync(path, data) {
-          console.log(`WRITING DATA: ${data}`);
-          fs.writeFileSync(`${config.general.workspace}/${path}`, data);
+          try {
+            fs.writeFileSync(`${config.general.workspace}/${path}`, data);
+          } catch (err) {
+            console.error(err);
+          }
         },
         existsSync(path) {
           return fs.existsSync(`${config.general.workspace}/${path}`);
@@ -29,27 +36,27 @@ const vmconfigs = {
 // Start MITM proxy
 const hoxy = require("hoxy");
 
-try {
-  const { port, key, cert } = config.proxy;
-  const proxy = hoxy.createServer({
-    certAuthority: {
-      key: fs.readFileSync(key),
-      cert: fs.readFileSync(cert),
-    },
-  });
+const { port, key, cert } = config.proxy;
+const proxy = hoxy.createServer({
+  certAuthority: {
+    key: fs.readFileSync(key),
+    cert: fs.readFileSync(cert),
+  },
+});
 
-  addRules(proxy, config);
+addRules(proxy, config);
 
-  proxy.listen(port, function () {
-    console.log(`MITM proxy listenning on ${port}...`);
-  });
-} catch (err) {
-  console.error("ERROR:" + err);
-}
+proxy.listen(port, function () {
+  console.log(`MITM proxy listenning on ${port}...`);
+});
+
+// Ignore unkown errors
+proxy.on("error", (event) => {});
+process.on("error", () => {});
 
 function loadConfig(path) {
   const config = JSON.parse(fs.readFileSync(path));
-  console.log(`Configuration loaded: \n${JSON.stringify(config)}`);
+  console.log(`Configuration loaded: \n${JSON.stringify(config)}\n`);
   return config;
 }
 
@@ -61,17 +68,21 @@ function generateRewrites(config) {
       name: "Quantumult X",
       func: (prev, script) =>
         prev +
-        `${script.pattern} url script-${script.type}-${
-          script.require_body ? "body" : "header"
-        } ${config.general.remote + script.path}\n`,
+        `${script.enabled === false ? ";" : ""}${script.pattern} url script-${
+          script.type
+        }-${script.require_body ? "body" : "header"} ${
+          config.general.remote + "/" + script.path
+        }\n`,
     },
     {
       name: "Loon",
       func: (prev, script) =>
         prev +
         `http-${script.type} ${script.pattern} script-path=${
-          config.general.remote + script.path
-        }, require-body=${script.require_body}, tag=${script.name}\n`,
+          config.general.remote + "/" + script.path
+        }, require-body=${script.require_body}, tag=${script.name}, enabled=${
+          script.enabled === false ? false : true
+        }\n`,
     },
     {
       name: "Surge",
@@ -79,7 +90,9 @@ function generateRewrites(config) {
         prev +
         `type=http-${script.type}, pattern=${script.pattern}, script-path=${
           config.general.remote + "/" + script.path
-        }, require-body=${script.require_body}, tag=${script.name}\n`,
+        }, require-body=${script.require_body}, tag=${script.name}, enabled=${
+          script.enabled === false ? false : true
+        }\n`,
     },
   ];
 
@@ -97,6 +110,8 @@ function generateRewrites(config) {
 
 function addRules(proxy, config) {
   config.scripts.forEach((script) => {
+    if (!script.enabled) return;
+    console.log(`Added script ${script.path}`);
     proxy.intercept(
       {
         phase: script.type,
@@ -122,7 +137,7 @@ function addRules(proxy, config) {
           const $response = {
             statusCode: resp.statusCode,
             headers: resp.headers,
-            body: resp.buffer,
+            body: resp.string,
           };
 
           if (script.type === "request") {
