@@ -5,7 +5,7 @@
  */
 
 // 书籍id列表
-const ids = ["672340", "408586"];
+const ids = ["408586"];
 const alwaysNotice = false; // 设置为true则每次运行通知，否则只通知更新
 
 /********************************* SCRIPT START *******************************************************/
@@ -56,7 +56,7 @@ async function checkUpdate(books) {
           if (
             cachebook === undefined ||
             alwaysNotice ||
-            latestChapter !== cachebook.latestChapter
+            book.latestChapter !== cachebook.latestChapter
           ) {
             // upate database
             books[id] = book;
