@@ -1,11 +1,11 @@
 # MITM Proxy
 
-为开发者的打造的又一神兵利器！电脑端MITM拦截请求并运行指定JavaScript脚本修改`Request`和`Response`。至此，配合**OpenAPI**，开发者已经可以完全脱离手机书写代码。
+为开发者打造的又一神兵利器！电脑端MITM拦截请求并运行指定JavaScript脚本修改`Request`和`Response`。至此，配合**OpenAPI**，开发者已经可以完全脱离手机书写代码。
 
 ## 特性
 
 1. 按照MITM host和正则自动拦截http(s)请求，并执行指定代码。
-2. 支持一键生成Quantumult X, Loon 和 Surge 的配置。
+2. 支持自动生成Quantumult X, Loon 和 Surge 的配置。
 3. 脚本在虚拟环境中运行 (vm2)，安全性100%！
 4. 脚本实时加载，无需反复开启MITM proxy。
 
@@ -119,3 +119,5 @@ $.done({body: $.read("data")}) // 这里会将body设置为："HACKED BY MITM"
 ```
 
 可以看到`data`字段已经被修改了。
+
+另外，当前目录下的`rewrites.txt`里已经自动生成了全部远程配置。
