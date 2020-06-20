@@ -1,0 +1,26 @@
+{
+    "general": {
+        "workspace": "/Users/pengyiming/Project/QuanX/Rewrites",
+        "remote": "https://raw.githubusercontent.com/Peng-YM/QuanX/master/Rewrites"
+    },
+
+    "proxy": {
+        "port": 6789,
+        "key": "mitmproxy.key.pem",
+        "cert": "mitmproxy.crt"
+    },
+
+    "mitm": [
+        "httpbin.org"
+    ],
+    
+    "scripts": [
+        {
+            "name": "test-request-body",
+            "type": "request",
+            "pattern": "^http:\/\/httpbin\\.org\/post",
+            "require_body": true,
+            "path": "test-request-body.js"
+        }
+    ]
+}
