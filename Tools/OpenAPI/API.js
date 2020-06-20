@@ -175,7 +175,7 @@ function API(name = "untitled", debug = false) {
     }
 
     error(msg) {
-      this.log("ERROR: " + msg);
+      console.log("ERROR: " + msg);
     }
 
     wait(millisec) {
