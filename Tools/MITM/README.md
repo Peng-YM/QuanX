@@ -71,7 +71,7 @@ node Proxy.js
 }
 ```
 
-大部分配置不需要更改，
+`proxy`部分配置一般不需要更改，
 
 1. `general.workspace`指定脚本路径，MITM proxy拦截请求后会加载此目录的脚本。
 2. `general.remote`指定远程路径，用于一键生成配置文件。
