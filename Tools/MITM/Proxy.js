@@ -161,11 +161,8 @@ function addRules(proxy, config) {
             // modify the response
             const $context = {};
             const vm = new NodeVM({
-              console: "inherit",
-              require: {
-                external: true,
-              },
-              sandbox: { $context, $request, $response },
+              ...vmconfigs,
+              sandbox: { $context, $request , $response},
             });
             vm.run(code);
             resp.headers = $context.headers;
