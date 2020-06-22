@@ -6,7 +6,7 @@
  * 更新地址：https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/flow.js
  * 推荐使用mini图标组：https://github.com/Orz-3/mini
  */
-const $ = API("flow", true);
+const $ = API("flow", false);
 const subscriptions = [
   {
     link: "机场订阅地址",
