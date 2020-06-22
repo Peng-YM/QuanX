@@ -32,7 +32,7 @@ async function fetchInfo(sub) {
     url: sub.link,
     headers
   }).then((resp) => {
-    const userinfo = resp.headers["subscription-userinfo"];
+    const userinfo = resp.headers["Subscription-Userinfo"] || resp.headers["subscription-userinfo"];
     const KEY_o_now = "o_now" + sub.name;
     const KEY_today_flow = "today_flow" + sub.name;
     $.log(userinfo);
