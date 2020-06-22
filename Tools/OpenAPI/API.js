@@ -186,9 +186,11 @@ function API(name = "untitled", debug = false) {
       if (this.isQX || this.isLoon || this.isSurge) {
         $done(value);
       } else if (this.isNode && !this.isJSBox) {
-        $context.headers = value.headers;
-        $context.statusCode = value.statusCode;
-        $context.body = value.body;
+        if (typeof $context !== 'undefined'){
+          $context.headers = value.headers;
+          $context.statusCode = value.statusCode;
+          $context.body = value.body;
+        }
       }
     }
   }
