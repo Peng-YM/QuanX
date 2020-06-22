@@ -50,7 +50,7 @@ function API(name = "untitled", debug = false) {
           if (this.isLoon || this.isSurge)
             $httpClient.get(options, (err, response, body) => {
               if (err) reject(err);
-              else resolve({ ...response, body });
+              else resolve({ status: response.status, headers: response.headers, body });
             });
           else
             this.node.request(options, (err, response, body) => {
@@ -71,7 +71,7 @@ function API(name = "untitled", debug = false) {
           if (this.isLoon || this.isSurge) {
             $httpClient.post(options, (err, response, body) => {
               if (err) reject(err);
-              else resolve({ ...response, body });
+              else resolve({ status: response.status, headers: response.headers, body });
             });
           } else {
             this.node.request.post(options, (err, response, body) => {
