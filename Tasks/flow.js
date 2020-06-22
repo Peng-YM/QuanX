@@ -6,11 +6,16 @@
  * 更新地址：https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/flow.js
  * 推荐使用mini图标组：https://github.com/Orz-3/mini
  */
-const $ = API("flow", true);
+const $ = API("flow");
 const subscriptions = [
   {
-    link: "机场订阅地址",
-    name: "取个名字",
+    link: "机场订阅地址1",
+    name: "取个名字1",
+    icon: "https://raw.githubusercontent.com/Orz-3/mini/master/图标名字.png"
+  },
+  {
+    link: "机场订阅地址2",
+    name: "取个名字2",
     icon: "https://raw.githubusercontent.com/Orz-3/mini/master/图标名字.png"
   },
 ];
@@ -20,8 +25,16 @@ Promise.all(subscriptions.map(async (sub) => fetchInfo(sub)))
   .finally(() => $.done());
 
 async function fetchInfo(sub) {
-  $.get(sub.link).then((resp) => {
+  const headers = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36",
+  };
+  $.get({
+    url: sub.link,
+    headers
+  }).then((resp) => {
     const userinfo = resp.headers["subscription-userinfo"];
+    const KEY_o_now = "o_now" + sub.name;
+    const KEY_today_flow = "today_flow" + sub.name;
     $.log(userinfo);
     const upload_k = Number(userinfo.match(/upload=(\d+)/)[1]);
     const download_k = Number(userinfo.match(/download=(\d+)/)[1]);
@@ -32,10 +45,10 @@ async function fetchInfo(sub) {
       total_k / 1048576 - download_k / 1048576 - upload_k / 1048576;
     const residue = residue_m.toFixed(2).toString();
     const dnow = new Date().getTime().toString();
-    const utime = dnow - $.read("o_now");
-    const todayflow = $.read("today_flow") - residue;
-    $.write(residue, "today_flow");
-    $.write(dnow, "o_now");
+    const utime = dnow - $.read(KEY_o_now);
+    const todayflow = $.read(KEY_today_flow) - residue;
+    $.write(residue, KEY_today_flow);
+    $.write(dnow, KEY_o_now);
     const title = `🚀 [机场流量] ${sub.name}`;
     const hutime = parseInt(utime / 3600000);
     const mutime = (utime / 60000) % 60;
