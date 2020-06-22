@@ -8,12 +8,13 @@
  * 2. Loon & Surge
  * domain, rsshub.app, proxy
  */
-
+const $ = API("epic");
 checkUpdate().then(() => $done());
 
 async function checkUpdate() {
-    const html = await $task
-        .fetch({ url: "https://rsshub.app/epicgames/freegames" })
+    const html = await $.get({
+        url: "https://rsshub.app/epicgames/freegames"
+    })
         .then((resp) => resp.body);
     const itemRegex = new RegExp(/<item>[\s\S]*?<\/item>/g);
     html.match(itemRegex).forEach(async (item) => {
@@ -26,7 +27,7 @@ async function checkUpdate() {
         }
         let time = item.match(/<pubDate>([\s\S]*?)<\/pubDate>/)[1];
         let { description, publisher } = await fetchGameInfo(url);
-        $notify(
+        $.notify(
             `🎮 [Epic 限免]  ${name}`,
             `⏰ 发布时间: ${formatTime(time)}`,
             `💡 游戏简介:\n${description}`,
@@ -36,7 +37,7 @@ async function checkUpdate() {
 }
 
 async function fetchGameInfo(url) {
-    const html = await $task.fetch({ url }).then((resp) => resp.body);
+    const html = await $.get({ url }).then((resp) => resp.body);
     const description = html.match(/"og:description" content="([\s\S]*?)"/)[1];
     const publisher = html.match();
     return {
