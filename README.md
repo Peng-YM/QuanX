@@ -1,4 +1,5 @@
-# QuanX
+# Scripts
+Scripts for QuantumultX, Loon, Surge, JSBox and Node.
 ## Tasks
 定时任务合集
 
@@ -13,6 +14,7 @@
 | [Epic](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/epic.js) | Epic周免 | 0 9 ? * MON |
 | [PSN](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/psn.js) | PSN会免 | 0 9 1 * * |
 | [疫情日报](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/nCov.js) | 推送当前地区疫情信息 | 0 9 * * * |
+| [✈️ 流量](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/flow.js) | 查询✈️ 流量 | 0 8 * * * |
 
 ### Gallery
 
