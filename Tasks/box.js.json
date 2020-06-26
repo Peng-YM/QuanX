@@ -1,0 +1,89 @@
+{
+  "apps": [
+    {
+      "id": "Github Monitor",
+      "name": "GitHub 监控",
+      "keys": [
+        "@github.repo"
+      ],
+      "settings": [
+        {
+          "id": "@github.repo",
+          "name": "仓库地址",
+          "val": "[\r\n  {\r\n    name: \"NZW9314 \u811A\u672C\",\r\n    url: \"https://github.com/nzw9314/QuantumultX/tree/master\",\r\n  },\r\n  {\r\n    name: \"ClashX\",\r\n    url: \"https://github.com/yichengchen/clashX/releases\",\r\n  },\r\n  {\r\n    name: \"Chavy \u811A\u672C\",\r\n    url: \"https://github.com/chavyleung/scripts\",\r\n  },\r\n  {\r\n    name: \"Qure \u56FE\u6807\",\r\n    url: \"https://github.com/Koolson/Qure\",\r\n  },\r\n  {\r\n    name: \"Orz-mini \u56FE\u6807\",\r\n    url: \"https://github.com/Orz-3/mini\",\r\n  },\r\n  {\r\n    name: \"yichahucha -- \u5FAE\u535A\u5E7F\u544A\",\r\n    file_names: [\"wb_ad.js\", \"wb_launch.js\"],\r\n    url: \"https://github.com/yichahucha/surge/tree/master\", //\u8DEF\u5F84\u6A21\u677F\uD83C\uDF1F\r\n  },\r\n  {\r\n    name: \"NobyDa\",\r\n    file_names: [\"JD-DailyBonus/JD_DailyBonus.js\", \"52pojie-DailyBonus\"], //\u8DEF\u5F84\u6A21\u677F\uD83C\uDF1F\r\n    url: \"https://github.com/NobyDa/Script/tree/master\",\r\n  },\r\n]",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 5,
+          "desc": "仓库地址 (JSON 格式)"
+        },
+        {
+          "id": "@github.token",
+          "name": "Github Token (可选)",
+          "val": "784a03feb07989d3339dfa41c7eb41777436cbfa",
+          "type": "text",
+          "desc": "Github Token"
+        }
+      ],
+      "author": "@Peng-YM",
+      "repo": "https://github.com/Peng-YM/QuanX",
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/github.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/github.png"
+      ]
+    },
+    {
+      "id": "Flow",
+      "name": "机场流量查询",
+      "keys": [
+        "@flow.subscriptions"
+      ],
+      "settings": [
+        {
+          "id": "@flow.subscriptions",
+          "name": "机场订阅",
+          "val": "[\r\n  {\r\n    link: \"\u8BA2\u9605\u5730\u57401\",\r\n    name: \"\u53D6\u4E2A\u540D\u5B571\",\r\n    icon: \"https://raw.githubusercontent.com/Orz-3/mini/master/pudding.png\"\r\n  },\r\n  {\r\n    link: \"\u8BA2\u9605\u5730\u57402\",\r\n    name: \"\u53D6\u4E2A\u540D\u5B572\",\r\n    icon: \"https://raw.githubusercontent.com/Orz-3/mini/master/Nexitally.png\"\r\n  },\r\n]",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 5,
+          "desc": "机场订阅 (JSON 格式)"
+        }
+      ]
+    },
+    {
+      "id": "Steam",
+      "name": "Steam 价格监控",
+      "keys": [
+        "@steam.games"
+      ],
+      "settings": [
+        {
+          "id": "@steam.games",
+          "name": "游戏列表",
+          "val": "[\r\n  {\r\n    id: 271590,\r\n    name: \"GTA V\",\r\n  },\r\n  {\r\n    id: 814380,\r\n    name: \"\u53EA\u72FC\uFF1A\u5F71\u901D\u4E8C\u5EA6\",\r\n  },\r\n  {\r\n    id: 292030,\r\n    name: \"\u5DEB\u5E08 3\uFF1A\u72C2\u730E\",\r\n  },\r\n];",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 5,
+          "desc": "游戏列表 (JSON 格式)"
+        }
+      ]
+    },
+    {
+      "id": "Zongheng",
+      "name": "纵横小说",
+      "keys": [
+        "@zongheng.ids"
+      ],
+      "settings": [
+        {
+          "id": "@zongheng.ids",
+          "name": "小说列表",
+          "val": "[\"408586\"]",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 5,
+          "desc": "小说的id列表, 使用方法：进入纵横小说页面，例如<<剑来>>：http://book.zongheng.com/book/672340.html 则id为672340，将id添加到列表即可。"
+        }
+      ]
+    }
+  ]
+}
