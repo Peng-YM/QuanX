@@ -201,7 +201,7 @@ async function checkUpdate(item) {
           
           paths = parserPath(file_names[i])
           $.log(paths)
-          await findFile(name, file_url, paths, 0)
+          await findFile(name, file_url, paths, 0, url)
         }
       }
     }
@@ -211,7 +211,7 @@ async function checkUpdate(item) {
   }
   return;
 }
-function findFile(name, tree_url, paths, current_pos) {
+function findFile(name, tree_url, paths, current_pos, jump_url) {
   
   if (current_pos == paths.length) {
     $.notify(`🐬 [${name}]`, "", `🚫 仓库中没有该文件：${paths[paths.length-1]}`);
@@ -228,14 +228,14 @@ function findFile(name, tree_url, paths, current_pos) {
         if (file_list[i].path == paths[current_pos]) {
 
           fileType = file_list[i].type
-          isDir = paths[current_pos].match(/\.js/) == null ? true : false;
-          $.log(`🔍正在判断：${paths[current_pos]} is a ${isDir?"directory":"file"}`)
+          isDir = paths[current_pos].match(/\.(js|py|cpp|c|cpp|html|css|jar|png|jpg|bmp|exe)/) == null ? true : false;
+          // $.log(`🔍正在判断：${paths[current_pos]} is a ${isDir?"directory":"file"}`)
           if (current_pos == paths.length - 1 && fileType == 'blob' && !isDir) {
             isFind = true;
             let file_hash = file_list[i].sha;
             let last_sha = $.read(hash(name + paths[current_pos]));
             if (file_hash != last_sha) {
-              $.notify(`🐬 [${name}]`, "", `📌 ${paths[current_pos]}有更新`);
+              $.notify(`🐬 [${name}]`, "", `📌 ${paths[current_pos]}有更新`, jump_url);
               $.write(file_hash, hash(name + paths[current_pos]));
             }
             $.log(
@@ -247,7 +247,7 @@ function findFile(name, tree_url, paths, current_pos) {
             let file_hash = file_list[i].sha;
             let last_sha = $.read(hash(name + paths[current_pos]));
             if (file_hash != last_sha) {
-              $.notify(`🐬 [${name}]`, "", `📌 ${paths[current_pos]}有更新`);
+              $.notify(`🐬 [${name}]`, "", `📌 ${paths[current_pos]}有更新`, jump_url);
               $.write(file_hash, hash(name + paths[current_pos]));
             }
             $.log(
@@ -256,7 +256,7 @@ function findFile(name, tree_url, paths, current_pos) {
           } else if (fileType == 'tree') {
             isFind = true;
             tree_url = file_list[i].url
-            findFile(name, tree_url, paths, current_pos + 1)
+            findFile(name, tree_url, paths, current_pos + 1, jump_url)
           }
         }
 
