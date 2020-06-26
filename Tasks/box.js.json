@@ -1,4 +1,9 @@
 {
+  "id": "pengym.app.sub",
+  "name": "Peng-YM 应用订阅",
+  "author": "@Peng-YM",
+  "icon": "https://avatars2.githubusercontent.com/u/21050064?s=460&u=40a74913dd0a3d00670d05148c3a08c787470021&v=4",
+  "repo": "https://github.com/Peng-YM/QuanX",
   "apps": [
     {
       "id": "Github Monitor",
