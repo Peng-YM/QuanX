@@ -10,8 +10,8 @@ let alwaysNotice = false; // 设置为true则每次运行通知，否则只通�
 
 /********************************* SCRIPT START *******************************************************/
 const $ = API("zongheng");
-ids = $.read("ids") || ids;
-alwaysNotice = $.read('alwaysNotice') || alwaysNotice;
+ids = JSON.parse($.read("ids")) || ids;
+alwaysNotice = JSON.parse($.read('alwaysNotice')) || alwaysNotice;
 
 const parsers = {
     title: new RegExp(/bookname="(\S+)"/, "i"),
