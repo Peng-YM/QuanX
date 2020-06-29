@@ -21,7 +21,7 @@ let subscriptions = [
 ];
 
 const $ = API("flow");
-subscriptions = $.read("subscriptions") || subscriptions;
+subscriptions = JSON.parse($.read("subscriptions")) || subscriptions;
 
 Promise.all(subscriptions.map(async sub => await fetchInfo(sub)))
     .catch(err => $.error(err))
