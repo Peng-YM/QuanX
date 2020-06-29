@@ -29,7 +29,7 @@ let games = [
 ];
 
 const $ = API("steam");
-games = $.read('games') || games;
+games = JSON.parse($.read('games')) || games;
 
 Promise.all(games.map(async (item) => check(item))).then(() => $.done());
 
