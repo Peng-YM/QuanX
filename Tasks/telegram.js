@@ -1,9 +1,12 @@
-let channels = ["mnbz666"];
+let channels = ["LoonNews"];
 let maxImgs = 3;
 
 const $ = API("telegram", true);
 if ($.read("channels") !== undefined) {
-    channels = $.read("channels");
+    channels = JSON.parse($.read("channels"));
+}
+if ($.read("maxImgs") !== undefined) {
+    maxImgs = parseInt($.read("maxImgs"));
 }
 
 const updated = JSON.parse($.read("updated") || "{}");
@@ -15,7 +18,7 @@ Promise.all(
             .then((response) => {
                 const body = response.body;
                 const channelLink = `https://t.me/s/${channel}`;
-                const channelName = body.match(/CDATA\[(\S*) - Telegram 频道\]/)[1];
+                const channelName = body.match(/CDATA\[(.*) - Telegram 频道\]/)[1];
                 let cnt = 0;
                 $.log(`Channel Name: ${channelName}, Link: ${channelLink}`);
                 response.body.match(/<item>[\s\S]*?<\/item>/g).forEach((item) => {
@@ -34,7 +37,7 @@ Promise.all(
                     }
                 });
                 // update timestamp
-                updated["channel"] = new Date().getTime();
+                updated[channel] = new Date().getTime();
                 $.write(JSON.stringify(updated), "updated");
             })
             .catch((error) => {

@@ -107,6 +107,39 @@
         "https://raw.githubusercontent.com/Orz-3/mini/master/zongheng.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/zongheng.png"
       ]
+    },
+    {
+      "id": "Telegram",
+      "name": "Telegram 频道图片推送",
+      "keys": [
+        "@telegram.channels",
+        "@telegram.maxImgs"
+      ],
+      "settings": [
+        {
+          "id": "@telegram.channels",
+          "name": "频道列表",
+          "val": "[\"LoonNews\"]",
+          "type": "textarea",
+          "autoGrow": false,
+          "rows": 2,
+          "desc": "频道列表，比如说一个频道的链接为https://t.me/s/LoonNews，那么将\"LoonNews\"加到列表中。"
+        },
+        {
+          "id": "@telegram.maxImgs",
+          "name": "每个频道最多显示图片的数量",
+          "val": 3,
+          "type": "text",
+          "rows": 1,
+          "desc": "每个频道最多显示图片的数量, 默认为3"
+        }
+      ],
+      "author": "@Peng-YM",
+      "repo": "https://github.com/Peng-YM/QuanX",
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/zongheng.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/zongheng.png"
+      ]
     }
   ]
 }
