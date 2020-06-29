@@ -29,7 +29,9 @@ let games = [
 ];
 
 const $ = API("steam");
-games = JSON.parse($.read('games')) || games;
+if ($.read('games') !== undefined) {
+    games = JSON.parse($.read('games'));
+}s
 
 Promise.all(games.map(async (item) => check(item))).then(() => $.done());
 

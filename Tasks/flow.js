@@ -21,7 +21,9 @@ let subscriptions = [
 ];
 
 const $ = API("flow");
-subscriptions = JSON.parse($.read("subscriptions")) || subscriptions;
+if ($.read("subscriptions") !== undefined) {
+    subscriptions = JSON.parse($.read("subscriptions"));
+}
 
 Promise.all(subscriptions.map(async sub => await fetchInfo(sub)))
     .catch(err => $.error(err))

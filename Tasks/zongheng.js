@@ -10,7 +10,9 @@ let alwaysNotice = false; // 设置为true则每次运行通知，否则只通�
 
 /********************************* SCRIPT START *******************************************************/
 const $ = API("zongheng");
-ids = JSON.parse($.read("ids")) || ids;
+if ($.read("ids") !== undefined){
+    ids = JSON.parse($.read("ids"));
+}
 alwaysNotice = $.read('alwaysNotice') || alwaysNotice;
 
 const parsers = {
