@@ -51,7 +51,13 @@
           "autoGrow": true,
           "rows": 5,
           "desc": "机场订阅 (JSON 格式)"
-        }
+        },
+        "author": "@Peng-YM",
+        "repo": "https://github.com/Peng-YM/QuanX",
+        "icons": [
+          "https://raw.githubusercontent.com/Orz-3/mini/master/airport.png",
+          "https://raw.githubusercontent.com/Orz-3/task/master/airport.png"
+        ]
       ]
     },
     {
@@ -70,6 +76,12 @@
           "rows": 5,
           "desc": "游戏列表 (JSON 格式)"
         }
+      ],
+      "author": "@Peng-YM",
+      "repo": "https://github.com/Peng-YM/QuanX",
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/steam.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/steam.png"
       ]
     },
     {
@@ -88,6 +100,12 @@
           "rows": 5,
           "desc": "小说的id列表, 使用方法：进入纵横小说页面，例如<<剑来>>：http://book.zongheng.com/book/672340.html 则id为672340，将id添加到列表即可。"
         }
+      ],
+      "author": "@Peng-YM",
+      "repo": "https://github.com/Peng-YM/QuanX",
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/zongheng.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/zongheng.png"
       ]
     }
   ]
