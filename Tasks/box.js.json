@@ -51,13 +51,13 @@
           "autoGrow": true,
           "rows": 5,
           "desc": "机场订阅 (JSON 格式)"
-        },
-        "author": "@Peng-YM",
-        "repo": "https://github.com/Peng-YM/QuanX",
-        "icons": [
-          "https://raw.githubusercontent.com/Orz-3/mini/master/airport.png",
-          "https://raw.githubusercontent.com/Orz-3/task/master/airport.png"
-        ]
+        }
+      ],
+      "author": "@Peng-YM",
+      "repo": "https://github.com/Peng-YM/QuanX",
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/airport.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/airport.png"
       ]
     },
     {
