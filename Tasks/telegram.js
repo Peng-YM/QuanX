@@ -1,7 +1,8 @@
 let channels = ["LoonNews"];
 let maxImgs = 3;
 
-const $ = API("telegram", true);
+const $ = API("telegram");
+const debug = true;
 if ($.read("channels") !== undefined) {
     channels = JSON.parse($.read("channels"));
 }
@@ -26,7 +27,7 @@ Promise.all(
                     const img = item.match(/img src="(.*?)"/);
                     const updateTime = new Date(item.match(/<pubDate>(.*?)<\/pubDate>/)[1]).getTime();
                     if (img) {
-                        if (updated["channel"] === undefined || updated["channel"] > updateTime) {
+                        if (debug || updated["channel"] === undefined || updated["channel"] > updateTime) {
                             $.notify(`[Telegram] ${channelName}`, "", "", {
                                 "media-url": img[1],
                                 "open-url": channelLink
