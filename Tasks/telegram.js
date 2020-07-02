@@ -37,7 +37,7 @@ Promise.all(
                     const img = item.match(/img src="(.*?)"/);
                     const updateTime = new Date(item.match(/<pubDate>(.*?)<\/pubDate>/)[1]).getTime();
                     if (img) {
-                        if (debug || updated[channel] === undefined || updated[channel] > updateTime) {
+                        if (debug || updated[channel] === undefined || updated[channel] < updateTime) {
                             $.notify(`[Telegram] ${channelName}`, "", "", {
                                 "media-url": img[1],
                                 "open-url": channelLink
