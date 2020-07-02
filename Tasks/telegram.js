@@ -1,7 +1,17 @@
-let channels = ["LoonNews"];
+/**
+ * TG频道图片推送
+ * @author: Peng-YM
+ * 更新地址：https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/telegram.js
+ * 使用方法：
+ * 1. 在channels里面添加频道的id，比如说对于频道https://t.me/ABCD，则填入"ABCD"
+ * 比如 channels = ["ABCD", "CDEF"]
+ * 2. 在maxImgs设置每个频道最多显示的图片数量，比如说设置为3，则只会显示最近3张图片，注意以前看过的图片不会显示。
+ */
+
+let channels = ["TimmyChannel"];
 let maxImgs = 3;
 
-const $ = API("telegram");
+const $ = API("telegram", true);
 const debug = true;
 if ($.read("channels") !== undefined) {
     channels = JSON.parse($.read("channels"));
@@ -27,7 +37,7 @@ Promise.all(
                     const img = item.match(/img src="(.*?)"/);
                     const updateTime = new Date(item.match(/<pubDate>(.*?)<\/pubDate>/)[1]).getTime();
                     if (img) {
-                        if (debug || updated["channel"] === undefined || updated["channel"] > updateTime) {
+                        if (debug || updated[channel] === undefined || updated[channel] > updateTime) {
                             $.notify(`[Telegram] ${channelName}`, "", "", {
                                 "media-url": img[1],
                                 "open-url": channelLink
