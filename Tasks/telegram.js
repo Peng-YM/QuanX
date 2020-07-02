@@ -8,11 +8,11 @@
  * 2. 在maxImgs设置每个频道最多显示的图片数量，比如说设置为3，则只会显示最近3张图片，注意以前看过的图片不会显示。
  */
 
-let channels = ["TimmyChannel"];
+let channels = ["mzt666"];
 let maxImgs = 3;
 
-const $ = API("telegram", true);
-const debug = true;
+const $ = API("telegram");
+const debug = false;
 if ($.read("channels") !== undefined) {
     channels = JSON.parse($.read("channels"));
 }
