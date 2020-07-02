@@ -9,7 +9,7 @@ let ids = ["408586"];
 let alwaysNotice = false; // 设置为true则每次运行通知，否则只通知更新
 
 /********************************* SCRIPT START *******************************************************/
-const $ = API("zongheng");
+const $ = API("zongheng", true);
 if ($.read("ids") !== undefined){
     ids = JSON.parse($.read("ids"));
 }
@@ -22,7 +22,7 @@ const parsers = {
         /<div class="book-img fl">[\s\S]*?<img src="(.*?)".*>[\s\S]*?<\/div>/
     ),
     description: new RegExp(/<div class="con">([\s\S]*?)<\/div>/),
-    updateTime: new RegExp(/(\d+)(?:小时|天)前/),
+    updateTime: new RegExp(/(\d+)(?:小时|天|周|月|年)前/),
     updateCount: new RegExp(/今日更新\d+章/),
     author: new RegExp(/<div class="au-name"><a [\s\S]*?>(\S*)<\/a><\/div>/),
 };
