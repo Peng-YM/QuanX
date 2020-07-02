@@ -119,11 +119,11 @@
         {
           "id": "@telegram.channels",
           "name": "频道列表",
-          "val": "[\"LoonNews\"]",
+          "val": "[\"ABCD\"]",
           "type": "textarea",
           "autoGrow": false,
           "rows": 2,
-          "desc": "频道列表，比如说一个频道的链接为https://t.me/s/LoonNews，那么将\"LoonNews\"加到列表中。"
+          "desc": "频道列表，比如说一个频道的链接为https://t.me/s/ABCD，那么将\"ABCD\"加到列表中。"
         },
         {
           "id": "@telegram.maxImgs",
@@ -137,8 +137,8 @@
       "author": "@Peng-YM",
       "repo": "https://github.com/Peng-YM/QuanX",
       "icons": [
-        "https://raw.githubusercontent.com/Orz-3/mini/master/zongheng.png",
-        "https://raw.githubusercontent.com/Orz-3/task/master/zongheng.png"
+        "https://raw.githubusercontent.com/Orz-3/mini/master/airport.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/airport.png"
       ]
     }
   ]
