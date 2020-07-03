@@ -9,7 +9,7 @@ let ids = ["408586"];
 let alwaysNotice = false; // 设置为true则每次运行通知，否则只通知更新
 
 /********************************* SCRIPT START *******************************************************/
-const $ = API("zongheng", true);
+const $ = API("zongheng");
 if ($.read("ids") !== undefined){
     ids = JSON.parse($.read("ids"));
 }

@@ -31,15 +31,14 @@ let games = [
 const $ = API("steam");
 if ($.read('games') !== undefined) {
     games = JSON.parse($.read('games'));
-}s
+}
 
 Promise.all(games.map(async (item) => check(item))).then(() => $.done());
 
 async function check(item) {
     const {id, name} = item;
-    if (debug) {
-        console.log(`正在检查：${item.id}...`);
-    }
+    $.log(`正在检查：${item.id}...`);
+
     const headers = {
         "User-Agent":
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36",
@@ -68,7 +67,6 @@ function getPrice(html) {
         const prices = row.match(/¥ \d+/g);
         const currentPrice = prices[0];
         const lowestPrice = prices[1];
-        ß
         const discount = row.match(/-\d+%/)[0];
         $.log({currentPrice, lowestPrice, discount});
         return {
