@@ -67,6 +67,7 @@ Promise.all(
                 $.write(JSON.stringify(updated), "updated");
             })
             .catch((error) => {
+                $.notify("[Telegram]", "", `❌ 未找到频道: ${channel}`);
                 $.error(error);
             });
     })
