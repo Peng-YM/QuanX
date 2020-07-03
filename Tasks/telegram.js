@@ -5,19 +5,23 @@
  * 使用方法：
  * 1. 在channels里面添加频道的id，比如说对于频道https://t.me/ABCD，则填入"ABCD"
  * 比如 channels = ["ABCD", "CDEF"]
- * 2. 在maxImgs设置每个频道最多显示的图片数量，比如说设置为3，则只会显示最近3张图片，注意以前看过的图片不会显示。
+ * 2. 在maxMedias设置每个频道最多显示的图片数量，比如说设置为3，则只会显示最近3张图片。
+ * 3. alwaysNotice控制是否重复显示已经看过的图片，如果设置为false，则只会显示更新的图片。
  */
 
-let channels = ["mnbz666"];
-let maxImgs = 3;
+let channels = ["xqsranimegif"];
+let maxMedias = 3;
+let alwaysNotice = false;
 
 const $ = API("telegram");
-const debug = false;
 if ($.read("channels") !== undefined) {
     channels = JSON.parse($.read("channels"));
 }
-if ($.read("maxImgs") !== undefined) {
-    maxImgs = parseInt($.read("maxImgs"));
+if ($.read("maxMedias") !== undefined) {
+    maxMedias = parseInt($.read("maxMedias"));
+}
+if ($.read("alwaysNotice") !== undefined) {
+    alwaysNotice = $.read("alwaysNotice");
 }
 
 const updated = JSON.parse($.read("updated") || "{}");
@@ -30,28 +34,40 @@ Promise.all(
                 const body = response.body;
                 const channelLink = `https://t.me/s/${channel}`;
                 const channelName = body.match(/CDATA\[(.*) - Telegram 频道\]/)[1];
-                let cnt = 0;
+
+
                 $.log(`Channel Name: ${channelName}, Link: ${channelLink}`);
+
+                // collect medias
+                let medias = [];
                 response.body.match(/<item>[\s\S]*?<\/item>/g).forEach((item) => {
-                    if (cnt >= maxImgs) return;
-                    const img = item.match(/img src="(.*?)"/);
+                    const mediaCollection = Array.from(item.matchAll(/(?:img|video) src="(.*?)"/g), m => m[1]).filter(m => m !== "undefined");
                     const updateTime = new Date(item.match(/<pubDate>(.*?)<\/pubDate>/)[1]).getTime();
-                    if (img) {
-                        if (debug || updated[channel] === undefined || updated[channel] < updateTime) {
-                            $.notify(`[Telegram] ${channelName}`, "", "", {
-                                "media-url": img[1],
-                                "open-url": channelLink
-                            });
-                            $.log(`IMG: ${img[1]}`);
-                            cnt += 1;
+                    if (mediaCollection) {
+                        if (alwaysNotice || updated[channel] === undefined || updated[channel] < updateTime) {
+                            medias = medias.concat(mediaCollection);
+                            $.log(mediaCollection);
                         } else return;
                     }
                 });
+
+                $.log(`All medias: ${medias}`)
+
+                // push notifications
+                for (let i = 0; i < Math.min(medias.length, maxMedias); i++) {
+                    $.notify(`[Telegram] ${channelName}`, "", "", {
+                        "media-url": medias[i],
+                        "open-url": medias[i]
+                    });
+                    $.log(`MEDIA: ${medias[i]}`);
+                }
+
                 // update timestamp
                 updated[channel] = new Date().getTime();
                 $.write(JSON.stringify(updated), "updated");
             })
             .catch((error) => {
+                $.notify("[Telegram]", "", `❌ 未找到频道: ${channel}`);
                 $.error(error);
             });
     })
@@ -59,12 +75,6 @@ Promise.all(
     .catch((err) => $.error(err))
     .finally(() => $.done());
 
-function formatTime(timestamp) {
-    const date = new Date(timestamp);
-    return `${
-        date.getMonth() + 1
-        }月${date.getDate()}日${date.getHours()}时`;
-}
 
 // prettier-ignore
 /*********************************** API *************************************/

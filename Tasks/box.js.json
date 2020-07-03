@@ -110,10 +110,10 @@
     },
     {
       "id": "Telegram",
-      "name": "Telegram 频道图片推送",
+      "name": "Telegram 频道媒体推送",
       "keys": [
         "@telegram.channels",
-        "@telegram.maxImgs"
+        "@telegram.maxMedias"
       ],
       "settings": [
         {
@@ -126,12 +126,12 @@
           "desc": "频道列表，比如说一个频道的链接为https://t.me/s/ABCD，那么将\"ABCD\"加到列表中。"
         },
         {
-          "id": "@telegram.maxImgs",
-          "name": "每个频道最多显示图片的数量",
+          "id": "@telegram.maxMedias",
+          "name": "每个频道最多显示视频和图片的数量",
           "val": 3,
           "type": "text",
           "rows": 1,
-          "desc": "每个频道最多显示图片的数量, 默认为3"
+          "desc": "每个频道最多显示视频和图片的数量, 默认为3"
         }
       ],
       "author": "@Peng-YM",
