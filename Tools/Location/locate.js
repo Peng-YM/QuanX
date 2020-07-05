@@ -13,13 +13,13 @@
  * 2. Loon
  * [MITM]
  * hostname=weather-data.apple.com
- * [Rewrite]
+ * [Script]
  * http-request https://weather-data.apple.com, script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/Location/locate.js, require-body=false
  * 
  * 3. Surge
  * [MITM]
  * hostname=weather-data.apple.com
- * [Rewrite]
+ * [Script]
  * type=http-request, pattern=https://weather-data.apple.com, script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/Location/locate.js, require-body=false
  * 
  * 即可定时获取当前位置，注意需要安装自带的天气应用。此重写不要禁用。
