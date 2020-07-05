@@ -35,10 +35,10 @@ console.log(`当前位置：经度${latitude}，纬度${longitude}`);
 // write data
 if (typeof $prefs !== 'undefined'){
     // QX
-    $prefs.setValueForKey("latitude", latitude);
-    $prefs.setValueForKey("longitude", longitude);
+    $prefs.setValueForKey(latitude, "latitude");
+    $prefs.setValueForKey(longitude, "longitude");
 }else{
     // Loon & Surge
-    $persistentStore.write("latitude", latitude);
-    $persistentStore.write("longitude", longitude);
+    $persistentStore.write(latitude, "latitude");
+    $persistentStore.write(longitude, "longitude");
 }
