@@ -27,7 +27,7 @@
  */
 
 const url = $request.url;
-const res = url.match(/\/CN\/(.*)\/(.*)\?/);
+const res = url.match(/CN\/(.*)\/(.*)\?/);
 const latitude = res[1];
 const longitude = res[2];
 console.log(`当前位置：经度${latitude}，纬度${longitude}`);
