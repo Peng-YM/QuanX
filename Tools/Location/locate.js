@@ -7,7 +7,7 @@
  * 1. Quantumult X
  * [MITM]
  * hostname=weather-data.apple.com
- * [Rewrite]
+ * [rewrite_local]
  * https://weather-data.apple.com url script-request-header https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/Location/locate.js
  * 
  * 2. Loon
@@ -27,10 +27,10 @@
  */
 
 const url = $request.url;
-const res = url.match(/CN\/(.*)\/(.*)\?/);
+const res = url.match(/weather\/.*?\/(.*)\/(.*)\?/);
 const latitude = res[1];
 const longitude = res[2];
-console.log(`当前位置：经度${latitude}，纬度${longitude}`);
+console.log(`当前位置：纬度${latitude}，经度${longitude}`);
 
 // write data
 if (typeof $prefs !== 'undefined'){
@@ -42,3 +42,5 @@ if (typeof $prefs !== 'undefined'){
     $persistentStore.write(latitude, "latitude");
     $persistentStore.write(longitude, "longitude");
 }
+
+$done();
