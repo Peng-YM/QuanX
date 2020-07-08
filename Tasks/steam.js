@@ -81,7 +81,7 @@ function getPrice(html) {
 
 function getInfo(html) {
     try {
-        const name = html.match(/<td itemprop=\"name\">([\s\S]+?)<\/td>/)[1];
+        const name = html.match(/<h1 itemprop=\"name\">([\s\S]+?)<\/h1>/)[1];
         const publisher = html.match(
             /<span itemprop=\"publisher\">([\s\S]+?)<\/span>/
         )[1];
