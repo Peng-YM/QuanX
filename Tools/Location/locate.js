@@ -30,7 +30,7 @@ const url = $request.url;
 const res = url.match(/weather\/.*?\/(.*)\/(.*)\?/);
 const latitude = res[1];
 const longitude = res[2];
-console.log(`当前位置：纬度${latitude}，经度${longitude}`);
+// console.log(`当前位置：纬度${latitude}，经度${longitude}`);
 
 // write data
 if (typeof $prefs !== 'undefined'){

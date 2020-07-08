@@ -28,6 +28,14 @@ if ($.read(key) !== undefined) {
   $.log("缓存Key未删除！");
 }
 
+const obj = {
+  hello: {
+    world: "HELLO"
+  }
+};
+
+$.write(obj, "obj");
+
 // 测试请求
 $.get("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
   .then((resp) => {
