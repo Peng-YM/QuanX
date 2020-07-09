@@ -207,7 +207,7 @@ function realtimeWeather() {
     `[彩云天气] ${address.city} ${address.district} ${address.street}`,
     `${mapSkycon(realtime.skycon)} ${realtime.apparent_temperature} ℃  🌤 空气质量 ${realtime.air_quality.description.chn}`,
     `${keypoint}
-🌡 体感${realtime.life_index.comfort.desc} ${realtime.temperature} ℃ 💧 湿度 ${realtime.humidity * 100}%,
+🌡 体感${realtime.life_index.comfort.desc} ${realtime.temperature} ℃  💧 湿度 ${realtime.humidity.toFixed(2) * 100}%
 🌞 紫外线 ${realtime.life_index.ultraviolet.desc} 
 💨 风力 ${mapWind(realtime.wind.speed, realtime.wind.direction)}
 
@@ -222,22 +222,22 @@ function dailyForcast() {
 
 function mapAlertCode(code) {
   const names = {
-    "01": "台风",
-    "02": "暴雨",
-    "03": "暴雪",
-    "04": "寒潮",
-    "05": "大风",
-    "06": "沙尘暴",
-    "07": "高温",
-    "08": "干旱",
-    "09": "雷电",
-    "10": "冰雹",
-    "11": "霜冻",
-    "12": "大雾",
-    "13": "霾",
-    "14": "道路结冰",
-    "15": "森林火灾",
-    "16": "雷雨大风"
+    "01": "🌪 台风",
+    "02": "⛈ 暴雨",
+    "03": "❄️ 暴雪",
+    "04": "❄ 寒潮",
+    "05": "💨 大风",
+    "06": "💨 沙尘暴",
+    "07": "☄️ 高温",
+    "08": "☄️ 干旱",
+    "09": "⚡️ 雷电",
+    "10": "💥 冰雹",
+    "11": "❄️ 霜冻",
+    "12": "💨 大雾",
+    "13": "💨 霾",
+    "14": "❄️ 道路结冰",
+    "15": "🔥 森林火灾",
+    "16": "⛈ 雷雨大风"
   };
 
   const intensity = {
@@ -248,7 +248,7 @@ function mapAlertCode(code) {
   };
 
   const res = code.match(/(\d{2})(\d{2})/);
-  return `${intensity[res[2]]}${names[res[1]]}`
+  return `${names[res[1]]}${intensity[res[2]]}`
 }
 
 function mapWind(speed, direction) {
