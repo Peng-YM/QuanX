@@ -147,7 +147,9 @@
       "keys": [
         "@caiyun.token.caiyun",
         "@caiyun.token.tencent",
-        "@caiyun.display_location"
+        "@caiyun.display_location",
+        "@caiyun.location.latitude",
+        "@caiyun.location.longitude"
       ],
       "settings": [
         {
