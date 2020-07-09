@@ -173,7 +173,21 @@
           "val": false,
           "type": "boolean",
           "desc": ""
-        }
+        },
+        {
+          "id": "@caiyun.location.latitude",
+          "name": "纬度",
+          "val": null,
+          "type": "text",
+          "desc": "纬度，可以关闭MITM获取位置，手动设置"
+        },
+        {
+          "id": "@caiyun.location.longitude",
+          "name": "经度",
+          "val": null,
+          "type": "text",
+          "desc": "经度，可以关闭MITM获取位置，手动设置"
+        },
       ],
       "author": "@Peng-YM",
       "repo": "https://github.com/Peng-YM/QuanX",
