@@ -189,7 +189,7 @@
           "val": null,
           "type": "text",
           "desc": "经度，可以关闭MITM获取位置，手动设置"
-        },
+        }
       ],
       "author": "@Peng-YM",
       "repo": "https://github.com/Peng-YM/QuanX",
