@@ -25,7 +25,7 @@
  * [MITM]
  * hostname=weather-data.apple.com
  * [Script]
- * http-request https://weather-data.apple.com, script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/caiyun.js, require-body=false
+ * http-request https://weather-data.apple.com script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/caiyun.js, require-body=false
  * 
  * (3). Surge
  * [MITM]
@@ -46,13 +46,6 @@
 const $ = API("caiyun");
 
 const ERR = MYERR();
-const DEBUG_REQUEST = false;
-
-if (DEBUG_REQUEST) {
-  var $request = {
-    url: "https://weather-data.apple.com/v1/weather/en-US/26.41/112.85?units=m&include=current_observations,now_links"
-  }
-}
 
 if (typeof $request !== 'undefined') {
   // get location from request url
