@@ -118,7 +118,7 @@ async function query() {
     }).then(resp => {
       const body = JSON.parse(resp.body);
       if (body.status === 'failed') {
-        throw new ERR.TokenError(`❌ 无效的彩云天气Token: ${$.read("token").caiyun}`);
+        throw new Error(body.error);
       }
       return body;
     }).catch(err => {
@@ -126,6 +126,7 @@ async function query() {
     });
 
     $.log("Query location...");
+    await $.wait(Math.random()*2000);
     const address =
       await $
         .get(`https://apis.map.qq.com/ws/geocoder/v1/?key=${$.read("token").tencent}&location=${$.read("location").latitude},${$.read("location").longitude}`)
@@ -139,7 +140,7 @@ async function query() {
           throw err;
         });
     $.write(new Date().getTime(), "updated");
-    $.write(weather, "weather");
+    $.write(JSON.stringify(weather), "weather");
 
     if ($.read("display_location") == true) {
       $.info(JSON.stringify(address));
@@ -149,7 +150,7 @@ async function query() {
 }
 
 function weatherAlert() {
-  const data = $.read("weather").result.alert;
+  const data = JSON.parse($.read("weather")).result.alert;
   const address = $.read("address");
   const alerted = $.read("alerted") || [];
 
@@ -170,7 +171,7 @@ function weatherAlert() {
 }
 
 function realtimeWeather() {
-  const data = $.read("weather").result;
+  const data = JSON.parse($.read("weather")).result;
   const address = $.read("address");
 
   const alert = data.alert;
