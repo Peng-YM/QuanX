@@ -24,7 +24,7 @@ function API(name = "untitled", debug = false) {
           return null;
         }
       })();
-      this.cache = this.initCache();
+      this.initCache();
       this.log(`INITIAL CACHE:\n${JSON.stringify(this.cache)}`);
 
       const delay = (t, v) =>
@@ -92,8 +92,8 @@ function API(name = "untitled", debug = false) {
         return JSON.parse($persistentStore.read(this.name) || "{}");
 
       if (this.isNode) {
-        // create a json file with the given name if not exists
-        const fpath = `${this.name}.json`;
+        // create a json for root cache
+        let fpath = "root.json";
         if (!this.node.fs.existsSync(fpath)) {
           this.node.fs.writeFileSync(
             fpath,
@@ -101,9 +101,21 @@ function API(name = "untitled", debug = false) {
             { flag: "wx" },
             (err) => console.log(err)
           );
-          return {};
+        }
+        this.root = {};
+
+        // create a json file with the given name if not exists
+        fpath = `${this.name}.json`;
+        if (!this.node.fs.existsSync(fpath)) {
+          this.node.fs.writeFileSync(
+            fpath,
+            JSON.stringify({}),
+            { flag: "wx" },
+            (err) => console.log(err)
+          );
+          this.cache = {};
         } else {
-          return JSON.parse(this.node.fs.readFileSync(`${this.name}.json`));
+          this.cache = JSON.parse(this.node.fs.readFileSync(`${this.name}.json`));
         }
       }
     }
@@ -114,29 +126,76 @@ function API(name = "untitled", debug = false) {
       this.log(`FLUSHING DATA:\n${data}`);
       if (this.isQX) $prefs.setValueForKey(data, this.name);
       if (this.isLoon || this.isSurge) $persistentStore.write(data, this.name);
-      if (this.isNode)
+      if (this.isNode) {
         this.node.fs.writeFileSync(
           `${this.name}.json`,
           data,
           { flag: "w" },
           (err) => console.log(err)
         );
+        this.node.fs.writeFileSync(
+          "root.json",
+          JSON.stringify(this.root),
+          { flag: "w" },
+          (err) => console.log(err)
+        )
+      }
     }
 
     write(data, key) {
       this.log(`SET ${key} = ${JSON.stringify(data)}`);
-      this.cache[key] = data;
+      if (key.indexOf('#') !== -1) {
+        key = key.substr(1)
+        if (this.isSurge & this.isLoon) {
+          $persistentStore.write(data, key);
+        }
+        if (this.isQX) {
+          $prefs.setValueForKey(data, key);
+        }
+        if (this.isNode) {
+          this.root[key] = data;
+        }
+      } else {
+        this.cache[key] = data;
+      }
       this.persistCache();
     }
 
     read(key) {
-      this.log(`READ ${key} ==> ${JSON.stringify(this.cache[key])}`);
-      return this.cache[key];
+      this.log(`READ ${key}`);
+      if (key.indexOf('#') !== -1) {
+        key = key.substr(1)
+        if (this.isSurge & this.isLoon) {
+          $persistentStore.read(data, key);
+        }
+        if (this.isQX) {
+          return $prefs.valueForKey(key);
+        }
+        if (this.isNode) {
+          return this.root[key];
+        }
+      } else {
+        return this.cache[key];
+      }
     }
 
     delete(key) {
       this.log(`DELETE ${key}`);
       delete this.cache[key];
+      if (key.indexOf('#') !== -1) {
+        key = key.substr(1)
+        if (this.isSurge & this.isLoon) {
+          $persistentStore.write(null, key);
+        }
+        if (this.isQX) {
+          $prefs.setValueForKey(null, key);
+        }
+        if (this.isNode) {
+          delete this.root[key];
+        }
+      } else {
+        this.cache[key] = data;
+      }
       this.persistCache();
     }
 
@@ -186,7 +245,7 @@ function API(name = "untitled", debug = false) {
       if (this.isQX || this.isLoon || this.isSurge) {
         $done(value);
       } else if (this.isNode && !this.isJSBox) {
-        if (typeof $context !== 'undefined'){
+        if (typeof $context !== 'undefined') {
           $context.headers = value.headers;
           $context.statusCode = value.statusCode;
           $context.body = value.body;
