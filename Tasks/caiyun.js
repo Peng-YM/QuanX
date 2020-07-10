@@ -44,6 +44,8 @@
 
 /********************** SCRIPT START *********************************/
 const $ = API("caiyun");
+$.write("", "weather");
+$.write("", "address");
 
 const ERR = MYERR();
 const display_location = JSON.parse($.read("display_location") || "false");
@@ -98,14 +100,11 @@ async function scheduler() {
   realtimeWeather();
   // hourlyForcast();
   // dailyForcast();
+
 }
 
 async function query() {
   const now = new Date();
-  // check last updated time
-  const STABLE_UPDATE_TIME = (5 + Math.random()) * 60 * 1000;
-  const updated = $.read("updated");
-  if (updated === undefined || now - new Date(updated) > STABLE_UPDATE_TIME) {
     // query API
     const url = `https://api.caiyunapp.com/v2.5/${$.read("token").caiyun}/${$.read("location").longitude},${$.read("location").latitude}/weather?lang=zh_CN&dailystart=0&hourlysteps=384&dailysteps=16&alert=true`;
 
@@ -140,19 +139,18 @@ async function query() {
         }).catch(err => {
           throw err;
         });
-    $.write(new Date().getTime(), "updated");
-    $.write(JSON.stringify(weather), "weather");
+
+    $.weather = weather;
 
     if (display_location == true) {
       $.info(JSON.stringify(address));
     }
-    $.write(address, "address");
-  }
+    $.address = address;
 }
 
 function weatherAlert() {
-  const data = JSON.parse($.read("weather")).result.alert;
-  const address = $.read("address");
+  const data = $.weather.result.alert;
+  const address = $.address;
   const alerted = $.read("alerted") || [];
 
   if (data.status === 'ok') {
@@ -172,8 +170,8 @@ function weatherAlert() {
 }
 
 function realtimeWeather() {
-  const data = JSON.parse($.read("weather")).result;
-  const address = $.read("address");
+  const data = $.weather.result;
+  const address = $.address;
 
   const alert = data.alert;
   const alertInfo = alert.content.length == 0 ? "" : alert.content.reduce((acc, curr) => {
