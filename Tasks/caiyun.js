@@ -46,6 +46,7 @@
 const $ = API("caiyun");
 
 const ERR = MYERR();
+const display_location = JSON.parse($.read("display_location") || "false");
 
 if (typeof $request !== 'undefined') {
   // get location from request url
@@ -62,7 +63,7 @@ if (typeof $request !== 'undefined') {
   if (!$.read("location")) {
     $.notify("[彩云天气]", "", "🎉🎉🎉 获取定位成功。");
   }
-  if ($.read("display_location") == true) {
+  if (display_location) {
     $.info(`成功获取当前位置：纬度 ${location.latitude} 经度 ${location.longitude}`);
   }
   $.write(location, "location");
@@ -142,7 +143,7 @@ async function query() {
     $.write(new Date().getTime(), "updated");
     $.write(JSON.stringify(weather), "weather");
 
-    if ($.read("display_location") == true) {
+    if (display_location == true) {
       $.info(JSON.stringify(address));
     }
     $.write(address, "address");
