@@ -277,20 +277,21 @@ function mapWind(speed, direction) {
 }
 
 // 天气状况 --> 自然语言描述
+// icon来源：https://dribbble.com/kel
 function mapSkycon(skycon) {
   const map = {
-    "CLEAR_DAY": ["☀️ 日间晴朗", "https://cdn.dribbble.com/users/186452/screenshots/1732132/weather-1.gif?vid=1"],
+    "CLEAR_DAY": ["☀️ 日间晴朗", "https://raw.githubusercontent.com/Peng-YM/QuanX/master/assets/caiyun/CLEAR_DAY.mp4"],
     "CLEAR_NIGHT": "✨ 夜间晴朗",
-    "PARTLY_CLOUDY_DAY": ["⛅️ 日间多云", "https://cdn.dribbble.com/users/186452/screenshots/1733462/weather-4.gif?vid=1"],
+    "PARTLY_CLOUDY_DAY": ["⛅️ 日间多云", "https://raw.githubusercontent.com/Peng-YM/QuanX/master/assets/caiyun/CLOUDY_DAY.mp4"],
     "PARTLY_CLOUDY_NIGHT": "☁️ 夜间多云",
     "CLOUDY": "☁️ 阴",
     "LIGHT_HAZE": "😤 轻度雾霾",
     "MODERATE_HAZE": "😤 中度雾霾",
     "HEAVY_HAZE": "😤 重度雾霾",
-    "LIGHT_RAIN": ["💧 小雨", "https://cdn.dribbble.com/users/186452/screenshots/1732130/weather-2.gif?vid=1"],
-    "MODERATE_RAIN": ["💦 中雨", "https://cdn.dribbble.com/users/186452/screenshots/1733456/weather-2.gif?vid=1"],
-    "HEAVY_RAIN": ["🌧 大雨", "https://cdn.dribbble.com/users/186452/screenshots/1733456/weather-3.gif?vid=1"],
-    "STORM_RAIN": ["⛈ 暴雨", "https://cdn.dribbble.com/users/186452/screenshots/1733456/weather-3.gif?vid=1"],
+    "LIGHT_RAIN": ["💧 小雨", "https://raw.githubusercontent.com/Peng-YM/QuanX/master/assets/caiyun/RAIN.mp4"],
+    "MODERATE_RAIN": ["💦 中雨", "https://raw.githubusercontent.com/Peng-YM/QuanX/master/assets/caiyun/RAIN.mp4"],
+    "HEAVY_RAIN": ["🌧 大雨", "https://raw.githubusercontent.com/Peng-YM/QuanX/master/assets/caiyun/HEAVY_RAIN.mp4"],
+    "STORM_RAIN": ["⛈ 暴雨", "https://raw.githubusercontent.com/Peng-YM/QuanX/master/assets/caiyun/HEAVY_RAIN.mp4"],
     "LIGHT_SNOW": "🌨 小雪",
     "MODERATE_SNOW": "❄️ 中雪",
     "HEAVY_SNOW": "☃️ 大雪",
