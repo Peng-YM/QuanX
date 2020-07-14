@@ -76,7 +76,6 @@ PS. 隐藏参数 ntf=0/1, 用于关闭/打开资源解析器的提示通知
 var content0 = $resource.content;
 var link0 = $resource.link;
 //debug
-//const $notify=console.log
 //const $resource={}
 //const $done=function(snt){return snt}
 //parameters
@@ -106,7 +105,7 @@ SubFlow() //流量通知
 var type0 = Type_Check(content0); //  类型
 var Pin0 = mark0 && para1.indexOf("in=") != -1 ? (para1.split("in=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
 var Pout0 = mark0 && para1.indexOf("out=") != -1 ? (para1.split("out=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null;
-var Psfilter = mark0 && para1.indexOf("sfilter=") != -1 ? Base64.decode(para1.split("sfilter=")[0]) : null; // script filter
+var Psfilter = mark0 && para1.indexOf("sfilter=") != -1 ? Base64.decode(para1.split("sfilter=")[1].split("&")[0]) : null; // script filter
 var Preg = mark0 && para1.indexOf("regex=") != -1 ? decodeURIComponent(para1.split("regex=")[1].split("&")[0]) : null; //server正则过滤参数
 var Pregdel = mark0 && para1.indexOf("delreg=") != -1 ? decodeURIComponent(para1.split("delreg=")[1].split("&")[0]) : null; // 正则删除参数
 var Phin0 = mark0 && para1.indexOf("inhn=") != -1 ? (para1.split("inhn=")[1].split("&")[0].split("+")).map(decodeURIComponent) : null; //hostname 
@@ -116,7 +115,7 @@ var Pemoji = mark0 && para1.indexOf("emoji=") != -1 ? para1.split("emoji=")[1].s
 var Pudp0 = mark0 && para1.indexOf("udp=") != -1 ? para1.split("udp=")[1].split("&")[0] : 0;
 var Ptfo0 = mark0 && para1.indexOf("tfo=") != -1 ? para1.split("tfo=")[1].split("&")[0] : 0;
 var Prname = mark0 && para1.indexOf("rename=") != -1 ? para1.split("rename=")[1].split("&")[0].split("+") : null;
-var Psrame = mark0 && para1.indexOf("srename=") != -1 ? Base64.decode(para1.split("srename=")[0]) : null; // script rename
+var Psrename = mark0 && para1.indexOf("srename=") != -1 ? Base64.decode(para1.split("srename=")[1].split("&")[0]) : null; // script rename
 var Prrname = mark0 && para1.indexOf("rrname=") != -1 ? para1.split("rrname=")[1].split("&")[0].split("+") : null;
 var Ppolicy = mark0 && para1.indexOf("policy=") != -1 ? decodeURIComponent(para1.split("policy=")[1].split("&")[0]) : "Shawn";
 var Pcert0 = mark0 && para1.indexOf("cert=") != -1 ? para1.split("cert=")[1].split("&")[0] : 1;
@@ -224,7 +223,7 @@ if (flag == 3) { // rule 类型
     if (Preplace) { // server 类型也可用 replace 参数进行重命名操作
         total = ReplaceReg(total, Preplace)
     }
-    if (Psrame) { total = RenameScript(total, Psrame) }
+    if (Psrename) { total = RenameScript(total, Psrename) }
     if (Psort0 == 1 || Psort0 == -1) {
         total = QXSort(total, Psort0);
     } else if (Psort0 == "x") {
@@ -933,19 +932,19 @@ function Filter(servers, Pin, Pout) {
 }
 
 function FilterScript(servers, script) {
-    console.log("Executing filter script: \n" + script);
     const $ = Tools();
     eval(script);
+    $notify("Script Filter", "脚本过滤器启动", script);
     // extract server tags
     const nodes = {
         names: servers.map(s => s.split("tag=")[1])
     };
-    const selected = filter(nodes);
-    if (!selected.any()) {
-        //无剩余节点时强制通知
+    const IN = filter(nodes);
+    const res = servers.filter((_, i) => IN[i]);
+    if (res.length === 0) {
         $notify("‼️ ⟦" + subtag + "⟧" + "筛选后节点数为0️⃣", "⚠️ 请自行检查原始链接以及筛选参数", link0, sub_link);
     }
-    return servers.filter((_, i) => selected[i]);
+    return res;
 }
 
 //SSR 类型 URI 转换 quanx 格式
@@ -1151,7 +1150,7 @@ function Rename(str) {
 }
 
 function RenameScript(servers, script) {
-    console.log("Executing rename script: \n" + script);
+    $notify("Script Filter", "脚本重命名启动", script);
     const $ = Tools().rename;
     // extract server tags
     const nodes = {
