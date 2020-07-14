@@ -934,7 +934,6 @@ function Filter(servers, Pin, Pout) {
 function FilterScript(servers, script) {
     const $ = Tools();
     eval(script);
-    $notify("Script Filter", "脚本过滤器启动", script);
     // extract server tags
     const nodes = {
         names: servers.map(s => s.split("tag=")[1])
@@ -1150,7 +1149,6 @@ function Rename(str) {
 }
 
 function RenameScript(servers, script) {
-    $notify("Script Filter", "脚本重命名启动", script);
     const $ = Tools().rename;
     // extract server tags
     const nodes = {
@@ -1541,7 +1539,7 @@ function Base64Code() {
         return _decode(
             String(a).replace(/[-_]/g, function (m0) { return m0 == '-' ? '+' : '/' })
                 .replace(/[^A-Za-z0-9\+\/]/g, '')
-        );
+        ).replace(/&gt;/g, ">").replace(/&lt;/g, "<");
     };
 }
 
