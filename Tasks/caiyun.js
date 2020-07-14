@@ -281,9 +281,9 @@ function mapWind(speed, direction) {
 function mapSkycon(skycon) {
   const map = {
     "CLEAR_DAY": ["☀️ 日间晴朗", "https://github.com/Peng-YM/QuanX/blob/master/assets/caiyun/CLEAR_DAY.mp4?raw=true"],
-    "CLEAR_NIGHT": "✨ 夜间晴朗",
+    "CLEAR_NIGHT": ["✨ 夜间晴朗"],
     "PARTLY_CLOUDY_DAY": ["⛅️ 日间多云", "https://github.com/Peng-YM/QuanX/blob/master/assets/caiyun/CLOUDY_DAY.mp4?raw=true"],
-    "PARTLY_CLOUDY_NIGHT": "☁️ 夜间多云",
+    "PARTLY_CLOUDY_NIGHT": ["☁️ 夜间多云"],
     "CLOUDY": ["☁️ 阴"],
     "LIGHT_HAZE": ["😤 轻度雾霾"],
     "MODERATE_HAZE": ["😤 中度雾霾"],
