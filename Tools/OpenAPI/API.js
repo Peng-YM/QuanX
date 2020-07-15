@@ -1,5 +1,5 @@
 function API(name = "untitled", debug = false) {
-  class wrapper {
+  return new class {
     constructor(name, debug) {
       this.name = name;
       this.debug = debug;
@@ -25,7 +25,6 @@ function API(name = "untitled", debug = false) {
         }
       })();
       this.initCache();
-      this.log(`INITIAL CACHE:\n${JSON.stringify(this.cache)}`);
 
       const delay = (t, v) =>
         new Promise(function (resolve) {
@@ -123,7 +122,6 @@ function API(name = "untitled", debug = false) {
     // store cache
     persistCache() {
       const data = JSON.stringify(this.cache);
-      this.log(`FLUSHING DATA:\n${data}`);
       if (this.isQX) $prefs.setValueForKey(data, this.name);
       if (this.isLoon || this.isSurge) $persistentStore.write(data, this.name);
       if (this.isNode) {
@@ -143,7 +141,7 @@ function API(name = "untitled", debug = false) {
     }
 
     write(data, key) {
-      this.log(`SET ${key} = ${JSON.stringify(data)}`);
+      this.log(`SET ${key}`);
       if (key.indexOf('#') !== -1) {
         key = key.substr(1)
         if (this.isSurge & this.isLoon) {
@@ -200,23 +198,21 @@ function API(name = "untitled", debug = false) {
     }
 
     // notification
-    notify(title, subtitle, content, options) {
-      const url = typeof options == "string" ? options : undefined;
-      const content_ = content + (url == undefined ? "" : `\n${url}`);
+    notify(title, subtitle="", content="", options={}) {
+      const openURL = options['open-url'];
+      const mediaURL = options['media-url'];
 
-      if (this.isQX) {
-        if (url !== undefined)
-          $notify(title, subtitle, content, { "open-url": url });
-        else $notify(title, subtitle, content, options);
-      }
+      const content_ = content + (openURL ? `\n点击跳转: ${openURL}` : "") + (mediaURL ? `\n多媒体: ${mediaURL}` : "");
+
+      if (this.isQX) $notify(title, subtitle, content, options);
       if (this.isSurge) $notification.post(title, subtitle, content_);
-      if (this.isLoon) $notification.post(title, subtitle, content);
+      if (this.isLoon) $notification.post(title, subtitle, content, openURL);
       if (this.isNode) {
         if (this.isJSBox) {
           const push = require("push");
           push.schedule({
             title: title,
-            body: subtitle ? subtitle + "\n" + content : content,
+            body: (subtitle ? subtitle + "\n" : "") + content_,
           });
         } else {
           console.log(`${title}\n${subtitle}\n${content_}\n\n`);
@@ -252,6 +248,5 @@ function API(name = "untitled", debug = false) {
         }
       }
     }
-  }
-  return new wrapper(name, debug);
+  }(name, debug);
 }
