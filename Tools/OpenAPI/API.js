@@ -86,9 +86,9 @@ function API(name = "untitled", debug = false) {
 
     // initialize cache
     initCache() {
-      if (this.isQX) return JSON.parse($prefs.valueForKey(this.name) || "{}");
+      if (this.isQX) this.cache = JSON.parse($prefs.valueForKey(this.name) || "{}");
       if (this.isLoon || this.isSurge)
-        return JSON.parse($persistentStore.read(this.name) || "{}");
+        this.cache = JSON.parse($persistentStore.read(this.name) || "{}");
 
       if (this.isNode) {
         // create a json for root cache
@@ -198,7 +198,7 @@ function API(name = "untitled", debug = false) {
     }
 
     // notification
-    notify(title, subtitle="", content="", options={}) {
+    notify(title, subtitle = "", content = "", options = {}) {
       const openURL = options['open-url'];
       const mediaURL = options['media-url'];
 
