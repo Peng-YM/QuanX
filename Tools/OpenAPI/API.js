@@ -200,17 +200,13 @@ function API(name = "untitled", debug = false) {
     }
 
     // notification
-    notify(title, subtitle, content, options) {
-      const url = typeof options == "string" ? options : undefined;
-      const content_ = content + (url == undefined ? "" : `\n${url}`);
+    notify(title = name, subtitle = '', content = '', open_url, media_url) {
+      const content_Surge = content + (open_url == undefined ? "" : `\n跳转链接：${open_url}`) + (media_url == undefined ? "" : `\n多媒体链接：${media_url}`);
+      const content_Loon = content + (media_url == undefined ? "" : `\n多媒体链接：${media_url}`);
 
-      if (this.isQX) {
-        if (url !== undefined)
-          $notify(title, subtitle, content, { "open-url": url });
-        else $notify(title, subtitle, content, options);
-      }
-      if (this.isSurge) $notification.post(title, subtitle, content_);
-      if (this.isLoon) $notification.post(title, subtitle, content);
+      if (this.isQX) $notify(title, subtitle, content, {"open-url": open_url, "media-url": media_url});
+      if (this.isSurge) $notification.post(title, subtitle, content_Surge);
+      if (this.isLoon) $notification.post(title, subtitle, content_Loon, open_url);
       if (this.isNode) {
         if (this.isJSBox) {
           const push = require("push");
