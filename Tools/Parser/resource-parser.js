@@ -932,18 +932,22 @@ function Filter(servers, Pin, Pout) {
 }
 
 function FilterScript(servers, script) {
-    const $ = Tools();
-    eval(script);
-    // extract server tags
-    const nodes = {
-        names: servers.map(s => s.split("tag=")[1])
-    };
-    const IN = filter(nodes);
-    const res = servers.filter((_, i) => IN[i]);
-    if (res.length === 0) {
-        $notify("‼️ ⟦" + subtag + "⟧" + "筛选后节点数为0️⃣", "⚠️ 请自行检查原始链接以及筛选参数", link0, sub_link);
+    $notify("🤖 启用脚本进行筛选", "", script);
+    try {
+        const $ = Tools();
+        eval(script);
+        // extract server tags
+        const nodes = Tools().getNodeInfo(servers);
+        const IN = filter(nodes);
+        const res = servers.filter((_, i) => IN[i]);
+        if (res.length === 0) {
+            $notify("‼️ ⟦" + subtag + "⟧" + "筛选后节点数为0️⃣", "⚠️ 请自行检查原始链接以及筛选参数", link0, sub_link);
+        }
+        return res;
+    } catch (err) {
+        $notify("❌ 脚本筛选出现错误", "", err);
+        return servers;
     }
-    return res;
 }
 
 //SSR 类型 URI 转换 quanx 格式
@@ -1149,15 +1153,20 @@ function Rename(str) {
 }
 
 function RenameScript(servers, script) {
-    const $ = Tools().rename;
-    // extract server tags
-    const nodes = {
-        names: servers.map(s => s.split("tag=")[1])
+    $notify("🤖 启用脚本进行重命名", "", script);
+    try {
+        const $ = Tools().rename;
+        // extract server tags
+        const nodes = Tools().getNodeInfo(servers);
+        eval(script);
+        const newNames = rename(nodes);
+        // rename nodes
+        return servers.map((s, i) => s.split("tag=")[0] + "tag=" + newNames[i]);
+    } catch (err) {
+        $notify("❌ 脚本重命名出现错误", "", err);
+        return servers;
     }
-    eval(script);
-    const newNames = rename(nodes);
-    // rename nodes
-    return servers.map((s, i) => s.split("tag=")[0] + "tag=" + newNames[i]);
+
 }
 
 //删除 emoji 
@@ -1565,8 +1574,20 @@ function Tools() {
         }
     }
 
+    const getNodeInfo = servers => {
+        const nodes = {
+            names: servers.map(s => s.split("tag=")[1]),
+            types: servers.map(s => {
+                const type = s.match(/^(vmess|trojan|shadowsocks|http)=/);
+                return type ? type[1] : 'unknown';
+            })
+        };
+        return nodes;
+    }
+
+
     return {
-        filter, rename
+        filter, rename, getNodeInfo
     }
 }
 

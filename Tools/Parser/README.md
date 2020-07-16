@@ -19,7 +19,11 @@
 function filter(nodes) {}
 ```
 
-其中`nodes`参数目前只有一个`names`参数，包含了所有节点的`tag`。
+其中`nodes`参数有以下两个key:
+
+- `names`，包含了所有节点的`tag`。
+
+- `types`，包含了所有节点的类型，可以为`shadowsocks`, `vmess`, `http`, `trojan`或者`unknown`。节点类型同样可以用于过滤或者重命名。
 
 `filter`函数的核心思想是：根据`nodes`输出一个布尔数组，其中`true`代表选择该节点，`false`代表去掉该节点`。
 
@@ -29,9 +33,9 @@ function filter(nodes) {}
 
 另外，对于一些复杂的需求，提供了三个布尔运算符`AND`, `OR`, `NOT`。
 
-- `AND`可以合并多个布尔数组，表达的是逻辑和的关系
+- `AND`可以合并多个布尔数组，表达的是**逻辑和**的关系
   - 例如：`AND([true, false, true], [false, true, true]) ==> [false, fasle, true]`。
-- `OR`类似于`AND`，表达的是逻辑与的关系
+- `OR`类似于`AND`，表达的是**逻辑或**的关系
   - 例如：`OR([true, false, false], [false, true, false]) ==> [true, true, false]`。
 - `NOT`用于反转一个布尔数组的所有元素
 
@@ -39,6 +43,7 @@ function filter(nodes) {}
 
 > 我们的需求是：
 >
+> - 只保留shadowsocks或者vmess类型的节点。
 > - 所有带有"NETFLIX"的节点。
 > - 只要IPLC和IEPL的节点。
 > - 去掉"印度"，"土耳其"，"加拿大"的节点，我们还需要保留NETFLIX节点。
@@ -48,10 +53,11 @@ function filter(nodes) {}
 ```javascript
 function filter(nodes) {
   const names = nodes.names;
+  const types = $.filter(nodes.types, /shadowsocks|vmess/);
   const netflix = $.filter(names, /NETFLIX/i); //过滤出所有NETFLIX节点
   const iplc = $.filter(names, /IPLC|IEPL/i); //过滤出含有IPLC和IEPL的节点
   const kick = $.filter(names, /印度|土耳其/, /加拿大/); //过滤掉某些地区的节点，注意$.filter可以支持多个表达式
-  return OR(netflix, AND(iplc, NOT(kick)));
+  return AND(types, OR(netflix, AND(iplc, NOT(kick))));
 }
 ```
 
