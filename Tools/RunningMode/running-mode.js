@@ -40,7 +40,7 @@ function manager() {
     const v4_ip = $network.v4.primaryAddress;
 
     // no network connection
-    if (!v4_ip) {
+    if (!config.silence && !v4_ip) {
         $notification.post("Surge 运行模式", "❌ 当前无网络", "");
         return;
     }
