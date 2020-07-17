@@ -197,6 +197,88 @@
         "https://raw.githubusercontent.com/Orz-3/mini/master/caiyun.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/caiyun.png"
       ]
+    },
+    {
+      "id": "surge-running-mode",
+      "name": "Surge运行模式",
+      "keys": [
+        "@surge_running_mode.silence",
+        "@surge_running_mode.cellular",
+        "@surge_running_mode.wifi",
+        "@surge_running_mode.all_direct",
+        "@surge_running_mode.all_proxy"
+      ],
+      "author": "@Peng-YM",
+      "repo": "https://github.com/Peng-YM/QuanX",
+      "settings": [
+        {
+          "id": "@surge_running_mode.silence",
+          "name": "静默运行",
+          "val": false,
+          "type": "boolean",
+          "desc": "打开后模式切换时不显示通知"
+        },
+        {
+          "id": "@surge_running_mode.cellular",
+          "name": "默认蜂窝数据模式",
+          "val": "RULE",
+          "type": "radios",
+          "items": [
+            {
+              "key": "RULE",
+              "label": "规则模式"
+            },
+            {
+              "key": "PROXY",
+              "label": "全局代理模式"
+            },
+            {
+              "key": "DIRECT",
+              "label": "全局直连模式"
+            }
+          ],
+          "desc": "默认规则模式"
+        },
+        {
+          "id": "@surge_running_mode.wifi",
+          "name": "默认WIFI模式",
+          "val": "RULE",
+          "type": "radios",
+          "items": [
+            {
+              "key": "RULE",
+              "label": "规则模式"
+            },
+            {
+              "key": "PROXY",
+              "label": "全局代理模式"
+            },
+            {
+              "key": "DIRECT",
+              "label": "全局直连模式"
+            }
+          ],
+          "desc": "默认规则模式"
+        },
+        {
+          "id": "@surge_running_mode.all_direct",
+          "name": "全局直连的WIFI列表",
+          "val": "[\"WRT32X\", \"WRT32X Extreme\"]",
+          "type": "text",
+          "desc": "填入全局直连的WIFI列表，不可留空，默认的方括号需要保留！"
+        },
+        {
+          "id": "@surge_running_mode.all_proxy",
+          "name": "全局代理的WIFI列表",
+          "val": "[]",
+          "type": "text",
+          "desc": "填入全局代理的WIFI列表，不可留空，默认的方括号需要保留！"
+        }
+      ],
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/ssid.png",
+        "https://raw.githubusercontent.com/Orz-3/mini/master/ssid.png"
+      ]
     }
   ]
 }
