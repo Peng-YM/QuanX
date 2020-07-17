@@ -28,6 +28,8 @@ let config = {
 const boxConfig = $persistentStore.read("surge_running_mode");
 if (boxConfig) {
     config = JSON.parse(boxConfig);
+    config.all_direct = JSON.parse(config.all_direct);
+    config.all_proxy = JSON.parse(config.all_proxy);
 }
 
 manager();
