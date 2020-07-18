@@ -164,7 +164,7 @@ function API(name = "untitled", debug = false) {
       if (key.indexOf('#') !== -1) {
         key = key.substr(1)
         if (this.isSurge & this.isLoon) {
-          $persistentStore.read(data, key);
+          return $persistentStore.read(key);
         }
         if (this.isQX) {
           return $prefs.valueForKey(key);
