@@ -17,21 +17,21 @@ TODO:
 根据平台添加如下配置
 (1). Quantumult X
 [MITM]
-hostname=weather-data.apple.com
+hostname=weather-data.apple.com, api.weather.com
 [rewrite_local]
-https://weather-data.apple.com url script-request-header https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/caiyun.js
+https:\/\/((weather-data\.apple)|(api.weather))\.com url script-request-header https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/caiyun.js
 
 (2). Loon
 [MITM]
-hostname=weather-data.apple.com
+hostname=weather-data.apple.com, api.weather.com
 [Script]
-http-request https://weather-data.apple.com script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/caiyun.js, require-body=false
+http-request https:\/\/((weather-data\.apple)|(api.weather))\.com script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/caiyun.js, require-body=false
 
 (3). Surge
 [MITM]
-hostname=weather-data.apple.com
+hostname=weather-data.apple.com, api.weather.com
 [Script]
-type=http-request, pattern=https://weather-data.apple.com, script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/caiyun.js, require-body=false
+type=http-request, pattern=https:\/\/((weather-data\.apple)|(api.weather))\.com, script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/caiyun.js, require-body=false
 2️⃣ 打开手机设置 > 隐私 > 定位服务
 (1) 打开定位服务
 (2) 选择天气，设置永远允许天气访问位置信息，并允许使用精确位置。
