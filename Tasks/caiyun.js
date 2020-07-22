@@ -48,7 +48,10 @@ const display_location = JSON.parse($.read("display_location") || "false");
 if (typeof $request !== "undefined") {
   // get location from request url
   const url = $request.url;
-  const res = url.match(/weather\/.*?\/(.*)\/(.*)\?/) || url.match(/geocode=([0-9.]*),([0-9.]*)/);
+  const res =
+    url.match(/weather\/.*?\/(.*)\/(.*)\?/) ||
+    url.match(/geocode\/([0-9.]*)\/([0-9.]*)\//) ||
+    url.match(/geocode=([0-9.]*),([0-9.]*)\//);
   if (res === null) {
     $.notify(
       "[彩云天气]",
@@ -78,9 +81,14 @@ if (typeof $request !== "undefined") {
 } else {
   // this is a task
   !(async () => {
-    if (!$.read("token")) {
-      // no token found
-      throw new ERR.TokenError("❌ 未找到Token");
+    const { caiyun, tencent } = $.read("token") || {};
+
+    if (!caiyun) {
+      throw new ERR.TokenError("❌ 未找到彩云Token令牌");
+    } else if (caiyun.indexOf("http") !== -1) {
+      throw new ERR.TokenError("❌ Token令牌 并不是 一个链接！");
+    } else if (!tencent) {
+      throw new ERR.TokenError("❌ 未找到腾讯地图Token令牌");
     } else if (!$.read("location")) {
       // no location
       $.notify(
@@ -122,6 +130,18 @@ async function scheduler() {
 }
 
 async function query() {
+  const location = $.read("location") || {};
+  $.info(location);
+  const isNumeric = (input) => input && !isNaN(input);
+  if (!isNumeric(location.latitude) || !isNumeric(location.longitude)) {
+    throw new Error("❌ 经纬度设置错误！");
+  }
+
+  if (Number(location.latitude) > 90 || Number(location.longitude) > 180) {
+    throw new Error(
+      "🤖 地理小课堂：经度的范围是0~180，纬度是0~90哦。请仔细检查经纬度是否设置正确。"
+    );
+  }
   // query API
   const url = `https://api.caiyunapp.com/v2.5/${$.read("token").caiyun}/${
     $.read("location").longitude
