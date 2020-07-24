@@ -32,7 +32,8 @@
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/mini/master/github.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/github.png"
-      ]
+      ],
+      "script": "https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/github.js"
     },
     {
       "id": "Flow",
@@ -54,7 +55,8 @@
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/flow_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/flow.png"
-      ]
+      ],
+      "script": "https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/flow.js"
     },
     {
       "id": "Steam",
@@ -76,7 +78,8 @@
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/mini/master/steam.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/steam.png"
-      ]
+      ],
+      "script": "https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/steam.js"
     },
     {
       "id": "Zongheng",
@@ -98,7 +101,8 @@
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/mini/master/zongheng.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/zongheng.png"
-      ]
+      ],
+      "script": "https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/zongheng.js"
     },
     {
       "id": "Telegram",
@@ -128,7 +132,8 @@
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/telegram_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/telegram.png"
-      ]
+      ],
+      "script": "https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/telegram.js"
     },
     {
       "id": "Caiyun",
@@ -185,7 +190,8 @@
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/mini/master/caiyun.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/caiyun.png"
-      ]
+      ],
+      "script": "https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/caiyun.js"
     },
     {
       "id": "surge-running-mode",
