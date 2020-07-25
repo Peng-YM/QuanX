@@ -32,7 +32,7 @@ Promise.all(subscriptions.map(async sub => await fetchInfo(sub)))
 async function fetchInfo(sub) {
     const headers = {
         "User-Agent":
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"
+            "Quantumult/1.0.13 (iPhone10,3; iOS 14.0)"
     };
     $.get({
         url: sub.link,
