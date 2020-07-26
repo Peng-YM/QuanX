@@ -21,11 +21,11 @@ Scripts for QuantumultX, Loon, Surge, JSBox and Node.
 
 ### ⭐️ OpenAPI
 
-优雅的跨平台脚本API，一种代码，同时支持**Quantumult X**, **Loon**, **Surge**, **JSBox** 和**Node.js**。[了解更多]()
+优雅的跨平台脚本API，一种代码，同时支持**Quantumult X**, **Loon**, **Surge**, **JSBox** 和**Node.js**。[了解更多](https://github.com/Peng-YM/QuanX/tree/master/Tools/OpenAPI)
 
 ### ⭐️ MITM Proxy
 
-为开发者打造的又一神兵利器！电脑端MITM拦截请求并运行指定JavaScript脚本修改`Request`和`Response`。[了解更多]()
+为开发者打造的又一神兵利器！电脑端MITM拦截请求并运行指定JavaScript脚本修改`Request`和`Response`。[了解更多](https://github.com/Peng-YM/QuanX/tree/master/Tools/MITM)
 
 ## Tools
 
