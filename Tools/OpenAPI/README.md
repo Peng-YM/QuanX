@@ -9,8 +9,8 @@
 将`api-minified.js`内容复制到js脚本下方。
 
 ```javascript
-const $ = API("weather"); // 创建一个名字为weather的脚本。默认为product环境。
-const $ = API("weather", true); // 打开debug环境，抑制所有log输出，保持error信息。
+const $ = API("weather"); // 创建一个名字为weather的脚本。默认为product环境，抑制所有log输出，保持error信息。。
+const $ = API("weather", true); // 打开debug环境，打开所有log输出
 ```
 
 ### Log
@@ -123,6 +123,13 @@ $2.write("data", "key");
 #### 2. Node & JSBox (2.0+)
 
 Node环境中，`cache`会被保存到和脚本同级目录下的`name.json`中。
+
+**如果希望在脚本里直接存取`$prefs`或者`$persistentStore`里面的缓存，可以通过在`KEY`前面加`#`号实现：**
+
+```javascript
+$.read("#KEY");
+$.write(value, "#KEY");
+```
 
 ### 其他
 
