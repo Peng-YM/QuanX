@@ -5,20 +5,33 @@
 ## 示例
 
 ### 开始使用
+
 将`api-minified.js`内容复制到js脚本下方。
+
 ```javascript
 const $ = API("weather"); // 创建一个名字为weather的脚本。默认为product环境。
 const $ = API("weather", true); // 打开debug环境，抑制所有log输出，保持error信息。
 ```
 
 ### Log
+
 ```javascript
 $.log("Something"); // 如果debug设置为false, log不会有任何输出。
 $.info("Some important thing"); // 需要展示给用户的info信息，不受debug影响。
 $.error("Some error message"); // 错误信息，不受debug影响。
 ```
 
-## 通知
+### 环境判断
+
+```javascript
+$.env.isQX;
+$.env.isSurge;
+$.env.isLoon;
+$.env.isNode;
+$.env.isJSBox;
+```
+
+### 通知
 
 ```javascript
 $.notify("title", "subtitle", "content"); // 简单标题
@@ -128,5 +141,4 @@ $.get("http://www.baidu.com")
 })
 ```
 
-
-
+更全面的用法请查看`example.js`。

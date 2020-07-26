@@ -39,7 +39,9 @@ function API(name = "untitled", debug = false) {
     constructor(name, debug) {
       this.name = name;
       this.debug = debug;
+      
       this.http = HTTP();
+      this.env = ENV();
 
       this.node = (() => {
         if (isNode) {
