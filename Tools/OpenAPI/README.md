@@ -39,33 +39,47 @@ npm install -g request
 npm link request
 ```
 
-示例如下：
+OpenAPI提供了全部HTTP方法，包括`["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"]`，
+统一通过`$.http`调用：
 
 ```javascript
 // GET
-$.get("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
-  .then((resp) => {
-    // do something with response
-  })
-  .catch((err) => {
-    // handle errors
-  });
+$.http.get("https://postman-echo.com/get?foo1=bar1&foo2=bar2").then(resp => {
+  // do something
+});
 
-// POST
-const sample = {
-  data: "ECHO",
-};
+// PATCH
+$.http.put({
+    url: "https://postman-echo.com/put",
+    body: "HELLO",
+    headers: {
+      'content-type': 'text/plain'
+    }
+}).then(response => {
+  // do something
+});
+```
 
-$.post({
-  url: "http://scooterlabs.com/echo",
-  body: JSON.stringify(sample),
+或者你可以使用自定义参数的HTTP对象，实现一些自定义的配置。例如我们可以这样设置默认的baseURL以及默认的请求参数(请求头等)
+
+```javascript
+$.http = HTTP(baseURL, defaultOptions);
+```
+
+
+```javascript
+// 设置默认的baseURL为api.github.com，并设置鉴权token
+$.http = HTTP("https://api.github.com", {
+  headers: {
+    Authorization: `token MY_TOKEN`,
+    "User-Agent":
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"
+  }
 })
-  .then((resp) => {
-    // do something with response
-  })
-  .catch((err) => {
-    // handle errors
-  });
+
+$.http.get("/gists").then(resp => {
+  // do something
+})
 ```
 
 ### 持久化

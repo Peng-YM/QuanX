@@ -1,23 +1,51 @@
+function ENV() {
+  const isQX = typeof $task != "undefined";
+  const isLoon = typeof $loon != "undefined";
+  const isSurge = typeof $httpClient != "undefined" && !this.isLoon;
+  const isJSBox = typeof require == 'function' && typeof $jsbox != "undefined";
+  const isNode = typeof require == "function" && !isJSBox;
+
+  return { isQX, isLoon, isSurge, isNode, isJSBox }
+}
+
+function HTTP(baseURL, defaultOptions) {
+  const { isQX, isLoon, isSurge } = ENV();
+  const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"]
+
+  function send(method, options={...defaultOptions, ...options}) {
+    options = typeof options === 'string' ? { url: options } : options;
+    options.url = baseURL ? baseURL + options.url : options.url;
+    if (isQX) {
+      return $task.fetch({ method, ...options });
+    } else {
+      return new Promise((resolve, reject) => {
+        const request = (isSurge || isLoon) ? $httpClient : require('request');
+        request[method.toLowerCase()](options, (err, response, body) => {
+          if (err) reject(err);
+          else resolve({ statusCode: response.status || response.statusCode, headers: response.headers, body });
+        })
+      });
+    }
+  }
+
+  const http = {};
+  methods.forEach(method => http[method.toLowerCase()] = options => send(method, options));
+  return http;
+}
+
 function API(name = "untitled", debug = false) {
+  const { isQX, isLoon, isSurge, isNode, isJSBox } = ENV();
   return new class {
     constructor(name, debug) {
       this.name = name;
       this.debug = debug;
-
-      this.isQX = typeof $task != "undefined";
-      this.isLoon = typeof $loon != "undefined";
-      this.isSurge = typeof $httpClient != "undefined" && !this.isLoon;
-      this.isNode = typeof require == "function";
-      this.isJSBox = this.isNode && typeof $jsbox != "undefined";
+      this.http = HTTP();
 
       this.node = (() => {
-        if (this.isNode) {
-          const request =
-            typeof $request != "undefined" ? undefined : require("request");
+        if (isNode) {
           const fs = require("fs");
 
           return {
-            request,
             fs,
           };
         } else {
@@ -37,60 +65,15 @@ function API(name = "untitled", debug = false) {
         });
       };
     }
-
-    // http methods
-    get(options) {
-      if (this.isQX) {
-        if (typeof options == "string")
-          options = { url: options, method: "GET" };
-        return $task.fetch(options);
-      } else {
-        return new Promise((resolve, reject) => {
-          if (this.isLoon || this.isSurge)
-            $httpClient.get(options, (err, response, body) => {
-              if (err) reject(err);
-              else resolve({ status: response.status, headers: response.headers, body });
-            });
-          else
-            this.node.request(options, (err, response, body) => {
-              if (err) reject(err);
-              else resolve({ ...response, status: response.statusCode, body });
-            });
-        });
-      }
-    }
-
-    post(options) {
-      if (this.isQX) {
-        if (typeof options == "string") options = { url: options };
-        options["method"] = "POST";
-        return $task.fetch(options);
-      } else {
-        return new Promise((resolve, reject) => {
-          if (this.isLoon || this.isSurge) {
-            $httpClient.post(options, (err, response, body) => {
-              if (err) reject(err);
-              else resolve({ status: response.status, headers: response.headers, body });
-            });
-          } else {
-            this.node.request.post(options, (err, response, body) => {
-              if (err) reject(err);
-              else resolve({ ...response, status: response.statusCode, body });
-            });
-          }
-        });
-      }
-    }
-
     // persistance
 
     // initialize cache
     initCache() {
-      if (this.isQX) this.cache = JSON.parse($prefs.valueForKey(this.name) || "{}");
-      if (this.isLoon || this.isSurge)
+      if (isQX) this.cache = JSON.parse($prefs.valueForKey(this.name) || "{}");
+      if (isLoon || isSurge)
         this.cache = JSON.parse($persistentStore.read(this.name) || "{}");
 
-      if (this.isNode) {
+      if (isNode) {
         // create a json for root cache
         let fpath = "root.json";
         if (!this.node.fs.existsSync(fpath)) {
@@ -122,9 +105,9 @@ function API(name = "untitled", debug = false) {
     // store cache
     persistCache() {
       const data = JSON.stringify(this.cache);
-      if (this.isQX) $prefs.setValueForKey(data, this.name);
-      if (this.isLoon || this.isSurge) $persistentStore.write(data, this.name);
-      if (this.isNode) {
+      if (isQX) $prefs.setValueForKey(data, this.name);
+      if (isLoon || isSurge) $persistentStore.write(data, this.name);
+      if (isNode) {
         this.node.fs.writeFileSync(
           `${this.name}.json`,
           data,
@@ -144,13 +127,13 @@ function API(name = "untitled", debug = false) {
       this.log(`SET ${key}`);
       if (key.indexOf('#') !== -1) {
         key = key.substr(1)
-        if (this.isSurge & this.isLoon) {
+        if (isSurge & isLoon) {
           $persistentStore.write(data, key);
         }
-        if (this.isQX) {
+        if (isQX) {
           $prefs.setValueForKey(data, key);
         }
-        if (this.isNode) {
+        if (isNode) {
           this.root[key] = data;
         }
       } else {
@@ -163,13 +146,13 @@ function API(name = "untitled", debug = false) {
       this.log(`READ ${key}`);
       if (key.indexOf('#') !== -1) {
         key = key.substr(1)
-        if (this.isSurge & this.isLoon) {
+        if (isSurge & isLoon) {
           return $persistentStore.read(key);
         }
-        if (this.isQX) {
+        if (isQX) {
           return $prefs.valueForKey(key);
         }
-        if (this.isNode) {
+        if (isNode) {
           return this.root[key];
         }
       } else {
@@ -182,13 +165,13 @@ function API(name = "untitled", debug = false) {
       delete this.cache[key];
       if (key.indexOf('#') !== -1) {
         key = key.substr(1)
-        if (this.isSurge & this.isLoon) {
+        if (isSurge & isLoon) {
           $persistentStore.write(null, key);
         }
-        if (this.isQX) {
+        if (isQX) {
           $prefs.setValueForKey(null, key);
         }
-        if (this.isNode) {
+        if (isNode) {
           delete this.root[key];
         }
       } else {
@@ -204,11 +187,11 @@ function API(name = "untitled", debug = false) {
 
       const content_ = content + (openURL ? `\n点击跳转: ${openURL}` : "") + (mediaURL ? `\n多媒体: ${mediaURL}` : "");
 
-      if (this.isQX) $notify(title, subtitle, content, options);
-      if (this.isSurge) $notification.post(title, subtitle, content_);
-      if (this.isLoon) $notification.post(title, subtitle, content, openURL);
-      if (this.isNode) {
-        if (this.isJSBox) {
+      if (isQX) $notify(title, subtitle, content, options);
+      if (isSurge) $notification.post(title, subtitle, content_);
+      if (isLoon) $notification.post(title, subtitle, content, openURL);
+      if (isNode) {
+        if (isJSBox) {
           const push = require("push");
           push.schedule({
             title: title,
@@ -238,9 +221,9 @@ function API(name = "untitled", debug = false) {
     }
 
     done(value = {}) {
-      if (this.isQX || this.isLoon || this.isSurge) {
+      if (isQX || isLoon || isSurge) {
         $done(value);
-      } else if (this.isNode && !this.isJSBox) {
+      } else if (isNode && !isJSBox) {
         if (typeof $context !== 'undefined') {
           $context.headers = value.headers;
           $context.statusCode = value.statusCode;
