@@ -12,13 +12,17 @@ function HTTP(baseURL, defaultOptions) {
   const { isQX, isLoon, isSurge } = ENV();
   const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"]
 
-  function send(method, options={...defaultOptions, ...options}) {
+  function send(method, options = { ...defaultOptions, ...options }) {
     options = typeof options === 'string' ? { url: options } : options;
     options.url = baseURL ? baseURL + options.url : options.url;
+    const timeout = options.timeout;
+
+    let worker = null;
+
     if (isQX) {
-      return $task.fetch({ method, ...options });
+      worker = $task.fetch({ method, ...options });
     } else {
-      return new Promise((resolve, reject) => {
+      worker = new Promise((resolve, reject) => {
         const request = (isSurge || isLoon) ? $httpClient : require('request');
         request[method.toLowerCase()](options, (err, response, body) => {
           if (err) reject(err);
@@ -26,6 +30,13 @@ function HTTP(baseURL, defaultOptions) {
         })
       });
     }
+
+    return timeout ? Promise.race([
+      worker,
+      new Promise((_, reject) => {
+        setTimeout(reject, timeout, `${method} URL: ${options.url} exceeded timeout ${timeout} ms!`);
+      })
+    ]) : worker;
   }
 
   const http = {};
@@ -39,7 +50,7 @@ function API(name = "untitled", debug = false) {
     constructor(name, debug) {
       this.name = name;
       this.debug = debug;
-      
+
       this.http = HTTP();
       this.env = ENV();
 
