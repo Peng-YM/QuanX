@@ -57,17 +57,20 @@ OpenAPI提供了全部HTTP方法，包括`["GET", "POST", "PUT", "DELETE", "HEAD
 
 ```javascript
 // GET
+// 简单的请求一个URL
 $.http.get("https://postman-echo.com/get?foo1=bar1&foo2=bar2").then(resp => {
   // do something
 });
 
 // PATCH
+// 请求加入一些自定义参数
 $.http.put({
     url: "https://postman-echo.com/put",
-    body: "HELLO",
+    body: "HELLO", // 设置请求body
     headers: {
       'content-type': 'text/plain'
-    }
+    }, // 设置请求头
+    timeout: 200 // 设置请求超时为200ms
 }).then(response => {
   // do something
 });
