@@ -36,8 +36,8 @@ $.env.isJSBox;
 ```javascript
 $.notify("title", "subtitle", "content"); // 简单标题
 // URL标题
-$.notify("title", "subtitle", "content", "https://www.bing.com") // 带URL跳转的标题
-$.notify("title", "subtitle", "content", {"open-url": "https://www.bing.com"}) // QX写法
+
+$.notify("title", "subtitle", "content", {"open-url": "https://www.bing.com"})
 // 多媒体标题，QX >= build 316, 其他平台不会显示多媒体内容。
 $.notify("title", "subtitle", "content", {"media-url": "https://avatars2.githubusercontent.com/u/21050064?s=460&u=40a74913dd0a3d00670d05148c3a08c787470021&v=4"}) 
 ```
