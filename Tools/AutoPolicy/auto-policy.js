@@ -66,7 +66,7 @@ async function manager() {
   }
 
   $persistentStore.write(targetMode, "surge_auto_policy_mode");
-  if (!silence) {
+  if (!config.silence) {
     $notification.post(
       "Surge 自动策略",
       `当前网络：${ssid ? ssid : "蜂窝数据"}`,
