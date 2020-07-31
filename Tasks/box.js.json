@@ -379,6 +379,36 @@
         "https://github.com/Peng-YM/QuanX/blob/master/assets/icons/Surge_run_transparent.png?raw=true",
         "https://github.com/Peng-YM/QuanX/blob/master/assets/icons/Surge_run.png?raw=true"
       ]
+    },
+    {
+      "id": "github-private-repo",
+      "name": "Github私有仓库",
+      "keys": [
+        "@github_private_repo.username",
+        "@github_private_repo.token"
+      ],
+      "author": "@Peng-YM",
+      "repo": "https://github.com/Peng-YM/QuanX",
+      "settings": [
+        {
+          "id": "@github_private_repo.username",
+          "name": "Github用户名",
+          "val": "",
+          "type": "text",
+          "desc": "你的Github用户名"
+        },
+        {
+          "id": "@github_private_repo.token",
+          "name": "Github仓库的Token",
+          "val": "",
+          "type": "text",
+          "desc": "请参照脚本说明生成token，否则无法访问！"
+        }
+      ],
+      "icons": [
+        "https://raw.githubusercontent.com/58xinian/icon/master/Github2.png",
+        "https://raw.githubusercontent.com/58xinian/icon/master/Github2.png"
+      ]
     }
   ]
 }
