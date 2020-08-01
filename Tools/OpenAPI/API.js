@@ -17,21 +17,18 @@ function HTTP(baseURL, defaultOptions = {}) {
     options.url = baseURL ? baseURL + options.url : options.url;
     options = { ...defaultOptions, ...options };
     const timeout = options.timeout;
-    const event = {
+    const events = {
       ...{
         onRequest: () => {},
         onResponse: (resp) => resp,
-        onError: (err) => {
-          throw err;
-        },
+        onTimeout: () => {},
       },
-      ...options.event,
+      ...options.events,
     };
 
-    let worker = null;
+    events.onRequest(method, options);
 
-    event.onRequest(options);
-
+    let worker;
     if (isQX) {
       worker = $task.fetch({ method, ...options });
     } else {
@@ -48,18 +45,27 @@ function HTTP(baseURL, defaultOptions = {}) {
         });
       });
     }
-    const timer = new Promise((_, reject) => {
-      setTimeout(
-        reject,
-        timeout,
-        `${method} URL: ${options.url} exceeded timeout ${timeout} ms!`
-      );
-    });
-    return (timeout ? Promise.race([worker, timer]) : worker)
-      .then((resp) => event.onResponse(resp))
-      .catch((err) => {
-        event.onError(err);
-      });
+
+    let timeoutid;
+    const timer = timeout
+      ? new Promise((_, reject) => {
+          timeoutid = setTimeout(() => {
+            events.onTimeout();
+            return reject(
+              `${method} URL: ${options.url} exceeds the timeout ${timeout} ms`
+            );
+          }, timeout);
+        })
+      : null;
+
+    return (timer
+      ? Promise.race([timer, worker]).then((res) => {
+          clearTimeout(timeoutid);
+          return res;
+        })
+      : worker
+    )
+      .then((resp) => events.onResponse(resp))
   }
 
   const http = {};

@@ -62,7 +62,7 @@ $.http.get("https://postman-echo.com/get?foo1=bar1&foo2=bar2").then(resp => {
   // do something
 });
 
-// PATCH
+// PUT
 // 请求加入一些自定义参数
 $.http.put({
     url: "https://postman-echo.com/put",
@@ -70,16 +70,45 @@ $.http.put({
     headers: {
       'content-type': 'text/plain'
     }, // 设置请求头
-    timeout: 200 // 设置请求超时为200ms
+    timeout: 200 // 设置请求超时为200ms,
+    // 一些钩子函数
+    events: {
+      onRequest: (method, options) => {
+        // 请求之前可以做一些操作，比如log，注意method和options无法修改
+      },
+      onResponse: (resp) => {
+        // 请求之后可以对resp做修改，记得返回resp！
+        resp.body = JSON.parse(resp.body);
+        return resp;
+      },
+      onTimeout: () => {
+        // timeout的处理，比如可以退出APP
+        $.done();
+      }
+    }
 }).then(response => {
   // do something
 });
 ```
 
-或者你可以使用自定义参数的HTTP对象，实现一些自定义的配置。例如我们可以这样设置默认的baseURL以及默认的请求参数(请求头等)
+或者你可以使用自定义参数的HTTP对象，实现一些自定义的配置。例如我们可以这样设置默认的baseURL以及默认的请求参数，比如：
+
+- headers
+- timeout
+- events
+
+
 
 ```javascript
-$.http = HTTP(baseURL, defaultOptions);
+$.http = HTTP(baseURL, {
+  timeout: 500,
+  headers: {
+    "User-Agent": "OpenAPI"
+  },
+  events: {
+    onTimeout: () => $.error("OH NO!")
+  }
+});
 ```
 
 
