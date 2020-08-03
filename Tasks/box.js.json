@@ -284,7 +284,7 @@
         "@surge_auto_policy.wifi",
         "@surge_auto_policy.all_direct",
         "@surge_auto_policy.all_proxy",
-        "@surge_auto_policy.whitelist"
+        "@surge_auto_policy.whitelist",
         "@surge_auto_policy.global_proxy",
         "@surge_auto_policy.global_direct"
       ],
