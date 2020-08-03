@@ -284,6 +284,7 @@
         "@surge_auto_policy.wifi",
         "@surge_auto_policy.all_direct",
         "@surge_auto_policy.all_proxy",
+        "@surge_auto_policy.whitelist"
         "@surge_auto_policy.global_proxy",
         "@surge_auto_policy.global_direct"
       ],
@@ -372,7 +373,7 @@
           "name": "白名单策略",
           "val": "Netease, AdGuard",
           "type": "text",
-          "desc": "填入白名单列表，在此列表中的策略不会不会执行切换。比如说去广告策略，网易云等策略可以加入此列表。多个策略用逗号分隔"
+          "desc": "填入白名单列表，在此列表中的策略不会执行切换。比如说去广告策略，网易云等策略可以加入此列表。多个策略用逗号分隔"
         }
       ],
       "icons": [
