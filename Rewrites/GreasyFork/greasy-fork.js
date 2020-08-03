@@ -54,7 +54,7 @@ function processScript(script, name) {
 🔘 Quantumult X
 [rewrite_local]
 ${patterns.reduce(
-  (acc, cur) => acc + cur + " url script-response-body " + name + ".js\n",
+  (acc, cur) => acc + cur + " url script-response-body " + name + "\n",
   ""
 )}
 
