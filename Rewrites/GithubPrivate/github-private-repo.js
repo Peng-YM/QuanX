@@ -19,12 +19,6 @@ let config = {
 };
 
 // load user prefs from box
-const boxConfig = $persistentStore.read("github_private_repo");
-if (boxConfig) {
-  config = JSON.parse(boxConfig);
-}
-
-// load user prefs from box
 const boxConfig = $persistentStore.read("surge_private_repo");
 if (boxConfig) {
   config = JSON.parse(boxConfig);
