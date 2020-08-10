@@ -37,7 +37,7 @@ try {
 }
 
 function processScript(script, name) {
-  script = script.replace(/`|\${/g, function (match) {
+  script = script.replace(/`|\$|%{/g, function (match) {
     return "\\" + match;
   });
   // get host name

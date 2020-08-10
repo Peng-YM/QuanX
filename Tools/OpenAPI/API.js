@@ -216,7 +216,7 @@ function API(name = "untitled", debug = false) {
           $persistentStore.write(null, key);
         }
         if (isQX) {
-          $prefs.setValueForKey(null, key);
+          $prefs.removeValueForKey(key);
         }
         if (isNode) {
           delete this.root[key];
