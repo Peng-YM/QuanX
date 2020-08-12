@@ -43,7 +43,13 @@ type=http-request, pattern=https:\/\/((weather-data\.apple)|(api.weather))\.com,
 /********************** SCRIPT START *********************************/
 const $ = API("caiyun");
 const ERR = MYERR();
-const display_location = JSON.parse($.read("display_location") || "false");
+
+let display_location = $.read("display_location");
+if (display_location === undefined) {
+  display_location = false;
+} else {
+  display_location = JSON.parse(display_location);
+}
 
 if (typeof $request !== "undefined") {
   // get location from request url
@@ -110,7 +116,7 @@ if (typeof $request !== "undefined") {
             "open-url": "https://t.me/cool_scripts",
           }
         );
-      else $.notify("[彩云天气]", "❌ 出现错误", err.message);
+      else $.notify("[彩云天气]", "❌ 出现错误", err);
     })
     .finally($.done());
 }
