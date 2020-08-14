@@ -64,7 +64,8 @@ function GistBox(token) {
       });
     }
 
-    async createDatabase(backups = []) {
+    async createDatabase(backups) {
+      if (!(backups instanceof Array)) backups = [backups];
       const files = {};
       backups.forEach((b) => {
         files[genFileName(b.time)] = {
@@ -127,14 +128,6 @@ function GistBox(token) {
   })();
 }
 
-function ENV() {
-  const isQX = typeof $task != "undefined";
-  const isLoon = typeof $loon != "undefined";
-  const isSurge = typeof $httpClient != "undefined" && !this.isLoon;
-  const isJSBox = typeof require == "function" && typeof $jsbox != "undefined";
-  const isNode = typeof require == "function" && !isJSBox;
-
-  return { isQX, isLoon, isSurge, isNode, isJSBox };
-}
 // prettier-ignore
+function ENV(){const e="undefined"!=typeof $task,n="undefined"!=typeof $loon,o="undefined"!=typeof $httpClient&&!this.isLoon,i="function"==typeof require&&"undefined"!=typeof $jsbox;return{isQX:e,isLoon:n,isSurge:o,isNode:"function"==typeof require&&!i,isJSBox:i}}
 function HTTP(e,t={}){const{isQX:o,isLoon:s,isSurge:n}=ENV();const r={};return["GET","POST","PUT","DELETE","HEAD","OPTIONS","PATCH"].forEach(u=>r[u.toLowerCase()]=(r=>(function(r,u){(u="string"==typeof u?{url:u}:u).url=e?e+u.url:u.url;const i=(u={...t,...u}).timeout,T={onRequest:()=>{},onResponse:e=>e,onTimeout:()=>{},...u.events};let a,c;T.onRequest(r,u),a=o?$task.fetch({method:r,...u}):new Promise((e,t)=>{(n||s?$httpClient:require("request"))[r.toLowerCase()](u,(o,s,n)=>{o?t(o):e({statusCode:s.status||s.statusCode,headers:s.headers,body:n})})});const m=i?new Promise((e,t)=>{c=setTimeout(()=>(T.onTimeout(),t(`${r} URL: ${u.url} exceeds the timeout ${i} ms`)),i)}):null;return(m?Promise.race([m,a]).then(e=>(clearTimeout(c),e)):a).then(e=>T.onResponse(e))})(u,r))),r}
