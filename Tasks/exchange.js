@@ -10,6 +10,7 @@
 const base = "CNY"; // 基准货币，可以改成其他币种
 const digits = 2; // 保留几位有效数字
 
+const $ = API("exchange");
 const currencyNames = {
     CNY: ["人民币", "🇨🇳"],
     USD: ["美元", "🇺🇸"],
@@ -19,54 +20,8 @@ const currencyNames = {
     GBP: ["英镑", "🇬🇧"],
 };
 
-/******************** 转换器 ********************/
-let q = null != $task, s = null != $httpClient;
-var $task = q ? $task : {}, $httpClient = s ? $httpClient : {}, $prefs = q ? $prefs : {},
-    $persistentStore = s ? $persistentStore : {}, $notify = q ? $notify : {}, $notification = s ? $notification : {};
-if (q) {
-    var errorInfo = {error: ""};
-    $httpClient = {
-        get: (t, r) => {
-            var e;
-            e = "string" == typeof t ? {url: t} : t, $task.fetch(e).then(t => {
-                r(void 0, t, t.body)
-            }, t => {
-                errorInfo.error = t.error, r(errorInfo, response, "")
-            })
-        }, post: (t, r) => {
-            var e;
-            e = "string" == typeof t ? {url: t} : t, t.method = "POST", $task.fetch(e).then(t => {
-                r(void 0, t, t.body)
-            }, t => {
-                errorInfo.error = t.error, r(errorInfo, response, "")
-            })
-        }
-    }
-}
-s && ($task = {
-    fetch: t => new Promise((r, e) => {
-        "POST" == t.method ? $httpClient.post(t, (t, e, o) => {
-            e ? (e.body = o, r(e, {error: t})) : r(null, {error: t})
-        }) : $httpClient.get(t, (t, e, o) => {
-            e ? (e.body = o, r(e, {error: t})) : r(null, {error: t})
-        })
-    })
-}), q && ($persistentStore = {
-    read: t => $prefs.valueForKey(t),
-    write: (t, r) => $prefs.setValueForKey(t, r)
-}), s && ($prefs = {
-    valueForKey: t => $persistentStore.read(t),
-    setValueForKey: (t, r) => $persistentStore.write(t, r)
-}), q && ($notification = {
-    post: (t, r, e) => {
-        $notify(t, r, e)
-    }
-}), s && ($notify = function (t, r, e) {
-    $notification.post(t, r, e)
-});
-/******************** 转换器 ********************/
-$task
-    .fetch({url: "https://api.ratesapi.io/api/latest?base=CNY"})
+
+$.http.get({url: "https://api.ratesapi.io/api/latest?base=CNY"})
     .then((response) => {
         const data = JSON.parse(response.body);
         const source = currencyNames[base];
@@ -88,13 +43,13 @@ $task
             }
             return accumulator + line;
         }, "");
-        $notify(
+        $.notify(
             `[今日汇率] 基准：${source[1]} ${source[0]}`,
             `⏰ 更新时间：${data.date}`,
             `📈 汇率情况：\n${info}`
         );
     })
-    .then(() => $done());
+    .then(() => $.done());
 
 function roundNumber(num, scale) {
     if (!("" + num).includes("e")) {
@@ -112,3 +67,8 @@ function roundNumber(num, scale) {
         );
     }
 }
+
+// prettier-ignore
+/*********************************** API *************************************/
+function ENV(){const e="undefined"!=typeof $task,t="undefined"!=typeof $loon,s="undefined"!=typeof $httpClient&&!this.isLoon,o="function"==typeof require&&"undefined"!=typeof $jsbox;return{isQX:e,isLoon:t,isSurge:s,isNode:"function"==typeof require&&!o,isJSBox:o}}function HTTP(e,t={}){const{isQX:s,isLoon:o,isSurge:n}=ENV();const i={};return["GET","POST","PUT","DELETE","HEAD","OPTIONS","PATCH"].forEach(r=>i[r.toLowerCase()]=(i=>(function(i,r){(r="string"==typeof r?{url:r}:r).url=e?e+r.url:r.url;const u=(r={...t,...r}).timeout,h={onRequest:()=>{},onResponse:e=>e,onTimeout:()=>{},...r.events};let c,l;h.onRequest(i,r),c=s?$task.fetch({method:i,...r}):new Promise((e,t)=>{(n||o?$httpClient:require("request"))[i.toLowerCase()](r,(s,o,n)=>{s?t(s):e({statusCode:o.status||o.statusCode,headers:o.headers,body:n})})});const a=u?new Promise((e,t)=>{l=setTimeout(()=>(h.onTimeout(),t(`${i} URL: ${r.url} exceeds the timeout ${u} ms`)),u)}):null;return(a?Promise.race([a,c]).then(e=>(clearTimeout(l),e)):c).then(e=>h.onResponse(e))})(r,i))),i}function API(e="untitled",t=!1){const{isQX:s,isLoon:o,isSurge:n,isNode:i,isJSBox:r}=ENV();return new class{constructor(e,t){this.name=e,this.debug=t,this.http=HTTP(),this.env=ENV(),this.node=(()=>{if(i){return{fs:require("fs")}}return null})(),this.initCache();Promise.prototype.delay=function(e){return this.then(function(t){return((e,t)=>new Promise(function(s){setTimeout(s.bind(null,t),e)}))(e,t)})}}initCache(){if(s&&(this.cache=JSON.parse($prefs.valueForKey(this.name)||"{}")),(o||n)&&(this.cache=JSON.parse($persistentStore.read(this.name)||"{}")),i){let e="root.json";this.node.fs.existsSync(e)||this.node.fs.writeFileSync(e,JSON.stringify({}),{flag:"wx"},e=>console.log(e)),this.root={},e=`${this.name}.json`,this.node.fs.existsSync(e)?this.cache=JSON.parse(this.node.fs.readFileSync(`${this.name}.json`)):(this.node.fs.writeFileSync(e,JSON.stringify({}),{flag:"wx"},e=>console.log(e)),this.cache={})}}persistCache(){const e=JSON.stringify(this.cache);s&&$prefs.setValueForKey(e,this.name),(o||n)&&$persistentStore.write(e,this.name),i&&(this.node.fs.writeFileSync(`${this.name}.json`,e,{flag:"w"},e=>console.log(e)),this.node.fs.writeFileSync("root.json",JSON.stringify(this.root),{flag:"w"},e=>console.log(e)))}write(e,t){this.log(`SET ${t}`),-1!==t.indexOf("#")?(t=t.substr(1),n&o&&$persistentStore.write(e,t),s&&$prefs.setValueForKey(e,t),i&&(this.root[t]=e)):this.cache[t]=e,this.persistCache()}read(e){return this.log(`READ ${e}`),-1===e.indexOf("#")?this.cache[e]:(e=e.substr(1),n&o?$persistentStore.read(e):s?$prefs.valueForKey(e):i?this.root[e]:void 0)}delete(e){this.log(`DELETE ${e}`),-1!==e.indexOf("#")?(e=e.substr(1),n&o&&$persistentStore.write(null,e),s&&$prefs.removeValueForKey(e),i&&delete this.root[e]):delete this.cache[e],this.persistCache()}notify(e,t="",u="",h={}){const c=h["open-url"],l=h["media-url"],a=u+(c?`\n点击跳转: ${c}`:"")+(l?`\n多媒体: ${l}`:"");if(s&&$notify(e,t,u,h),n&&$notification.post(e,t,a),o&&$notification.post(e,t,u,c),i)if(r){require("push").schedule({title:e,body:(t?t+"\n":"")+a})}else console.log(`${e}\n${t}\n${a}\n\n`)}log(e){this.debug&&console.log(e)}info(e){console.log(e)}error(e){console.log("ERROR: "+e)}wait(e){return new Promise(t=>setTimeout(t,e))}done(e={}){s||o||n?$done(e):i&&!r&&"undefined"!=typeof $context&&($context.headers=e.headers,$context.statusCode=e.statusCode,$context.body=e.body)}}(e,t)}
+/*****************************************************************************/
