@@ -4,8 +4,8 @@ function ENV() {
   const isSurge = typeof $httpClient != "undefined" && !this.isLoon;
   const isJSBox = typeof require == "function" && typeof $jsbox != "undefined";
   const isNode = typeof require == "function" && !isJSBox;
-
-  return { isQX, isLoon, isSurge, isNode, isJSBox };
+  const isRequest = typeof $request !== "undefined";
+  return { isQX, isLoon, isSurge, isNode, isJSBox, isRequest };
 }
 
 function HTTP(baseURL, defaultOptions = {}) {
