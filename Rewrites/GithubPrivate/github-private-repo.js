@@ -2,7 +2,8 @@
 允许引用Github私有仓库/gist中的订阅分流，重写，脚本等配置文件。❗️仅Loon & Surge可用
 @author: Peng-YM
 🛎[配置说明]
-0️⃣ 1. 使用Surge模块:
+0️⃣ 
+1. 使用Surge模块:
 https://raw.githubusercontent.com/Peng-YM/QuanX/master/Rewrites/GithubPrivate/github-private-repo.sgmodule
 2. 使用Loon插件:
 https://raw.githubusercontent.com/Peng-YM/QuanX/master/Rewrites/GithubPrivate/github-private-repo.plugin
