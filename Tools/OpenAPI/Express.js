@@ -15,7 +15,9 @@ function express() {
   ];
 
   // dispatch url to route
-  const dispatch = (method, url, start = 0) => {
+  const dispatch = (request, start = 0) => {
+    const {method, url, headers, body} = request;
+    method = method.toUpperCase();
     const { path, query } = extractURL(url);
     let handler = null;
     let i;
@@ -40,6 +42,8 @@ function express() {
         path,
         query,
         params: extractPathParams(handler.pattern, path),
+        headers,
+        body
       };
       const res = Response();
       handler.callback(req, res, next);
@@ -75,8 +79,7 @@ function express() {
 
   // start service
   app.start = () => {
-    const { method, url } = $request;
-    dispatch(method, url);
+    dispatch(...$request);
   };
 
   return app;

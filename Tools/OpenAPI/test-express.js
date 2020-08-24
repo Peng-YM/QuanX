@@ -1,5 +1,5 @@
 const app = express();
-app.all("/home", function (req, res) {
+app.all("/home", async function (req, res) {
   res.send("HELLO from express!");
 });
 app
