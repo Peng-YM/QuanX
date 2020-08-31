@@ -92,7 +92,7 @@ function HTTP(baseURL, defaultOptions = {}) {
 }
 
 function API(name = "untitled", debug = false) {
-  const { isQX, isLoon, isSurge, isNode, isJSBox } = ENV();
+  const { isQX, isLoon, isSurge, isNode, isJSBox, isScriptable } = ENV();
   return new (class {
     constructor(name, debug) {
       this.name = name;
@@ -254,7 +254,7 @@ function API(name = "untitled", debug = false) {
       if (isQX) $notify(title, subtitle, content, options);
       if (isSurge) $notification.post(title, subtitle, content_);
       if (isLoon) $notification.post(title, subtitle, content, openURL);
-      if (isNode) {
+      if (isNode || isScriptable) {
         if (isJSBox) {
           const push = require("push");
           push.schedule({
