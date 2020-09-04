@@ -253,7 +253,16 @@ function API(name = "untitled", debug = false) {
 
       if (isQX) $notify(title, subtitle, content, options);
       if (isSurge) $notification.post(title, subtitle, content_);
-      if (isLoon) $notification.post(title, subtitle, content, openURL);
+      if (isLoon) {
+        let opts = {};
+        if (openURL) opts["openUrl"] = openURL;
+        if (mediaURL) opts["mediaUrl"] = mediaURL;
+        if(JSON.stringify(opts) == '{}') {
+            $notification.post(title, subtitle, content);
+        } else {
+            $notification.post(title, subtitle, content, opts);
+        }
+      }
       if (isNode || isScriptable) {
         if (isJSBox) {
           const push = require("push");
