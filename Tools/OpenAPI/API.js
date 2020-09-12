@@ -10,7 +10,7 @@ function ENV() {
 }
 
 function HTTP(baseURL, defaultOptions = {}) {
-  const { isQX, isLoon, isSurge, isScriptable, isNode} = ENV();
+  const { isQX, isLoon, isSurge, isScriptable, isNode } = ENV();
   const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"];
 
   function send(method, options) {
@@ -32,7 +32,7 @@ function HTTP(baseURL, defaultOptions = {}) {
     let worker;
     if (isQX) {
       worker = $task.fetch({ method, ...options });
-    } else if (isLoon || isSurge || isNode){
+    } else if (isLoon || isSurge || isNode) {
       worker = new Promise((resolve, reject) => {
         const request = isNode ? require("request") : $httpClient;
         request[method.toLowerCase()](options, (err, response, body) => {
@@ -44,22 +44,25 @@ function HTTP(baseURL, defaultOptions = {}) {
               body,
             });
         });
-      }) 
+      });
     } else if (isScriptable) {
       const request = new Request(options.url);
       request.method = method;
       request.headers = options.headers;
       request.body = options.body;
       worker = new Promise((resolve, reject) => {
-        request.loadString().then(body => {
+        request
+          .loadString()
+          .then((body) => {
             resolve({
-                statusCode: request.response.statusCode,
-                headers: request.response.headers,
-                body
+              statusCode: request.response.statusCode,
+              headers: request.response.headers,
+              body,
             });
-        }).catch(err => reject(err));
+          })
+          .catch((err) => reject(err));
       });
-    };
+    }
 
     let timeoutid;
     const timer = timeout
@@ -79,8 +82,7 @@ function HTTP(baseURL, defaultOptions = {}) {
           return res;
         })
       : worker
-    )
-      .then((resp) => events.onResponse(resp))
+    ).then((resp) => events.onResponse(resp));
   }
 
   const http = {};
@@ -246,24 +248,32 @@ function API(name = "untitled", debug = false) {
       const openURL = options["open-url"];
       const mediaURL = options["media-url"];
 
-      const content_ =
-        content +
-        (openURL ? `\n点击跳转: ${openURL}` : "") +
-        (mediaURL ? `\n多媒体: ${mediaURL}` : "");
-
       if (isQX) $notify(title, subtitle, content, options);
-      if (isSurge) $notification.post(title, subtitle, content_);
+      if (isSurge) {
+        $notification.post(
+          title,
+          subtitle,
+          content + `${mediaURL ? "\n多媒体:" + mediaURL : ""}`,
+          {
+            url: openURL,
+          }
+        );
+      }
       if (isLoon) {
         let opts = {};
         if (openURL) opts["openUrl"] = openURL;
         if (mediaURL) opts["mediaUrl"] = mediaURL;
-        if(JSON.stringify(opts) == '{}') {
-            $notification.post(title, subtitle, content);
+        if (JSON.stringify(opts) == "{}") {
+          $notification.post(title, subtitle, content);
         } else {
-            $notification.post(title, subtitle, content, opts);
+          $notification.post(title, subtitle, content, opts);
         }
       }
       if (isNode || isScriptable) {
+        const content_ =
+          content +
+          (openURL ? `\n点击跳转: ${openURL}` : "") +
+          (mediaURL ? `\n多媒体: ${mediaURL}` : "");
         if (isJSBox) {
           const push = require("push");
           push.schedule({
