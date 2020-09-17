@@ -30,8 +30,7 @@ if (!NextDNS) {
 }
 
 function Surge_Producer(servers) {
-  return;
-  `#!name=NextDNS
+  return `#!name=NextDNS
 #!desc=NextDNS (屏蔽广告，跟踪器和恶意网站) @ Peng-YM
 
 [General]
