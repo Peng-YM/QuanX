@@ -20,6 +20,9 @@ if (!NextDNS) {
     $done({
       response: {
         status: 200,
+        headers: {
+          "Content-Type": "text/plain;charset=UTF-8"
+        },
         body: Surge_Producer(servers),
       },
     });
