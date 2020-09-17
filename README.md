@@ -37,9 +37,11 @@ Scripts for QuantumultX, Loon, Surge, JSBox and Node.
 ### Github私有仓库
 允许引用Github私有仓库/gist中的订阅分流，重写，脚本等配置文件。[了解更多](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Rewrites/GithubPrivate/github-private-repo.js)
 
+### SSID 自动策略切换
+可能是最强的SSID脚本，适用于Surge和Loon，根据当前网络自动切换策略组。由于运行模式的全局直连下，去广告，网易云等分流也会失效，使用此脚本完全解决了此类问题。[了解更多](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/AutoPolicy/auto-policy.js)
+
 ### Surge运行模式
 
 网络变化时自动根据设定调整当前Surge的代理模式。[了解更多](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/RunningMode/running-mode.js)
 
-### Surge自动策略切换
-可能是最强的SSID脚本，根据当前网络自动切换策略组。由于运行模式的全局直连下，去广告，网易云等分流也会失效，使用此脚本完全解决了此类问题。[了解更多](https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/AutoPolicy/auto-policy.js)
+
