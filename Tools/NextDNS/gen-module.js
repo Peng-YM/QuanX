@@ -21,7 +21,7 @@ if (!NextDNS) {
       response: {
         status: 200,
         headers: {
-          "Content-Type": "text/plain;charset=UTF-8"
+          "Content-Type": "text/plain;charset=UTF-8",
         },
         body: Surge_Producer(servers),
       },
@@ -30,8 +30,8 @@ if (!NextDNS) {
 }
 
 function Surge_Producer(servers) {
-  return `
-#!name=NextDNS
+  return;
+  `#!name=NextDNS
 #!desc=NextDNS (屏蔽广告，跟踪器和恶意网站) @ Peng-YM
 
 [General]
