@@ -8,6 +8,7 @@
     {
       "id": "Github Monitor",
       "name": "GitHub 监控",
+      "keys": ["@github.repo"],
       "settings": [
         {
           "id": "@github.repo",
@@ -37,6 +38,7 @@
     {
       "id": "Flow",
       "name": "机场流量查询",
+      "keys": ["@flow.subscriptions"],
       "settings": [
         {
           "id": "@flow.subscriptions",
@@ -59,6 +61,7 @@
     {
       "id": "Steam",
       "name": "Steam 价格监控",
+      "keys": ["@steam.games"],
       "settings": [
         {
           "id": "@steam.games",
@@ -81,6 +84,7 @@
     {
       "id": "Zongheng",
       "name": "纵横小说",
+      "keys": ["@zongheng.ids"],
       "settings": [
         {
           "id": "@zongheng.ids",
@@ -103,6 +107,7 @@
     {
       "id": "Telegram",
       "name": "Telegram 频道媒体推送",
+      "keys": ["@telegram.channels", "@telegram.maxMedias"],
       "settings": [
         {
           "id": "@telegram.channels",
@@ -133,6 +138,13 @@
     {
       "id": "Caiyun",
       "name": "彩云天气",
+      "keys": [
+        "@caiyun.token.caiyun",
+        "@caiyun.token.tencent",
+        "@caiyun.display_location",
+        "@caiyun.location.latitude",
+        "@caiyun.location.longitude"
+      ],
       "settings": [
         {
           "id": "@caiyun.token.caiyun",
@@ -184,6 +196,13 @@
     {
       "id": "surge-running-mode",
       "name": "Surge运行模式",
+      "keys": [
+        "@surge_running_mode.silence",
+        "@surge_running_mode.cellular",
+        "@surge_running_mode.wifi",
+        "@surge_running_mode.all_direct",
+        "@surge_running_mode.all_proxy"
+      ],
       "author": "@Peng-YM",
       "repo": "https://github.com/Peng-YM/QuanX",
       "settings": [
@@ -259,6 +278,16 @@
     {
       "id": "ssid-auto-policy",
       "name": "SSID 自动策略",
+      "keys": [
+        "@surge_auto_policy.silence",
+        "@surge_auto_policy.cellular",
+        "@surge_auto_policy.wifi",
+        "@surge_auto_policy.all_direct",
+        "@surge_auto_policy.all_proxy",
+        "@surge_auto_policy.whitelist",
+        "@surge_auto_policy.global_proxy",
+        "@surge_auto_policy.global_direct"
+      ],
       "author": "@Peng-YM",
       "repo": "https://github.com/Peng-YM/QuanX",
       "settings": [
@@ -402,6 +431,7 @@
       "name": "NextDNS",
       "author": "@Peng-YM",
       "repo": "https://github.com/Peng-YM/Sub-Store",
+      "keys": [],
       "settings": [
         {
           "id": "@NextDNS.url",
