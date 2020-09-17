@@ -1,0 +1,8 @@
+#!name=NextDNS
+#!desc=https://next.dns
+
+[MITM]
+hostname=%APPEND% next.dns
+
+[Script]
+type=http-request,pattern=https:\/\/next\.dns,script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/NextDNS/gen-module.js
