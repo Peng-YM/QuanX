@@ -194,8 +194,8 @@
       "script": "https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/caiyun.js"
     },
     {
-      "id": "surge-running-mode",
-      "name": "Surge运行模式",
+      "id": "running-mode",
+      "name": "SSID 运行模式",
       "keys": [
         "@surge_running_mode.silence",
         "@surge_running_mode.cellular",
