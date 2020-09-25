@@ -1,15 +1,22 @@
 /**
- * Surge的运行模式，根据当前网络自动切换模式，此脚本思路来自于Quantumult X。
+ * Surge & Loon 的运行模式，根据当前网络自动切换模式，此脚本思路来自于Quantumult X。
  * @author: Peng-YM
  * 更新地址: https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/RunningMode/running-mode.js
  *
  *************** Surge配置 ***********************
- * 此脚本仅支持Surge，推荐使用模块：
+ * 推荐使用模块：
  * https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/RunningMode/running-mode.sgmodule
  * 手动配置：
  * [Script]
  * event network-changed script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/RunningMode/running-mode.js
- * 
+ *
+ *************** Loon配置 ***********************
+ * 推荐使用插件：
+ * https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/RunningMode/running-mode.plugin
+ * 手动配置：
+ * [Script]
+ * network-changed script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/RunningMode/running-mode.js
+ *
  *************** 脚本配置 ***********************
  * 推荐使用BoxJS配置。
  * BoxJS订阅：https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/box.js.json
@@ -17,61 +24,87 @@
  */
 
 let config = {
-    silence: false, // 是否静默运行，默认false
-    cellular: "RULE", // 蜂窝数据下的模式，RULE代表规则模式，PROXY代表全局代理，DIRECT代表全局直连
-    wifi: "RULE", // wifi下默认的模式
-    all_direct: ["WRT32X", "WRT32X Extreme"], // 指定全局直连的wifi名字
-    all_proxy: [] // 指定全局代理的wifi名字
+  silence: false, // 是否静默运行，默认false
+  cellular: "RULE", // 蜂窝数据下的模式，RULE代表规则模式，PROXY代表全局代理，DIRECT代表全局直连
+  wifi: "RULE", // wifi下默认的模式
+  all_direct: ["WRT32X", "WRT32X Extreme"], // 指定全局直连的wifi名字
+  all_proxy: [], // 指定全局代理的wifi名字
 };
 
 // load user prefs from box
 const boxConfig = $persistentStore.read("surge_running_mode");
 if (boxConfig) {
-    config = JSON.parse(boxConfig);
-    config.silence = JSON.parse(config.silence);
-    config.all_direct = JSON.parse(config.all_direct);
-    config.all_proxy = JSON.parse(config.all_proxy);
+  config = JSON.parse(boxConfig);
+  config.silence = JSON.parse(config.silence);
+  config.all_direct = JSON.parse(config.all_direct);
+  config.all_proxy = JSON.parse(config.all_proxy);
 }
+
+const isLoon = typeof $loon !== "undefined";
+const isSurge = typeof $httpClient !== "undefined" && !isLoon;
+const MODE_NAMES = {
+  RULE: "🤖规则模式",
+  PROXY: "🚀全局代理模式",
+  DIRECT: "🎯全局直连模式",
+};
 
 manager();
 $done();
 
 function manager() {
+  if (isSurge) {
     const v4_ip = $network.v4.primaryAddress;
-
     // no network connection
     if (!config.silence && !v4_ip) {
-        $notification.post("Surge 运行模式", "❌ 当前无网络", "");
-        return;
+      notify("Surge 运行模式", "❌ 当前无网络", "");
+      return;
     }
-
     const ssid = $network.wifi.ssid;
-
     const mode = ssid ? lookupSSID(ssid) : config.cellular;
-
-    $surge.setOutboundMode(lookupOutbound(mode)[0]);
-
-    if (!config.silence)
-        $notification.post(
-            "Surge 运行模式",
-            `当前网络：${ssid ? ssid : "蜂窝数据"}`,
-            `Surge已切换至${lookupOutbound(mode)[1]}`
-        );
+    const target = {
+      RULE: "rule",
+      PROXY: "global-proxy",
+      DIRECT: "direct",
+    }[mode];
+    $surge.setOutboundMode(target);
+  } else if (isLoon) {
+    const conf = JSON.parse($config.Config());
+    const ssid = conf.ssid;
+    const mode = ssid ? lookupSSID(ssid) : config.cellular;
+    const target = {
+      DIRECT: 0,
+      RULE: 1,
+      PROXY: 2,
+    }[mode];
+    $config.setRunningModel(target);
+  }
+  if (!config.silence) {
+    notify(
+      `${isSurge ? "Surge" : "Loon"} 运行模式`,
+      `当前网络：${ssid ? ssid : "蜂窝数据"}`,
+      `${isSurge ? "Surge" : "Loon"} 已切换至${MODE_NAMES[mode]}`
+    );
+  }
 }
 
 function lookupSSID(ssid) {
-    const map = {};
-    config.all_direct.map(id => map[id] = "DIRECT");
-    config.all_proxy.map(id => map[id] = "PROXY");
+  const map = {};
+  config.all_direct.map((id) => (map[id] = "DIRECT"));
+  config.all_proxy.map((id) => (map[id] = "PROXY"));
 
-    const matched = map[ssid];
-    return matched ? matched : config.wifi;
+  const matched = map[ssid];
+  return matched ? matched : config.wifi;
 }
 
-function lookupOutbound(mode) {
-    return {
-        "RULE": ["rule", "🤖规则模式"],
-        "PROXY": ["global-proxy", "🚀全局代理模式"],
-        "DIRECT": ["direct", "🎯全局直连模式"]
-    }[mode];
+function notify(title, subtitle, content) {
+  const TIMESTAMP_KEY = "running_mode_notified_time";
+  const TEN_SECONDS = 10 * 1000;
+  const lastNotifiedTime = $persistentStore.read(TIMESTAMP_KEY);
+  if (
+    !lastNotifiedTime ||
+    new Date().getTime() - lastNotifiedTime > TEN_SECONDS
+  ) {
+    $notification.post(title, subtitle, content);
+    $persistentStore.write(new Date().getTime(), TIMESTAMP_KEY);
+  }
 }
