@@ -99,12 +99,12 @@ function lookupSSID(ssid) {
 function notify(title, subtitle, content) {
   const TIMESTAMP_KEY = "running_mode_notified_time";
   const THROTTLE_TIME = 3 * 1000;
-  const lastNotifiedTime = $persistentStore.read(TIMESTAMP_KEY);
+  const lastNotifiedTime = $persistentStore.read(THROTTLE_TIME);
   if (
     !lastNotifiedTime ||
     new Date().getTime() - lastNotifiedTime > THROTTLE_TIME
   ) {
     $notification.post(title, subtitle, content);
-    $persistentStore.write(new Date().getTime(), TIMESTAMP_KEY);
+    $persistentStore.write(new Date().getTime(), THROTTLE_TIME);
   }
 }
