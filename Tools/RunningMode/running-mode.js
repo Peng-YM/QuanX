@@ -68,7 +68,7 @@ function manager() {
     }[mode];
     $surge.setOutboundMode(target);
   } else if (isLoon) {
-    const conf = JSON.parse($config.Config());
+    const conf = JSON.parse($config.getConfig());
     const ssid = conf.ssid;
     const mode = ssid ? lookupSSID(ssid) : config.cellular;
     const target = {
