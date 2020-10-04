@@ -412,40 +412,6 @@
       ]
     },
     {
-      "id": "sub-store",
-      "name": "Sub-Store",
-      "keys": [],
-      "author": "@Peng-YM",
-      "repo": "https://github.com/Peng-YM/Sub-Store",
-      "settings": [
-        {
-          "id": "@sub-store.settings",
-          "name": "Sub-Store用户数据",
-          "val": "",
-          "type": "text",
-          "desc": "备份专用，请勿手动修改！"
-        },
-        {
-          "id": "@sub-store.subs",
-          "name": "Sub-Store订阅数据",
-          "val": "",
-          "type": "text",
-          "desc": "备份专用，请勿手动修改！"
-        },
-        {
-          "id": "@sub-store.collections",
-          "name": "Sub-Store组合订阅数据",
-          "val": "",
-          "type": "text",
-          "desc": "备份专用，请勿手动修改！"
-        }
-      ],
-      "icons": [
-        "https://raw.githubusercontent.com/58xinian/icon/master/Sub-Store_mini.png",
-        "https://raw.githubusercontent.com/58xinian/icon/master/Sub-Store.png"
-      ]
-    },
-    {
       "id": "next-dns",
       "name": "NextDNS",
       "author": "@Peng-YM",
