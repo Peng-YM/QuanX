@@ -106,6 +106,7 @@ function notify(title, subtitle, content) {
   ) {
     $persistentStore.write(new Date().getTime().toString(), TIMESTAMP_KEY);
     $notification.post(title, subtitle, content);
-    $persistentStore.write(new Date().getTime(), THROTTLE_TIME);
   }
 }
+
+notify("title", "subtitle", "content")
