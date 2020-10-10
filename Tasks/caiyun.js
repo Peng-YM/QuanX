@@ -116,7 +116,7 @@ if (typeof $request !== "undefined") {
             "open-url": "https://t.me/cool_scripts",
           }
         );
-      else $.notify("[彩云天气]", "❌ 出现错误", JSON.stringify(err));
+      else $.notify("[彩云天气]", "❌ 出现错误", JSON.stringify(err, Object.getOwnPropertyNames(err)));
     })
     .finally($.done());
 }
