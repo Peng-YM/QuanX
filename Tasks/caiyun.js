@@ -66,7 +66,7 @@ if (typeof $request !== "undefined") {
     );
     $.done({ body: $request.body });
   }
-  location = {
+  const location = {
     latitude: res[1],
     longitude: res[2],
   };

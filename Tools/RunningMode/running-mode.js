@@ -52,6 +52,9 @@ manager();
 $done();
 
 function manager() {
+  let ssid;
+  let mode;
+
   if (isSurge) {
     const v4_ip = $network.v4.primaryAddress;
     // no network connection
@@ -59,8 +62,8 @@ function manager() {
       notify("🤖 Surge 运行模式", "❌ 当前无网络", "");
       return;
     }
-    const ssid = $network.wifi.ssid;
-    const mode = ssid ? lookupSSID(ssid) : config.cellular;
+    ssid = $network.wifi.ssid;
+    mode = ssid ? lookupSSID(ssid) : config.cellular;
     const target = {
       RULE: "rule",
       PROXY: "global-proxy",
@@ -69,8 +72,8 @@ function manager() {
     $surge.setOutboundMode(target);
   } else if (isLoon) {
     const conf = JSON.parse($config.getConfig());
-    const ssid = conf.ssid;
-    const mode = ssid ? lookupSSID(ssid) : config.cellular;
+    ssid = conf.ssid;
+    mode = ssid ? lookupSSID(ssid) : config.cellular;
     const target = {
       DIRECT: 0,
       RULE: 1,
@@ -108,5 +111,3 @@ function notify(title, subtitle, content) {
     $notification.post(title, subtitle, content);
   }
 }
-
-notify("title", "subtitle", "content")
