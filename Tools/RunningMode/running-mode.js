@@ -53,6 +53,8 @@ $done();
 
 function manager() {
   let ssid;
+  let mode;
+
   if (isSurge) {
     const v4_ip = $network.v4.primaryAddress;
     // no network connection
@@ -61,7 +63,7 @@ function manager() {
       return;
     }
     ssid = $network.wifi.ssid;
-    const mode = ssid ? lookupSSID(ssid) : config.cellular;
+    mode = ssid ? lookupSSID(ssid) : config.cellular;
     const target = {
       RULE: "rule",
       PROXY: "global-proxy",
@@ -71,7 +73,7 @@ function manager() {
   } else if (isLoon) {
     const conf = JSON.parse($config.getConfig());
     ssid = conf.ssid;
-    const mode = ssid ? lookupSSID(ssid) : config.cellular;
+    mode = ssid ? lookupSSID(ssid) : config.cellular;
     const target = {
       DIRECT: 0,
       RULE: 1,
@@ -109,5 +111,3 @@ function notify(title, subtitle, content) {
     $notification.post(title, subtitle, content);
   }
 }
-
-notify("title", "subtitle", "content");
