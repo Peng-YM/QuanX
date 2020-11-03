@@ -118,7 +118,7 @@ if (typeof $request !== "undefined") {
         );
       else $.notify("[彩云天气]", "❌ 出现错误", JSON.stringify(err, Object.getOwnPropertyNames(err)));
     })
-    .finally($.done());
+    .finally(() => $.done());
 }
 
 async function scheduler() {

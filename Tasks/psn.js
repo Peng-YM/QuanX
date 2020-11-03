@@ -21,7 +21,7 @@ $.http.get({
         return parse(data['@graph']);
     })
     .catch((err) => $.error(err))
-    .finally($.done());
+    .finally(() => $.done());
 
 function parse(products) {
     products.forEach(item => {
