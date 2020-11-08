@@ -100,14 +100,11 @@ function lookupSSID(ssid) {
 }
 
 function notify(title, subtitle, content) {
-  const TIMESTAMP_KEY = "running_mode_notified_time";
-  const THROTTLE_TIME = 3 * 1000;
-  const lastNotifiedTime = $persistentStore.read(THROTTLE_TIME);
-  if (
-    !lastNotifiedTime ||
-    new Date().getTime() - lastNotifiedTime > THROTTLE_TIME
-  ) {
-    $persistentStore.write(new Date().getTime().toString(), TIMESTAMP_KEY);
+  const SUBTITLE_STORE_KEY = "running_mode_notified_subtitle";
+  const lastNotifiedSubtitle = $persistentStore.read(SUBTITLE_STORE_KEY);
+
+  if (!lastNotifiedSubtitle || lastNotifiedSubtitle !== subtitle) {
+    $persistentStore.write(subtitle.toString(), SUBTITLE_STORE_KEY);
     $notification.post(title, subtitle, content);
   }
 }
