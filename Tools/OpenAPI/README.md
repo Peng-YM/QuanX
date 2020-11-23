@@ -100,7 +100,8 @@ $.http.put({
 
 
 ```javascript
-$.http = HTTP(baseURL, {
+$.http = HTTP({
+  baseURL: "https://www.baidu.com",
   timeout: 500,
   headers: {
     "User-Agent": "OpenAPI"
@@ -114,7 +115,8 @@ $.http = HTTP(baseURL, {
 
 ```javascript
 // 设置默认的baseURL为api.github.com，并设置鉴权token
-$.http = HTTP("https://api.github.com", {
+$.http = HTTP({
+  baseURL: "https://api.github.com", 
   headers: {
     Authorization: `token MY_TOKEN`,
     "User-Agent":
