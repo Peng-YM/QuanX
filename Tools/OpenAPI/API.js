@@ -1,3 +1,8 @@
+/**
+ * OpenAPI
+ * @author: Peng-YM
+ * https://github.com/Peng-YM/QuanX/blob/master/Tools/OpenAPI/README.md
+ */
 function ENV() {
     const isQX = typeof $task !== "undefined";
     const isLoon = typeof $loon !== "undefined";
@@ -134,8 +139,7 @@ function API(name = "untitled", debug = false) {
             };
         }
 
-        // persistance
-
+        // persistence
         // initialize cache
         initCache() {
             if (isQX) this.cache = JSON.parse($prefs.valueForKey(this.name) || "{}");
@@ -175,7 +179,7 @@ function API(name = "untitled", debug = false) {
 
         // store cache
         persistCache() {
-            const data = JSON.stringify(this.cache);
+            const data = JSON.stringify(this.cache, null, 2);
             if (isQX) $prefs.setValueForKey(data, this.name);
             if (isLoon || isSurge) $persistentStore.write(data, this.name);
             if (isNode) {
@@ -187,7 +191,7 @@ function API(name = "untitled", debug = false) {
                 );
                 this.node.fs.writeFileSync(
                     "root.json",
-                    JSON.stringify(this.root),
+                    JSON.stringify(this.root, null, 2),
                     {flag: "w"},
                     (err) => console.log(err)
                 );
@@ -270,7 +274,7 @@ function API(name = "untitled", debug = false) {
                 let opts = {};
                 if (openURL) opts["openUrl"] = openURL;
                 if (mediaURL) opts["mediaUrl"] = mediaURL;
-                if (JSON.stringify(opts) == "{}") {
+                if (JSON.stringify(opts) === "{}") {
                     $notification.post(title, subtitle, content);
                 } else {
                     $notification.post(title, subtitle, content, opts);
@@ -295,15 +299,15 @@ function API(name = "untitled", debug = false) {
 
         // other helper functions
         log(msg) {
-            if (this.debug) console.log(msg);
+            if (this.debug) console.log(`[${this.name}] LOG: ${msg}`);
         }
 
         info(msg) {
-            console.log(msg);
+            console.log(`[${this.name}] INFO: ${msg}`);
         }
 
         error(msg) {
-            console.log("ERROR: " + msg);
+            console.log(`[${this.name}] ERROR: ${msg}`);
         }
 
         wait(millisec) {
