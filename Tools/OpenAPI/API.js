@@ -11,29 +11,48 @@ function ENV() {
     const isNode = typeof require == "function" && !isJSBox;
     const isRequest = typeof $request !== "undefined";
     const isScriptable = typeof importModule !== "undefined";
-    return {isQX, isLoon, isSurge, isNode, isJSBox, isRequest, isScriptable};
+    return {
+        isQX,
+        isLoon,
+        isSurge,
+        isNode,
+        isJSBox,
+        isRequest,
+        isScriptable
+    };
 }
 
-function HTTP(defaultOptions = {baseURL: ""}) {
-    const {isQX, isLoon, isSurge, isScriptable, isNode} = ENV();
+function HTTP(defaultOptions = {
+    baseURL: ""
+}) {
+    const {
+        isQX,
+        isLoon,
+        isSurge,
+        isScriptable,
+        isNode
+    } = ENV();
     const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"];
     const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
 
     function send(method, options) {
-        options = typeof options === "string" ? {url: options} : options;
+        options = typeof options === "string" ? {
+            url: options
+        } : options;
         const baseURL = defaultOptions.baseURL;
         if (baseURL && !URL_REGEX.test(options.url || "")) {
             options.url = baseURL ? baseURL + options.url : options.url;
         }
-        options = {...defaultOptions, ...options};
+        options = {
+            ...defaultOptions,
+            ...options
+        };
         const timeout = options.timeout;
         const events = {
             ...{
-                onRequest: () => {
-                },
+                onRequest: () => {},
                 onResponse: (resp) => resp,
-                onTimeout: () => {
-                },
+                onTimeout: () => {},
             },
             ...options.events,
         };
@@ -42,7 +61,10 @@ function HTTP(defaultOptions = {baseURL: ""}) {
 
         let worker;
         if (isQX) {
-            worker = $task.fetch({method, ...options});
+            worker = $task.fetch({
+                method,
+                ...options
+            });
         } else if (isLoon || isSurge || isNode) {
             worker = new Promise((resolve, reject) => {
                 const request = isNode ? require("request") : $httpClient;
@@ -76,37 +98,44 @@ function HTTP(defaultOptions = {baseURL: ""}) {
         }
 
         let timeoutid;
-        const timer = timeout
-            ? new Promise((_, reject) => {
+        const timer = timeout ?
+            new Promise((_, reject) => {
                 timeoutid = setTimeout(() => {
                     events.onTimeout();
                     return reject(
                         `${method} URL: ${options.url} exceeds the timeout ${timeout} ms`
                     );
                 }, timeout);
-            })
-            : null;
+            }) :
+            null;
 
-        return (timer
-                ? Promise.race([timer, worker]).then((res) => {
-                    clearTimeout(timeoutid);
-                    return res;
-                })
-                : worker
+        return (timer ?
+            Promise.race([timer, worker]).then((res) => {
+                clearTimeout(timeoutid);
+                return res;
+            }) :
+            worker
         ).then((resp) => events.onResponse(resp));
     }
 
     const http = {};
     methods.forEach(
         (method) =>
-            (http[method.toLowerCase()] = (options) => send(method, options))
+        (http[method.toLowerCase()] = (options) => send(method, options))
     );
     return http;
 }
 
 function API(name = "untitled", debug = false) {
-    const {isQX, isLoon, isSurge, isNode, isJSBox, isScriptable} = ENV();
-    return new (class {
+    const {
+        isQX,
+        isLoon,
+        isSurge,
+        isNode,
+        isJSBox,
+        isScriptable
+    } = ENV();
+    return new(class {
         constructor(name, debug) {
             this.name = name;
             this.debug = debug;
@@ -152,8 +181,9 @@ function API(name = "untitled", debug = false) {
                 if (!this.node.fs.existsSync(fpath)) {
                     this.node.fs.writeFileSync(
                         fpath,
-                        JSON.stringify({}),
-                        {flag: "wx"},
+                        JSON.stringify({}), {
+                            flag: "wx"
+                        },
                         (err) => console.log(err)
                     );
                 }
@@ -164,8 +194,9 @@ function API(name = "untitled", debug = false) {
                 if (!this.node.fs.existsSync(fpath)) {
                     this.node.fs.writeFileSync(
                         fpath,
-                        JSON.stringify({}),
-                        {flag: "wx"},
+                        JSON.stringify({}), {
+                            flag: "wx"
+                        },
                         (err) => console.log(err)
                     );
                     this.cache = {};
@@ -185,14 +216,16 @@ function API(name = "untitled", debug = false) {
             if (isNode) {
                 this.node.fs.writeFileSync(
                     `${this.name}.json`,
-                    data,
-                    {flag: "w"},
+                    data, {
+                        flag: "w"
+                    },
                     (err) => console.log(err)
                 );
                 this.node.fs.writeFileSync(
                     "root.json",
-                    JSON.stringify(this.root, null, 2),
-                    {flag: "w"},
+                    JSON.stringify(this.root, null, 2), {
+                        flag: "w"
+                    },
                     (err) => console.log(err)
                 );
             }
@@ -264,8 +297,7 @@ function API(name = "untitled", debug = false) {
                 $notification.post(
                     title,
                     subtitle,
-                    content + `${mediaURL ? "\n多媒体:" + mediaURL : ""}`,
-                    {
+                    content + `${mediaURL ? "\n多媒体:" + mediaURL : ""}`, {
                         url: openURL,
                     }
                 );
@@ -299,15 +331,15 @@ function API(name = "untitled", debug = false) {
 
         // other helper functions
         log(msg) {
-            if (this.debug) console.log(`[${this.name}] LOG: ${msg}`);
+            if (this.debug) console.log(`[${this.name}] LOG: ${this.stringify(msg)}`);
         }
 
         info(msg) {
-            console.log(`[${this.name}] INFO: ${msg}`);
+            console.log(`[${this.name}] INFO: ${this.stringify(msg)}`);
         }
 
         error(msg) {
-            console.log(`[${this.name}] ERROR: ${msg}`);
+            console.log(`[${this.name}] ERROR: ${this.stringify(msg)}`);
         }
 
         wait(millisec) {
@@ -324,6 +356,17 @@ function API(name = "untitled", debug = false) {
                     $context.body = value.body;
                 }
             }
+        }
+
+        stringify(obj_or_str) {
+            if (typeof obj_or_str === 'string' || obj_or_str instanceof String)
+                return obj_or_str;
+            else
+                try {
+                    return JSON.stringify(obj_or_str, null, 2);
+                } catch (err) {
+                    return "[object Object]";
+                }
         }
     })(name, debug);
 }
