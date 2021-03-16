@@ -43,6 +43,9 @@ function HTTP(defaultOptions = {
         if (baseURL && !URL_REGEX.test(options.url || "")) {
             options.url = baseURL ? baseURL + options.url : options.url;
         }
+        if (options.body && options.headers && !options.headers['Content-Type']) {
+            options.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        }
         options = {
             ...defaultOptions,
             ...options
