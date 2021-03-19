@@ -10,8 +10,8 @@ const verbose = true;
 const url = $request.url;
 let body = $response.body;
 
-if (body.indexOf('$httpClient') !== -1 && body.indexOf('$task') !== -1){
-    // If already adapt for multi-platform, skip converting.
+if (body.indexOf('$httpClient') !== -1 && body.indexOf('$task') !== -1)||body.match(pattern) == null){
+    // If already adapt for multi-platform, or not match skip converting.
     $done({body});
 } else {
     if (verbose) {
