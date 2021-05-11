@@ -38,7 +38,7 @@ const imdbId = body.data.returnValue.imdbid;
 function queryDoubanInfo({ title, imdbId }) {
     $.info(`Querying Douban info for movie: ${title}`);
     return $.http.get({
-        url: `https://www.douban.com/search?cat=1002&q=${encodeURIComponent(imdbId)}`,
+        url: `https://www.douban.com/search?cat=1002&q=${encodeURIComponent(imdbId || title)}`,
         headers: {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15',
             'Cookie': JSON.stringify(Date.now())
