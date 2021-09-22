@@ -60,11 +60,7 @@ if (typeof $request !== "undefined") {
     url.match(/geocode=([0-9.]*),([0-9.]*)/) ||
     url.match(/v2\/availability\/([0-9.]*)\/([0-9.]*)\//);
   if (res === null) {
-    $.info(
-      "[彩云天气]",
-      "❌ 正则表达式匹配错误",
-      `🥬 无法从URL: ${url} 获取位置。`
-    );
+    $.info(`❌ 正则表达式匹配错误，🥬 无法从URL: ${url} 获取位置。`);
     $.done({ body: $request.body });
   }
   const location = {
