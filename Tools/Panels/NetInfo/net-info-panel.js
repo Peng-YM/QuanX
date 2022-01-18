@@ -21,14 +21,16 @@ const v4IP = v4.primaryAddress;
     const ip = v4IP;
     const router = wifi.ssid ? v4.primaryRouter : undefined;
 
-    const resp = await $http.get("https://api.my-ip.io/ip");
+    const resp = await $http.get("https://api.myip.la");
     const externalIP = resp.body;
+    const respcn = await $http.get("https://myip.ipip.net/s");
+    const externalIPcn = respcn.body;
 
     const body = {
         title: wifi.ssid || "蜂窝数据",
         content: `IP：${ip} \n`
             + (wifi.ssid ? `路由器地址：${router}\n` : "")
-            + `外部 IP：${externalIP}`,
+            + `国内 IP：${externalIPcn}国外 IP：${externalIP}`,            + `外部 IP：${externalIP}`,
         icon: wifi.ssid ? "wifi" : "antenna.radiowaves.left.and.right"
     };
     $.done(body);
