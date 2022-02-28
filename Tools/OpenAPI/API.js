@@ -3,22 +3,18 @@
  * @author: Peng-YM
  * https://github.com/Peng-YM/QuanX/blob/master/Tools/OpenAPI/README.md
  */
+
 function ENV() {
-    const isQX = typeof $task !== "undefined";
-    const isLoon = typeof $loon !== "undefined";
-    const isSurge = typeof $httpClient !== "undefined" && !isLoon;
     const isJSBox = typeof require == "function" && typeof $jsbox != "undefined";
-    const isNode = typeof require == "function" && !isJSBox;
-    const isRequest = typeof $request !== "undefined";
-    const isScriptable = typeof importModule !== "undefined";
     return {
-        isQX,
-        isLoon,
-        isSurge,
-        isNode,
+        isQX: typeof $task !== "undefined",
+        isLoon: typeof $loon !== "undefined",
+        isSurge: typeof $surge !== "undefined",
+        isBrowser: typeof document !== "undefined",
+        isNode: typeof require == "function" && !isJSBox,
         isJSBox,
-        isRequest,
-        isScriptable
+        isRequest: typeof $request !== "undefined",
+        isScriptable: typeof importModule !== "undefined",
     };
 }
 
@@ -30,7 +26,8 @@ function HTTP(defaultOptions = {
         isLoon,
         isSurge,
         isScriptable,
-        isNode
+        isNode,
+        isBrowser
     } = ENV();
     const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"];
     const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
@@ -53,9 +50,11 @@ function HTTP(defaultOptions = {
         const timeout = options.timeout;
         const events = {
             ...{
-                onRequest: () => {},
+                onRequest: () => {
+                },
                 onResponse: (resp) => resp,
-                onTimeout: () => {},
+                onTimeout: () => {
+                },
             },
             ...options.events,
         };
@@ -98,6 +97,20 @@ function HTTP(defaultOptions = {
                     })
                     .catch((err) => reject(err));
             });
+        } else if (isBrowser) {
+            worker = new Promise((resolve, reject) => {
+                fetch(options.url, {
+                    method,
+                    headers: options.headers,
+                    body: options.body,
+                })
+                    .then(response => response.json())
+                    .then(response => resolve({
+                    statusCode: response.status,
+                    headers: response.headers,
+                    body: response.body,
+                })).catch(reject);
+            });
         }
 
         let timeoutid;
@@ -113,18 +126,18 @@ function HTTP(defaultOptions = {
             null;
 
         return (timer ?
-            Promise.race([timer, worker]).then((res) => {
-                clearTimeout(timeoutid);
-                return res;
-            }) :
-            worker
+                Promise.race([timer, worker]).then((res) => {
+                    clearTimeout(timeoutid);
+                    return res;
+                }) :
+                worker
         ).then((resp) => events.onResponse(resp));
     }
 
     const http = {};
     methods.forEach(
         (method) =>
-        (http[method.toLowerCase()] = (options) => send(method, options))
+            (http[method.toLowerCase()] = (options) => send(method, options))
     );
     return http;
 }
@@ -138,7 +151,7 @@ function API(name = "untitled", debug = false) {
         isJSBox,
         isScriptable
     } = ENV();
-    return new(class {
+    return new (class {
         constructor(name, debug) {
             this.name = name;
             this.debug = debug;
