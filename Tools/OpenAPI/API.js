@@ -108,7 +108,7 @@ function HTTP(defaultOptions = {
                     .then(response => resolve({
                     statusCode: response.status,
                     headers: response.headers,
-                    body: response.body,
+                    body: response.data,
                 })).catch(reject);
             });
         }
