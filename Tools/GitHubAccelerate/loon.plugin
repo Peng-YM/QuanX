@@ -1,4 +1,6 @@
-# GitHub 访问加速 @ Peng-YM
+#!name=GitHub Accelerate
+#!desc=GitHub 访问加速 @Peng-YM
+
 [MITM]
 hostname=raw.githubusercontent.com, gist.githubusercontent.com
 
