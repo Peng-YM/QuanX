@@ -31,6 +31,7 @@ if ($.env.isRequest) {
     $.done({response});
 } else {
     networkChanged();
+    $.done();
 }
 
 function getPolicyGroups() {
