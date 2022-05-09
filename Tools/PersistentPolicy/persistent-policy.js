@@ -61,7 +61,7 @@ function networkChanged() {
     const groups = getPolicyGroups();
     if (decisions) {
         for (let group of groups) {    
-            if (!decisions[groups]) continue;
+            if (!decisions[group]) continue;
             if ($.env.isLoon) {
                 $config.setSelectPolicy(group, decisions[group]);
             } else if ($.env.isSurge) {
