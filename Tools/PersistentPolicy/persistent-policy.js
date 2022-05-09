@@ -60,7 +60,8 @@ function networkChanged() {
     // execute policy switch
     const groups = getPolicyGroups();
     if (decisions) {
-        for (let group of groups) {
+        for (let group of groups) {    
+            if (!decisions[groups]) continue;
             if ($.env.isLoon) {
                 $config.setSelectPolicy(group, decisions[group]);
             } else if ($.env.isSurge) {
