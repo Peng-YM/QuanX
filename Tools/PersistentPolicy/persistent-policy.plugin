@@ -1,5 +1,7 @@
 #!name=Persistent Policy
-#!desc=记忆当前网络下策略组选中状态，切换网络时自动恢复 @Peng-YM
+#!desc=记忆当前网络下策略组选中状态，切换网络时自动恢复
+#!author=Peng-YM
+#!icon=https://avatars.githubusercontent.com/u/21050064?v=4
 
 [MITM]
 hostname=persistent-policy.com
