@@ -1,5 +1,7 @@
-#!name=Surge自动策略
-#!desc=根据当前网络自动切换模式 by Peng-YM
+#!name=自动策略
+#!desc=根据当前网络自动切换模式
+#!author=Peng-YM
+#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/WiFi.png
 
 [Script]
 network-changed script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/AutoPolicy/auto-policy.js

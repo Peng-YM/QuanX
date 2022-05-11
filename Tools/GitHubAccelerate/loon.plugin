@@ -1,5 +1,7 @@
 #!name=GitHub Accelerate
-#!desc=GitHub 访问加速 @Peng-YM
+#!desc=GitHub 访问加速
+#!author=Peng-YM
+#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/GitHub.png
 
 [MITM]
 hostname=raw.githubusercontent.com, gist.githubusercontent.com
