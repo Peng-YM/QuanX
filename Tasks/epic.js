@@ -7,13 +7,14 @@
  * host, rsshub.app, proxy
  * 2. Loon & Surge
  * domain, rsshub.app, proxy
+ * 去除获取介绍的接口，接口修改为中文
  */
 const $ = API("epic");
 checkUpdate().then(() => $done());
 
 async function checkUpdate() {
     const html = await $.http.get({
-        url: "https://rsshub.app/epicgames/freegames"
+        url: "https://rsshub.app/epicgames/freegames/zh-CN"
     })
         .then((resp) => resp.body);
     const itemRegex = new RegExp(/<item>[\s\S]*?<\/item>/g);
@@ -26,7 +27,7 @@ async function checkUpdate() {
             "media-url": imgurl
         }
         let time = item.match(/<pubDate>([\s\S]*?)<\/pubDate>/)[1];
-        let {description, publisher} = await fetchGameInfo(url);
+        let description = item.match(/<p>([\s\S]*?)<\/p>/)[1];
         $.notify(
             `🎮 [Epic 限免]  ${name}`,
             `⏰ 发布时间: ${formatTime(time)}`,
@@ -34,16 +35,6 @@ async function checkUpdate() {
             notificationURL
         );
     });
-}
-
-async function fetchGameInfo(url) {
-    const html = await $.http.get({url}).then((resp) => resp.body);
-    const description = html.match(/"og:description" content="([\s\S]*?)"/)[1];
-    const publisher = "";
-    return {
-        description,
-        publisher
-    };
 }
 
 function formatTime(timestamp) {
