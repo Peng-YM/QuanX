@@ -33,7 +33,7 @@ Promise.all(
             .then((response) => {
                 const body = response.body;
                 const channelLink = `https://t.me/s/${channel}`;
-                const channelName = body.match(/CDATA\[(.*) - Telegram 频道\]/)[1];
+                const channelName = body.match(/CDATA\[(.*) - Telegram Channel\]/)[1];
 
 
                 $.log(`Channel Name: ${channelName}, Link: ${channelLink}`);
