@@ -5,6 +5,7 @@
  * 📌 注意 rsshub.app 需要代理访问，将下面的配置加到分流规则中：
  * 1. QX
  * host, rsshub.app, proxy
+ * !如果本地分流有了rsshub的配置， 则不需要添加此配置， 否则有几率导致任务卡死， 从而展示活跃状态。
  * 2. Loon & Surge
  * domain, rsshub.app, proxy
  * 去除获取介绍的接口，接口修改为中文
