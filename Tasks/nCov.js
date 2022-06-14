@@ -50,9 +50,9 @@ const headers = {
         "       |较昨日增加: " +
         desc.deadIncr +
         "\n\n「疫情动态」\r    " +        
-        "😷" + news.title +
+        "😷 " + news.title +
         "\n\n「动态详情」\r     " +
-        "📢" + news.summary +
+        "📢 " + news.summary +
         "\n\n    发布时间：" +
         news.pubDateStr;
     console.log(detail)
