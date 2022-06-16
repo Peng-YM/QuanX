@@ -5,6 +5,7 @@
  * 配置方法：
  * 1. 设置基准货币，默认人民币(CNY)。
  * 2. 设置保留几位小数。
+ * @update ：YangZhaocool 
  */
 
 const base = "CNY"; // 基准货币，可以改成其他币种
@@ -21,7 +22,9 @@ const currencyNames = {
 };
 
 
-$.http.get({url: "https://api.ratesapi.io/api/latest?base=CNY"})
+$.http.get({
+    url: "https://api.exchangerate-api.com/v4/latest/CNY"
+})
     .then((response) => {
         const data = JSON.parse(response.body);
         const source = currencyNames[base];
