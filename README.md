@@ -3,6 +3,11 @@ Scripts for QuantumultX, Loon, Surge, JSBox and Node.
 ## Tasks
 定时任务合集
 
+boxjs订阅：https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/box.js.json
+
+
+task合集：https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/task.json
+
 ### 概览
 
 |                             脚本                             |              作用               |   推荐配置   | 预览 |
