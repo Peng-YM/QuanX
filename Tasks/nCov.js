@@ -1,16 +1,15 @@
 /**
  *  疫情日报，自动获取当前位置的疫情信息
  *  自行申请nCov API，非常简单: https://www.tianapi.com/apiview/169
- *  在12行 nCov_api 填入申请到的API
+ *  在boxjs填入申请的API
  *  @author: Peng-YM
  *  感谢 @Mazetsz 提供腾讯API接口Token
  *  更新地址: https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/nCov.js
  */
 
 const $ = API("nCov");
-
 const tx_key = "NOUBZ-7BNHD-SZ64A-HUWCW-YBGZ7-DDBNK";
-const nCov_api = "5dcf1a3871f36bcc48c543c8193223fc" /* 填入申请的 api */
+const nCov_api = `${$.read("api")}`
 const headers = {
     "User-Agent":
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36",
