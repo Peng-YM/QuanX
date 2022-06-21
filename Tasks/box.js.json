@@ -8,7 +8,9 @@
     {
       "id": "Github Monitor",
       "name": "GitHub 监控",
-      "keys": ["@github.repo"],
+      "keys": [
+        "@github.repo"
+      ],
       "settings": [
         {
           "id": "@github.repo",
@@ -38,7 +40,9 @@
     {
       "id": "Flow",
       "name": "机场流量查询",
-      "keys": ["@flow.subscriptions"],
+      "keys": [
+        "@flow.subscriptions"
+      ],
       "settings": [
         {
           "id": "@flow.subscriptions",
@@ -61,7 +65,9 @@
     {
       "id": "Steam",
       "name": "Steam 价格监控",
-      "keys": ["@steam.games"],
+      "keys": [
+        "@steam.games"
+      ],
       "settings": [
         {
           "id": "@steam.games",
@@ -84,7 +90,9 @@
     {
       "id": "Zongheng",
       "name": "纵横小说",
-      "keys": ["@zongheng.ids"],
+      "keys": [
+        "@zongheng.ids"
+      ],
       "settings": [
         {
           "id": "@zongheng.ids",
@@ -107,7 +115,10 @@
     {
       "id": "Telegram",
       "name": "Telegram 频道媒体推送",
-      "keys": ["@telegram.channels", "@telegram.maxMedias"],
+      "keys": [
+        "@telegram.channels",
+        "@telegram.maxMedias"
+      ],
       "settings": [
         {
           "id": "@telegram.channels",
@@ -445,6 +456,24 @@
         "https://raw.githubusercontent.com/58xinian/icon/master/telegram_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/telegram.png"
       ]
+    },
+    {
+      "id": "nCov",
+      "name": "疫情监控",
+      "author": "@YangZhaocool",
+      "repo": "https://github.com/Peng-YM/QuanX",
+      "keys": [
+        "@nCov.api"
+      ],
+      "settings": [
+        {
+          "id": "@nCov.api"
+        }
+      ],
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/Color/COVID-19.png"
+      ],
+      "script": "https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/nCov.js"
     }
   ]
 }
