@@ -35,8 +35,6 @@ async function fetchInfo(sub) {
             url: sub.link,
             headers
         }).then(resp => {
-
-            console.log(' =>-3811111111111111111111111');
             const headers = resp.headers;
             const subkey = Object.keys(headers).filter(k => /SUBSCRIPTION-USERINFO/i.test(k))[0];
             const userinfo = headers[subkey];
