@@ -2,6 +2,7 @@
  *  疫情日报，自动获取当前位置的疫情信息
  *  自行申请nCov API，非常简单: https://www.tianapi.com/apiview/169
  *  在boxjs填入申请的API
+ *  boxjs订阅地址： https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/nCov.js
  *  @author: Peng-YM
  *  感谢 @Mazetsz 提供腾讯API接口Token
  *  更新地址: https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/nCov.js

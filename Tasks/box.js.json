@@ -460,7 +460,7 @@
     {
       "id": "nCov",
       "name": "疫情监控",
-      "author": "@YangZhaoCool",
+      "author": "@YangZhaocool",
       "repo": "https://github.com/Peng-YM/QuanX",
       "keys": [
         "@nCov.api"
@@ -473,7 +473,7 @@
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/mini/master/Color/COVID-19.png"
       ],
-      "script": "https://raw.githubusercontent.com/YangZhaocool/QuanX-1/master/Tasks/nCov.js"
+      "script": "https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/nCov.js"
     }
   ]
 }
