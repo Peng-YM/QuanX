@@ -25,47 +25,51 @@ if ($.read("subscriptions") !== undefined) {
     subscriptions = JSON.parse($.read("subscriptions"));
 }
 
-Promise.all(subscriptions.map(async sub => await fetchInfo(sub)))
+Promise.all(subscriptions.map(async sub => await fetchInfo(sub))).catch((err) => $.error(err)).finally(() => {
+    setTimeout(() => {
+        $.done()
+    }, 1000);
+});
 
 async function fetchInfo(sub) {
     const headers = {
         "User-Agent": "Quantumult/1.0.13 (iPhone10,3; iOS 14.0)"
     };
     $.http.get({
-            url: sub.link,
-            headers
-        }).then(resp => {
-            const headers = resp.headers;
-            const subkey = Object.keys(headers).filter(k => /SUBSCRIPTION-USERINFO/i.test(k))[0];
-            const userinfo = headers[subkey];
-            if (!userinfo) {
-                $.notify("🚀 [机场流量]", `❌ 机场：${sub.name} 未提供流量信息！`);
-            }
-            const KEY_o_now = "o_now" + sub.name;
-            const KEY_today_flow = "today_flow" + sub.name;
-            $.log(userinfo);
-            const upload_k = Number(userinfo.match(/upload=(\d+)/)[1]);
-            const download_k = Number(userinfo.match(/download=(\d+)/)[1]);
-            const total_k = Number(userinfo.match(/total=(\d+)/)[1]);
-            const expire_time = userinfo.match(/expire=(\d+)/)
-            let expires = "无信息"
-            if (expire_time) {
-                expires = formatTime(Number(expire_time[1] * 1000));
-            }
+        url: sub.link,
+        headers
+    }).then(resp => {
+        const headers = resp.headers;
+        const subkey = Object.keys(headers).filter(k => /SUBSCRIPTION-USERINFO/i.test(k))[0];
+        const userinfo = headers[subkey];
+        if (!userinfo) {
+            $.notify("🚀 [机场流量]", `❌ 机场：${sub.name} 未提供流量信息！`);
+        }
+        const KEY_o_now = "o_now" + sub.name;
+        const KEY_today_flow = "today_flow" + sub.name;
+        $.log(userinfo);
+        const upload_k = Number(userinfo.match(/upload=(\d+)/)[1]);
+        const download_k = Number(userinfo.match(/download=(\d+)/)[1]);
+        const total_k = Number(userinfo.match(/total=(\d+)/)[1]);
+        const expire_time = userinfo.match(/expire=(\d+)/)
+        let expires = "无信息"
+        if (expire_time) {
+            expires = formatTime(Number(expire_time[1] * 1000));
+        }
 
-            const residue_m =
-                total_k / 1048576 - download_k / 1048576 - upload_k / 1048576;
-            const residue = residue_m.toFixed(2).toString();
-            const dnow = new Date().getTime().toString();
-            const utime = dnow - $.read(KEY_o_now);
-            const todayflow = $.read(KEY_today_flow) - residue;
-            $.write(residue, KEY_today_flow);
-            $.write(dnow, KEY_o_now);
-            const title = `🚀 [机场流量] ${sub.name}`;
-            const hutime = parseInt(utime / 3600000);
-            const mutime = (utime / 60000) % 60;
-            const subtitle = `剩余流量: ${(residue_m / 1024).toFixed(2)} G`;
-            const details = `
+        const residue_m =
+            total_k / 1048576 - download_k / 1048576 - upload_k / 1048576;
+        const residue = residue_m.toFixed(2).toString();
+        const dnow = new Date().getTime().toString();
+        const utime = dnow - $.read(KEY_o_now);
+        const todayflow = $.read(KEY_today_flow) - residue;
+        $.write(residue, KEY_today_flow);
+        $.write(dnow, KEY_o_now);
+        const title = `🚀 [机场流量] ${sub.name}`;
+        const hutime = parseInt(utime / 3600000);
+        const mutime = (utime / 60000) % 60;
+        const subtitle = `剩余流量: ${(residue_m / 1024).toFixed(2)} G`;
+        const details = `
 📌 [使用情况]
 ${
             hutime == 0
@@ -88,15 +92,14 @@ ${
 🛎 [到期时间]
 ${expires}`;
 
-            if (sub.icon) {
-                $.notify(title, subtitle, details, {
-                    "media-url": sub.icon
-                });
-            } else {
-                $.notify(title, subtitle, details);
-            }
-        }).catch((err) => $.error(err))
-        .finally(() => $.done());
+        if (sub.icon) {
+            $.notify(title, subtitle, details, {
+                "media-url": sub.icon
+            });
+        } else {
+            $.notify(title, subtitle, details);
+        }
+    })
 }
 
 function formatTime(timestamp) {
