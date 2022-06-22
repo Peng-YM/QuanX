@@ -28,7 +28,7 @@ if ($.read("subscriptions") !== undefined) {
 Promise.all(subscriptions.map(async sub => await fetchInfo(sub))).catch((err) => $.error(err)).finally(() => {
     setTimeout(() => {
         $.done()
-    }, 1000);
+    }, 5000);
 });
 
 async function fetchInfo(sub) {
