@@ -12,7 +12,7 @@ const vmconfigs = {
       fs: {
         readFileSync(path) {
           try {
-            const data = fs.readFileSync(`${config.general.workspace}/${path}`);
+            const data = fs.readFileSync(`${config.general.workspace}/${path}`, 'utf8');
             return data;
           } catch (err) {
             console.error(err);
@@ -123,7 +123,7 @@ function addRules(proxy, config) {
           console.log(`Script ${script.name} triggered by ${url}`);
           // load the script
           const code = fs.readFileSync(
-            `${config.general.workspace}/${script.path}`
+            `${config.general.workspace}/${script.path}`, 'utf8'
           );
           // request
           const $request = {
@@ -157,7 +157,7 @@ function addRules(proxy, config) {
               $response,
               $context: {},
             };
-            vm.runInContext(code, context);
+            // vm.runInContext(code, context);
             // modify the response
             const $context = {};
             const vm = new NodeVM({
