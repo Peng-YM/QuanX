@@ -1,3 +1,9 @@
+#!name=GitHub Private Access
+#!desc=GitHub 访问私有仓库
+#!author=Peng-YM
+#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/GitHub.png
+#!homepage=https://t.me/cool_scripts/147
+
 [MITM]
 hostname = raw.githubusercontent.com, gist.githubusercontent.com
 

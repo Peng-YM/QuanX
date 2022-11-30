@@ -1,0 +1,11 @@
+#!name=Persistent Policy
+#!desc=记忆当前网络下策略组选中状态，切换网络时自动恢复
+#!author=Peng-YM
+#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/WiFi.png
+
+[MITM]
+hostname=persistent-policy.com
+
+[Script]
+network-changed script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/PersistentPolicy/persistent-policy.js
+http-request https?:\/\/persistent-policy\.com script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/PersistentPolicy/persistent-policy.js

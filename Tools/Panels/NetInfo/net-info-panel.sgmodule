@@ -1,0 +1,9 @@
+#!name=Surge 网络信息面板
+#!platform=ios
+#!desc=显示 Surge 网络信息面板
+
+[Panel]
+net-info-panel=title="网络状态",content="请刷新",style=info,script-name=net-info-panel,update-interval=1
+
+[Script]
+net-info-panel=script-path=https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tools/Panels/NetInfo/net-info-panel.js,type=generic
